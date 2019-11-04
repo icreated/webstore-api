@@ -1,0 +1,31 @@
+resourcePackages:
+- org.icreated.wstore.endpoints
+prettyPrint: true
+cacheTTL: 0
+
+openAPI:
+  servers:
+    - url: http://localhost:8080/services/api
+    
+  components:
+    securitySchemes:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+        
+  security:
+  - bearerAuth: []
+  
+  info:
+    version: '3.0'
+    title: WebStore API
+    description: 'Web Services API for Webstore Angular'
+    termsOfService: http://www.idempiere.org
+    contact:
+      email: 
+    license:
+      name: Apache
+      url: http://www.apache.org/licenses/LICENSE-2.0.html
+  
+

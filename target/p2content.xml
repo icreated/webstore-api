@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='org.icreated.wstore.api' version='6.2.0.201911041628' generation='2'>
+    <update id='org.icreated.wstore.api' range='[0.0.0,6.2.0.201911041628)' severity='0'/>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='WebStore API'/>
+      <property name='org.eclipse.equinox.p2.provider' value='ICreated'/>
+      <property name='maven-groupId' value='org.idempiere'/>
+      <property name='maven-artifactId' value='org.icreated.wstore.api'/>
+      <property name='maven-version' value='6.2.0-SNAPSHOT'/>
+    </properties>
+    <provides size='4'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.icreated.wstore.api' version='6.2.0.201911041628'/>
+      <provided namespace='osgi.bundle' name='org.icreated.wstore.api' version='6.2.0.201911041628'/>
+      <provided namespace='osgi.identity' name='org.icreated.wstore.api' version='6.2.0.201911041628'>
+        <properties size='1'>
+          <property name='type' value='osgi.bundle'/>
+        </properties>
+      </provided>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='92'>
+      <required namespace='osgi.bundle' name='org.adempiere.base' range='6.2.0'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.annotation' range='0.0.0'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.core' range='0.0.0'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.core.base' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.core.io' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.core.json' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.core.type' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.core.util' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.databind' range='0.0.0'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.databind.cfg' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.databind.introspect' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.databind.module' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.databind.node' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.databind.ser' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.databind.type' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.databind.util' range='2.9.8'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.jaxrs.annotation' range='0.0.0'/>
+      <required namespace='java.package' name='com.fasterxml.jackson.jaxrs.json' range='0.0.0'/>
+      <required namespace='java.package' name='com.google.common.base' range='0.0.0'/>
+      <required namespace='java.package' name='javax.annotation' range='0.0.0'/>
+      <required namespace='java.package' name='javax.annotation.security' range='0.0.0'/>
+      <required namespace='java.package' name='javax.inject' range='0.0.0'/>
+      <required namespace='java.package' name='javax.servlet' range='3.1.0'/>
+      <required namespace='java.package' name='javax.servlet.http' range='3.1.0'/>
+      <required namespace='java.package' name='javax.ws.rs' range='0.0.0'/>
+      <required namespace='java.package' name='javax.ws.rs.container' range='2.1.5'/>
+      <required namespace='java.package' name='javax.ws.rs.core' range='0.0.0'/>
+      <required namespace='java.package' name='javax.ws.rs.ext' range='2.1.5'/>
+      <required namespace='java.package' name='javax.xml.bind.annotation' range='2.3.2'/>
+      <required namespace='java.package' name='jersey.repackaged.com.google.common.base' range='2.22.1'/>
+      <required namespace='java.package' name='jersey.repackaged.com.google.common.collect' range='2.22.1'/>
+      <required namespace='java.package' name='org.apache.commons.codec' range='1.10.0'/>
+      <required namespace='java.package' name='org.apache.commons.codec.binary' range='1.10.0'/>
+      <required namespace='java.package' name='org.apache.commons.io' range='0.0.0'/>
+      <required namespace='java.package' name='org.apache.commons.lang' range='0.0.0'/>
+      <required namespace='java.package' name='org.apache.commons.lang.math' range='2.6.0'/>
+      <required namespace='java.package' name='org.apache.commons.lang3' range='3.1.0'/>
+      <required namespace='java.package' name='org.apache.commons.lang3.math' range='3.1.0'/>
+      <required namespace='java.package' name='org.apache.commons.lang3.tuple' range='3.1.0'/>
+      <required namespace='java.package' name='org.apache.commons.logging' range='0.0.0'/>
+      <required namespace='java.package' name='org.compiere.model' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.equinox.app' range='1.1.0'/>
+      <required namespace='java.package' name='org.glassfish.hk2.api' range='0.0.0'/>
+      <required namespace='java.package' name='org.glassfish.hk2.utilities' range='0.0.0'/>
+      <required namespace='java.package' name='org.glassfish.hk2.utilities.binding' range='0.0.0'/>
+      <required namespace='java.package' name='org.glassfish.jersey' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.client' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.client.authentication' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.client.filter' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.client.spi' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.filter' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.internal' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.internal.inject' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.internal.l10n' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.internal.sonar' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.internal.spi' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.internal.util' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.internal.util.collection' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.message' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.message.internal' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.model' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.model.internal' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.process' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.process.internal' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.filter' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.filter.internal' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.internal' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.internal.inject' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.internal.monitoring' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.internal.monitoring.jmx' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.internal.process' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.internal.routing' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.internal.scanning' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.internal.sonar' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.model' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.model.internal' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.monitoring' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.spi' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.server.spi.internal' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.servlet' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.servlet.async' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.servlet.init' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.servlet.internal' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.servlet.internal.spi' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.servlet.spi' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.spi' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.uri' range='2.22.1'/>
+      <required namespace='java.package' name='org.glassfish.jersey.uri.internal' range='2.22.1'/>
+      <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
+      <required namespace='java.package' name='org.slf4j' range='1.7.25'/>
+      <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version&gt;=1.11))'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='org.icreated.wstore.api' version='6.2.0.201911041628'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: org.icreated.wstore.api;singleton:=true&#xA;Bundle-Version: 6.2.0.201911041628&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>
