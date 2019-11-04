@@ -1,0 +1,5 @@
+/WEB-INF/classes
+/WEB-INF/lib
+/classes/
+/target/
+/swagger
