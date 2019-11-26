@@ -5,9 +5,11 @@
 > 
 
 This server side plugin is created to show how API REST can be used in OSGI Idempiere Environment.
-It's based on Jersey API Framework, Java-JWT for security purposes & Swagger integration.
+It's based on Jersey API Framework, Java-JWT for security purposes & Swagger integration:
 
-Have a look at REST services:
+![WebStore Schema](/assets/images/ic_webstore_schema.png?raw=true "Webstore Schema")
+
+This API provides following services:
 
 ![Swagger services](/assets/images/ic_webstore_swagger.png?raw=true "Swagger services")
 

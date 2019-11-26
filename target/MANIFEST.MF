@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WebStore API
 Bundle-SymbolicName: org.icreated.wstore.api;singleton:=true
-Bundle-Version: 6.2.0.201911041628
+Bundle-Version: 6.2.0.201911261929
 Bundle-Vendor: ICreated
 Bundle-Activator: org.icreated.wstore.api.Activator
 Bundle-ActivationPolicy: lazy
