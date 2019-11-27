@@ -38,11 +38,14 @@ Build it with Maven:
 ```shell
 mvn install
 ```
-It works? Make sure you have all Jersey dependencies.
-Important to know that Idempiere already contains some libraries from Jersey.
-Make sure when you download them manually from https://mvnrepository.com/ to have the same version. 
-In my case it was 2.22.1
-Here is my Jersey dependencies, if it can help you:
+It works? 
+If it's ok, then you are using Idempiere 7.
+Otherwise, make sure you have all Jersey dependencies.
+Important to outline that Idempiere (version 6.2) already contains some libraries from Jersey.
+You can download missing dependencies manually from https://mvnrepository.com/.
+Check the version. In my case it was 2.22.1
+
+Just in case here are my Jersey dependencies, if it can help you:
 
 ![Jersey Dependencies](/assets/images/ic_webstore_plugins.png?raw=true "Jersey Dependencies")
 
