@@ -5,6 +5,7 @@
 > 
 
 This server side plugin is created to show how API REST can be used in OSGI Idempiere Environment.
+
 It's based on Jersey API Framework, Java-JWT for security purposes & Swagger integration:
 
 ![WebStore Schema](/assets/images/ic_webstore_schema.png?raw=true "Webstore Schema")
@@ -40,12 +41,14 @@ mvn install
 ```
 It works? 
 If it's ok, then you are using Idempiere 7.
+
 Otherwise, make sure you have all Jersey dependencies.
 Important to outline that Idempiere (version 6.2) already contains some libraries from Jersey.
+
 You can download missing dependencies manually from https://mvnrepository.com/.
 Check the version. In my case it was 2.22.1
 
-Just in case here are my Jersey dependencies, if it can help you:
+Just in case here are my Jersey dependencies, I hope this helps you:
 
 ![Jersey Dependencies](/assets/images/ic_webstore_plugins.png?raw=true "Jersey Dependencies")
 

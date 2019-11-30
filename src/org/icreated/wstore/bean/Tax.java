@@ -20,6 +20,10 @@ public class Tax {
 	String name;
 	BigDecimal tax;
 	
+	public Tax() {
+		
+	}
+	
 	public Tax(String name, BigDecimal tax) {
 		super();
 		this.name = name;

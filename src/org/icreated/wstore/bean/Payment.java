@@ -26,6 +26,9 @@ public class Payment {
 	String currency;
 	String tenderType;
 	
+	public Payment() {
+		
+	}
 	
 	public Payment(int id, String documentNo, String description, String docStatus, BigDecimal payAmt, String trxid,
 			String currency, String tenderType) {
