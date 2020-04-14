@@ -69,13 +69,13 @@ public enum Envs
       Env.setContext(newCtx, "#C_PaymentTerm_ID", wstore.getC_PaymentTerm_ID());
       Env.setContext(newCtx, "url", wstore.getUrl());
       
-      String s = wstore.getWebParam1(); //paypalConfigFile
+      String s = wstore.getWebParam1();
       Env.setContext(newCtx, "webParam1", s == null ? "" : s);
-      s = wstore.getWebParam2(); //M_FreightCategory_ID
+      s = wstore.getWebParam2();
       Env.setContext(newCtx, "webParam2", s == null ? "" : s);
-      s = wstore.getWebParam3(); //testPayCertificate
+      s = wstore.getWebParam3();
       Env.setContext(newCtx, "webParam3", s == null ? "" : s);
-      s = wstore.getWebParam4(); //payCertificate
+      s = wstore.getWebParam4();
       Env.setContext(newCtx, "webParam4", s == null ? "" : s);
       s = wstore.getWebParam5();
       Env.setContext(newCtx, "webParam5", s == null ? "" : s);

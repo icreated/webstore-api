@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MLocation;
-import org.compiere.model.MStore;
 import org.compiere.model.MUser;
 import org.compiere.model.X_AD_User;
 import org.compiere.model.X_C_BPartner_Location;
@@ -74,12 +73,12 @@ public class AccountService extends AService {
 	public MUser createNewAccount(NewAccountForm newUser) {
 		
 		log.log(Level.FINE,"new account ", newUser);
-		MStore webStore = MStore.get(ctx, Env.getContextAsInt(ctx, "#W_Store_ID"));
+		int SalesRep_ID = Env.getContextAsInt(ctx, "#SalesRep_ID");
 
 		MBPartner bp = new MBPartner (ctx);
 		bp.setIsCustomer(true);
 		bp.setName(newUser.getName());
-		bp.setSalesRep_ID(webStore.getSalesRep_ID());
+		bp.setSalesRep_ID(SalesRep_ID);
 		bp.save();
 		MUser user = new MUser(bp);
 		user.setName(newUser.getName());
