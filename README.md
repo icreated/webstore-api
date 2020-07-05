@@ -1,6 +1,6 @@
 # &int; created
 > Integration created
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/icreated?locale.x=fr_FR)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7TYVAGLZ7XATQ&source=url)
 
 # Idempiere WebStore API
 > 
