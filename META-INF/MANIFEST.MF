@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WebStore API
 Bundle-SymbolicName: org.icreated.wstore.api;singleton:=true
-Bundle-Version: 6.2.0.qualifier
+Bundle-Version: 7.1.0.qualifier
 Bundle-Vendor: ICreated
 Bundle-Activator: org.icreated.wstore.api.Activator
 Bundle-ActivationPolicy: lazy
@@ -23,7 +23,7 @@ Bundle-ClassPath: .,
 Automatic-Module-Name: org.icreated.wstore.api
 Comment: Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=1.11))"
-Require-Bundle: org.adempiere.base;bundle-version="6.2.0"
+Require-Bundle: org.adempiere.base;bundle-version="7.1.0"
 Import-Package: com.fasterxml.jackson.annotation,
  com.fasterxml.jackson.core,
  com.fasterxml.jackson.core.base;version="2.9.8",
