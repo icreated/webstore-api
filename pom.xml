@@ -54,6 +54,15 @@
 							</artifactItem>
 							
 							
+						
+							
+							<artifactItem>
+							<groupId>com.eclipsesource.jaxrs</groupId>
+    <artifactId>jersey-all</artifactId>
+    <version>2.22.1</version>
+							</artifactItem>
+							
+							
 
 							
 							<!-- Swagger -->
@@ -102,6 +111,7 @@
 							    <artifactId>classgraph</artifactId>
 							    <version>4.8.43</version>
 							</artifactItem>
+							
 							<!-- End Swagger -->	
 																																																																																											
 						</artifactItems>
