@@ -9,11 +9,11 @@ This server side plugin is created to show how API REST can be used in OSGI Idem
 
 It's based on Jersey API Framework, Java-JWT for security purposes & Swagger integration:
 
-![WebStore Schema](/assets/images/ic_webstore_schema.png?raw=true "Webstore Schema")
+![WebStore Schema](https://icreated.co/assets/images/projects/webstore/screenshot_schema.png?raw=true "Webstore Schema")
 
 This API provides following services:
 
-![Swagger services](/assets/images/ic_webstore_swagger.png?raw=true "Swagger services")
+![Swagger services](https://icreated.co/assets/images/projects/webstore/screenshot_swagger.png?raw=true "Swagger services")
 
 It's quite enough to build a real frontend commercial site with.
 As an example you can check an Angular project built on it: [https://github.com/icreated/webstore](https://github.com/icreated/webstore)
@@ -51,7 +51,7 @@ Check the version. In my case it was 2.22.1
 
 Just in case here are my Jersey dependencies, I hope this helps you:
 
-![Jersey Dependencies](/assets/images/ic_webstore_plugins.png?raw=true "Jersey Dependencies")
+![Jersey Dependencies](https://icreated.co/assets/images/projects/webstore/screenshot_plugins.png?raw=true "Jersey Dependencies")
 
 
 ### Deploying / Publishing / Testing
