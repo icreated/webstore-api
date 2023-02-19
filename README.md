@@ -2,8 +2,9 @@
 > Integration created
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7TYVAGLZ7XATQ&source=url)
 
-# Idempiere WebStore API
-> 
+# WebStore API plugin for ERP Idempiere
+>**Attention**: The full information about the project can be found on the [project website](https://icreated.co/projects/webportal).
+
 
 This server side plugin is created to show how API REST can be used in OSGI Idempiere Environment.
 
