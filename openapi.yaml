@@ -1,0 +1,745 @@
+openapi: 3.0.1
+info:
+  title: Icreated WebStore API
+  description: Icreated WebStore for ERP Idempiere
+  license:
+    name: Apache
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: '3.0'
+servers:
+  - url: http://localhost:8080/services/api
+security:
+  - bearerAuth: []
+paths:
+  /account/orders:
+    get:
+      tags:
+        - Account services
+      summary: Order list
+      description: Get customer orders
+      operationId: getOrders
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+  /account/signup:
+    post:
+      tags:
+        - Account services
+      summary: Account Creation
+      description: Create new account
+      operationId: signup
+      requestBody:
+        description: New Account Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewAccountForm'
+        required: true
+      responses:
+        '201':
+          description: Account created, Token in return
+        '400':
+          description: Missing Account Info or Email
+  /account/address/create_update:
+    post:
+      tags:
+        - Account services
+      summary: Update address info
+      description: Updating address info
+      operationId: createAddress
+      requestBody:
+        description: Address Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+        required: true
+      responses:
+        '200':
+          description: Address updated
+        '500':
+          description: Address not created
+  /account/addresses:
+    get:
+      tags:
+        - Account services
+      summary: Address List
+      description: Get address list
+      operationId: getAddresses
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+  /account/password/change:
+    post:
+      tags:
+        - Account services
+      summary: Password change
+      description: Change customer password
+      operationId: changePassword
+      requestBody:
+        description: Password Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Password'
+        required: true
+      responses:
+        '200':
+          description: Password updated
+        '202':
+          description: Old password not correct
+        '500':
+          description: Password not changed
+  /account/info/update:
+    post:
+      tags:
+        - Account services
+      summary: Update Account Info
+      description: Update account info like name, email
+      operationId: updateAccount
+      requestBody:
+        description: Account Form
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AccountInfo'
+        required: true
+      responses:
+        '201':
+          description: Account updated
+        '500':
+          description: Account not updated
+  /account/address/delete/{id}:
+    delete:
+      tags:
+        - Account services
+      summary: Deactivating address
+      description: Deactivating address
+      operationId: deleteAddress
+      parameters:
+        - name: id
+          in: path
+          description: C_BPartner_Location_ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '202':
+          description: Address deactivated
+        '500':
+          description: Address not deactivated
+  /account/pdf/{type}/{id}:
+    get:
+      tags:
+        - Account services
+      summary: Order Invoice PDF
+      description: Get PDF File
+      operationId: getOrderFile
+      parameters:
+        - name: type
+          in: path
+          description: Choice between 'order', 'invoice'
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: C_Order_ID or C_Invoice_ID depending from type
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: default response
+          content:
+            application/pdf: {}
+  /account/order/{id}:
+    get:
+      tags:
+        - Account services
+      summary: Order information
+      description: Get order by ID
+      operationId: getOrder
+      parameters:
+        - name: id
+          in: path
+          description: C_Order_ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  /account/info:
+    get:
+      tags:
+        - Account services
+      summary: Account Info
+      description: get account information like name, email
+      operationId: getInfo
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountInfo'
+  /auth/login:
+    post:
+      tags:
+        - Authentication services
+      summary: Login
+      description: Login
+      operationId: authenticateUser
+      requestBody:
+        description: Login Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+        required: true
+      responses:
+        '401':
+          description: Unauthorized
+  /catalog/cart:
+    get:
+      tags:
+        - Catalog Services
+      summary: Cart Product list
+      description: Product List from id product list
+      operationId: getCart
+      parameters:
+        - name: id
+          in: query
+          description: Product Category ID
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /catalog/products/{categoryId}:
+    get:
+      tags:
+        - Catalog Services
+      summary: Category Products
+      description: Product Categories, active, not discontinued & not BOM
+      operationId: getProducts
+      parameters:
+        - name: categoryId
+          in: path
+          description: Product Category ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceListProduct'
+  /catalog/categories:
+    get:
+      tags:
+        - Catalog Services
+      summary: Product Category List
+      description: Product Categories, active, not discontinued & not BOM
+      operationId: getCategories
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductCategory'
+  /catalog/products/featured:
+    get:
+      tags:
+        - Catalog Services
+      summary: Featured products
+      description: Featured products - IsWebstoreFeatured = 'Y'
+      operationId: getProductsFeatured
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceListProduct'
+  /catalog/products/search/{searchString}:
+    get:
+      tags:
+        - Catalog Services
+      summary: Search products
+      description: Searching products by Name or Description
+      operationId: getProductsSearch
+      parameters:
+        - name: searchString
+          in: path
+          description: Searching string
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceListProduct'
+  /checkout/payment:
+    post:
+      tags:
+        - Checkout Services
+      summary: Payment Creation
+      description: Create simple payment
+      operationId: payment
+      requestBody:
+        description: Payment Param
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentParam'
+        required: true
+      responses:
+        '200':
+          description: Order processed
+        '403':
+          description: Order forbidden
+        '500':
+          description: Order not processed
+  /checkout/order/void:
+    post:
+      tags:
+        - Checkout Services
+      summary: Void order
+      description: Void order
+      operationId: voidOrder
+      requestBody:
+        description: Order Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        '200':
+          description: Order processed
+        '403':
+          description: Order forbidden
+        '500':
+          description: Order not processed
+  /checkout/order/create:
+    post:
+      tags:
+        - Checkout Services
+      summary: Order Creation
+      description: Create order
+      operationId: createOrder
+      requestBody:
+        description: Order Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        '200':
+          description: Order created
+        '500':
+          description: Missing address or shipper or lines
+  /common/countries:
+    get:
+      tags:
+        - Common services
+      summary: Country List
+      description: List of all countries
+      operationId: getCountries
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdNameBean'
+  /common/lookup/email:
+    post:
+      tags:
+        - Common services
+      summary: Email lookup
+      description: Lookup Email
+      operationId: lookupEmail
+      requestBody:
+        description: Token Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Token'
+        required: true
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /common/shippers:
+    get:
+      tags:
+        - Common services
+      summary: Shipper List
+      description: List of all shippers
+      operationId: getShippers
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shipper'
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        label:
+          type: string
+        name:
+          type: string
+        address1:
+          type: string
+        address2:
+          type: string
+        postal:
+          type: string
+        city:
+          type: string
+        phone:
+          type: string
+        countryId:
+          type: integer
+          format: int32
+        countryName:
+          type: string
+    Document:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        documentNo:
+          type: string
+        poReference:
+          type: string
+        description:
+          type: string
+        docStatus:
+          type: string
+        docStatusName:
+          type: string
+        date:
+          type: string
+          format: date-time
+        totalLines:
+          type: number
+        grandTotal:
+          type: number
+        name:
+          type: string
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentLine'
+        shipAddress:
+          $ref: '#/components/schemas/Address'
+        billAddress:
+          $ref: '#/components/schemas/Address'
+    DocumentLine:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        productId:
+          type: integer
+          format: int32
+        line:
+          type: integer
+          format: int32
+        name:
+          type: string
+        description:
+          type: string
+        priceList:
+          type: number
+        price:
+          type: number
+        qty:
+          type: number
+        lineNetAmt:
+          type: number
+    NewAccountForm:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    Password:
+      type: object
+      properties:
+        password:
+          type: string
+        newPassword:
+          type: string
+        confirmPassword:
+          type: string
+    AccountInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        value:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        birthday:
+          type: string
+          format: date-time
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        documentNo:
+          type: string
+        poReference:
+          type: string
+        description:
+          type: string
+        docStatus:
+          type: string
+        docStatusName:
+          type: string
+        date:
+          type: string
+          format: date-time
+        totalLines:
+          type: number
+        grandTotal:
+          type: number
+        name:
+          type: string
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentLine'
+        shipAddress:
+          $ref: '#/components/schemas/Address'
+        billAddress:
+          $ref: '#/components/schemas/Address'
+        shipper:
+          $ref: '#/components/schemas/Shipper'
+        shipments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Shipment'
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+        taxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tax'
+    Payment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        documentNo:
+          type: string
+        description:
+          type: string
+        docStatus:
+          type: string
+        payAmt:
+          type: number
+        trxid:
+          type: string
+        currency:
+          type: string
+        tenderType:
+          type: string
+    Shipment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        documentNo:
+          type: string
+        poReference:
+          type: string
+        description:
+          type: string
+        docStatus:
+          type: string
+        docStatusName:
+          type: string
+        date:
+          type: string
+          format: date-time
+        totalLines:
+          type: number
+        grandTotal:
+          type: number
+        name:
+          type: string
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentLine'
+        shipAddress:
+          $ref: '#/components/schemas/Address'
+        billAddress:
+          $ref: '#/components/schemas/Address'
+        shipper:
+          $ref: '#/components/schemas/Shipper'
+        trackingNo:
+          type: string
+    Shipper:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        description:
+          type: string
+    Tax:
+      type: object
+      properties:
+        name:
+          type: string
+        tax:
+          type: number
+    UserCredentials:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    PriceListProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        value:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        help:
+          type: string
+        documentNote:
+          type: string
+        imageURL:
+          type: string
+        price:
+          type: number
+        qty:
+          type: integer
+          format: int32
+        line:
+          type: integer
+          format: int32
+    ProductCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        description:
+          type: string
+    PaymentParam:
+      type: object
+      properties:
+        type:
+          type: string
+        orderId:
+          type: integer
+          format: int32
+    IdNameBean:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+        msg:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
