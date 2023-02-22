@@ -1,5 +1,5 @@
 resourcePackages:
-- org.icreated.wstore.endpoints
+- co.icreated.wstore.endpoints
 prettyPrint: true
 cacheTTL: 0
 
@@ -19,9 +19,8 @@ openAPI:
   
   info:
     version: '3.0'
-    title: WebStore API
-    description: 'Web Services Idempiere Webstore API'
-    termsOfService: http://www.idempiere.org
+    title: Icreated WebStore API
+    description: 'Web Services for Idempiere'
     contact: 
       email: contact.icreated@gmail.com
     license:

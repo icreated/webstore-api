@@ -2,15 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
    <parent>
-	    <groupId>org.idempiere</groupId>
+		<groupId>org.idempiere</groupId>
 		<artifactId>org.idempiere.parent</artifactId>
 		<version>${revision}</version>
 		<relativePath>../idempiere/org.idempiere.parent/pom.xml</relativePath>
-		<!--ICreated: Standard Idempiere Parent pom.xml path
-		<relativePath>../org.idempiere.parent/pom.xml</relativePath>
-		 -->
    </parent>
-  <artifactId>org.icreated.wstore.api</artifactId>
+  <artifactId>co.icreated.wstore.api</artifactId>
   <packaging>eclipse-plugin</packaging>
   
   <properties>
@@ -20,8 +17,8 @@
   </properties>
   
   <build>
-  
-  <outputDirectory>${project.build.directory}/../WEB-INF/classes</outputDirectory>
+    <sourceDirectory>src</sourceDirectory>
+  	<outputDirectory>WEB-INF/classes</outputDirectory>
   
     <plugins>
     
@@ -55,15 +52,11 @@
 							</artifactItem>
 							
 							
-						
-							
 							<artifactItem>
-							<groupId>com.eclipsesource.jaxrs</groupId>
-    <artifactId>jersey-all</artifactId>
-    <version>2.22.1</version>
+								<groupId>com.eclipsesource.jaxrs</groupId>
+							    <artifactId>jersey-all</artifactId>
+							    <version>2.22.1</version>
 							</artifactItem>
-							
-							
 
 							
 							<!-- Swagger -->

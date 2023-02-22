@@ -19,5 +19,6 @@
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/swagger-jaxrs2-servlet-initializer.jar"/>
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/swagger-jaxrs2.jar"/>
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/swagger-models.jar"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>
