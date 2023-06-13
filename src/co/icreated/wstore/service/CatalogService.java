@@ -26,6 +26,8 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
+import co.icreated.wstore.api.model.PriceListProductDto;
+import co.icreated.wstore.api.model.ProductCategoryDto;
 import co.icreated.wstore.bean.PriceListProduct;
 import co.icreated.wstore.bean.ProductCategory;
 
@@ -43,9 +45,9 @@ public class CatalogService extends AService {
 	}
 	
 	
-	public List<ProductCategory> getCategories() {
+	public List<ProductCategoryDto> getCategories() {
 		
-		List<ProductCategory> retValue = new ArrayList<ProductCategory>();
+		List<ProductCategoryDto> retValue = new ArrayList<ProductCategoryDto>();
 		 
 			String sql = "SELECT t.M_Product_Category_ID, t.Name, t.Description " +
 			"FROM M_Product_Category t " +
@@ -62,7 +64,7 @@ public class CatalogService extends AService {
 				rs = pstmt.executeQuery ();
 
 				while (rs.next ()) {
-					retValue.add(new ProductCategory(rs.getInt(1), rs.getString(2), rs.getString(3)));
+					retValue.add(new ProductCategoryDto().id(rs.getInt(1)).name(rs.getString(2)).description(rs.getString(3)));
 				}
 					
 
@@ -81,9 +83,9 @@ public class CatalogService extends AService {
 	
 	
 	
-	public PriceListProduct getProduct(int M_Product_ID) {
+	public PriceListProductDto getProduct(int M_Product_ID) {
 		
-		PriceListProduct product = null;
+		PriceListProductDto product = null;
 			
 		String sql = "SELECT p.M_Product_ID, p.Value, p.Name, p.Description, p.Help, p.DocumentNote, p.ImageURL, pp.PriceStd " +
 				"FROM M_Product p " +
@@ -102,8 +104,8 @@ public class CatalogService extends AService {
 			rs = pstmt.executeQuery ();
 			
 			if (rs.next ()) {
-				product = new PriceListProduct(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5), rs.getString(6),rs.getString(7),
-						rs.getBigDecimal(8));
+				product = new PriceListProductDto().id(rs.getInt(1)).value(rs.getString(2)).name(rs.getString(3)).description(rs.getString(4)).help(rs.getString(5))
+						.documentNote(rs.getString(6)).imageURL(rs.getString(7)).price(rs.getBigDecimal(8));		
 			}
 
 		}
@@ -121,9 +123,9 @@ public class CatalogService extends AService {
 	
 	
 	
-	public  List<PriceListProduct> getProducts(int M_Product_Category_ID, boolean isWebStoreFeatured) {
+	public  List<PriceListProductDto> getProducts(int M_Product_Category_ID, boolean isWebStoreFeatured) {
 		
-		 List<PriceListProduct> list = new  ArrayList<PriceListProduct>();
+		 List<PriceListProductDto> list = new  ArrayList<PriceListProductDto>();
 			
 			String sql = "SELECT p.M_Product_ID, p.Value, p.Name, p.Description, p.Help, p.DocumentNote, p.ImageURL, pp.PriceStd " +
 					"FROM M_Product p " +
@@ -150,9 +152,8 @@ public class CatalogService extends AService {
 			rs = pstmt.executeQuery ();
 
 			while (rs.next ()) {
-
-				list.add(new PriceListProduct(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),
-						rs.getString(7),rs.getBigDecimal(8)));
+				list.add(new PriceListProductDto().id(rs.getInt(1)).value(rs.getString(2)).name(rs.getString(3)).description(rs.getString(4)).help(rs.getString(5))
+						.documentNote(rs.getString(6)).imageURL(rs.getString(7)).price(rs.getBigDecimal(8)));
 			}
 		}
 		catch (SQLException ex)
@@ -168,10 +169,10 @@ public class CatalogService extends AService {
 	}
 	
 	
-	public  List<PriceListProduct> doSearch(String searchString) {
+	public  List<PriceListProductDto> doSearch(String searchString) {
 		
 		
-		 List<PriceListProduct> list = new  ArrayList<PriceListProduct>();
+		 List<PriceListProductDto> list = new  ArrayList<PriceListProductDto>();
 			
 			String sql = "SELECT p.M_Product_ID, p.Value, p.Name, p.Description, p.Help, p.DocumentNote, p.ImageURL, pp.PriceStd " +
 					"FROM M_Product p " +
@@ -191,9 +192,7 @@ public class CatalogService extends AService {
 			rs = pstmt.executeQuery ();
 
 			while (rs.next ()) {
-
-				list.add(new PriceListProduct(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),
-						rs.getString(7),rs.getBigDecimal(8)));
+				list.add(new PriceListProductDto().id(rs.getInt(1)).value(rs.getString(2)).name(rs.getString(3)).description(rs.getString(4)).help(rs.getString(5)));
 			}
 		}
 		catch (SQLException ex)
@@ -209,9 +208,9 @@ public class CatalogService extends AService {
 	}
 	
 	
-	public  List<PriceListProduct> getProductsById(List<Integer> ids) {
+	public  List<PriceListProductDto> getProductsById(List<Integer> ids) {
 		
-		List<PriceListProduct> retValue = new ArrayList<PriceListProduct>();
+		List<PriceListProductDto> retValue = new ArrayList<PriceListProductDto>();
 		
 		String sql = "SELECT p.M_Product_ID, p.Value, p.Name, p.Description, p.Help, p.DocumentNote, p.ImageURL, pp.PriceStd " +
 			"FROM M_Product p " +
@@ -236,9 +235,8 @@ public class CatalogService extends AService {
 			rs = pstmt.executeQuery ();
 			
 			while (rs.next ()) {
-				
-				retValue.add(new PriceListProduct(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),
-						rs.getString(7),rs.getBigDecimal(8)));
+				retValue.add(new PriceListProductDto().id(rs.getInt(1)).value(rs.getString(2)).name(rs.getString(3)).description(rs.getString(4)).help(rs.getString(5))
+						.documentNote(rs.getString(6)).imageURL(rs.getString(7)).price(rs.getBigDecimal(8)));		
 			}
 
 				

@@ -15,6 +15,7 @@ package co.icreated.wstore;
 
 import java.util.Properties;
 
+import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.message.GZipEncoder;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -27,6 +28,7 @@ import co.icreated.wstore.endpoints.AuthenticationEndpoints;
 import co.icreated.wstore.endpoints.CatalogEndpoints;
 import co.icreated.wstore.endpoints.CheckoutEndpoints;
 import co.icreated.wstore.endpoints.CommonEndpoints;
+import co.icreated.wstore.api.service.CatalogApi;
 import co.icreated.wstore.factory.AccountServiceFactory;
 import co.icreated.wstore.factory.CatalogServiceFactory;
 import co.icreated.wstore.factory.ContextFactory;

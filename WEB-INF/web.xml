@@ -20,19 +20,6 @@
       <servlet-name>ApiServlet</servlet-name>
       <url-pattern>/api/*</url-pattern>
    </servlet-mapping>
-   <servlet>
-      <servlet-name>OpenApi</servlet-name>
-      <servlet-class>io.swagger.v3.jaxrs2.integration.OpenApiServlet</servlet-class>
-      <init-param>
-         <param-name>openApi.configuration.resourcePackages</param-name>
-         <param-value>co.icreated.wstore.endpoints</param-value>
-      </init-param>
-      <load-on-startup>2</load-on-startup>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>OpenApi</servlet-name>
-      <url-pattern>/api-docs/*</url-pattern>
-   </servlet-mapping>
    <welcome-file-list>
       <welcome-file>index.html</welcome-file>
    </welcome-file-list>

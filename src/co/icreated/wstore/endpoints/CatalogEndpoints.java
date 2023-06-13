@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -26,6 +27,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import co.icreated.wstore.api.model.PriceListProductDto;
+import co.icreated.wstore.api.model.ProductCategoryDto;
+import co.icreated.wstore.api.service.CatalogApi;
 import co.icreated.wstore.bean.PriceListProduct;
 import co.icreated.wstore.bean.ProductCategory;
 import co.icreated.wstore.service.CatalogService;
@@ -35,10 +39,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
+/**
+ * @author macspok
+ *
+ */
 @PermitAll
-@Path("/catalog")
-@Tag(name = "Catalog Services")
-public class CatalogEndpoints {
+public class CatalogEndpoints implements CatalogApi {
 	
 
 	    
@@ -46,11 +52,7 @@ public class CatalogEndpoints {
 	    CatalogService catalogService;
 	    
 
-		@GET
-		@Path("/categories")
-		@Produces(MediaType.APPLICATION_JSON)
-	    @Operation(summary = "Product Category List", description = "Product Categories, active, not discontinued & not BOM")   
-		public List<ProductCategory> getCategories() {
+		public List<ProductCategoryDto> getCategories() {
 
 			return catalogService.getCategories();
 		}
@@ -59,7 +61,7 @@ public class CatalogEndpoints {
 		@Path("/products/featured")
 		@Produces(MediaType.APPLICATION_JSON)
 	    @Operation(summary = "Featured products", description = "Featured products - IsWebstoreFeatured = 'Y'")   
-		public List<PriceListProduct> getProductsFeatured() {
+		public List<PriceListProductDto> getProductsFeatured() {
 
 			return catalogService.getProducts(0, true);
 		}
@@ -68,7 +70,7 @@ public class CatalogEndpoints {
 		@Path("/products/search/{searchString}")
 		@Produces(MediaType.APPLICATION_JSON)
 	    @Operation(summary = "Search products", description = "Searching products by Name or Description")   
-		public List<PriceListProduct> getProductsSearch(
+		public List<PriceListProductDto> getProductsSearch(
 				@Parameter(description = "Searching string", required = true) 
 				@PathParam("searchString") String searchString) {
 
@@ -88,22 +90,8 @@ public class CatalogEndpoints {
 			return catalogService.doSearch(search);
 		}
 		
-		@GET
-		@Path("/products/{categoryId}")
-		@Produces(MediaType.APPLICATION_JSON)
-	    @Operation(summary = "Category Products", description = "Product Categories, active, not discontinued & not BOM")   
-		public List<PriceListProduct> getProducts(
-				@Parameter(description = "Product Category ID", required = true) 
-				@PathParam("categoryId") int id) {
-
-			return catalogService.getProducts(id, false);
-		}
 		
 		
-		@GET
-		@Path("/cart")
-		@Produces(MediaType.APPLICATION_JSON)
-	    @Operation(summary = "Cart Product list", description = "Product List from id product list")   
 		public Response getCart(@Parameter(description = "Product Category ID", schema = @Schema(implementation =  List.class), required = true) 
 											@QueryParam("id") List<Integer> ids) {
 
@@ -112,6 +100,13 @@ public class CatalogEndpoints {
 			
 			return Response.status(Response.Status.OK).entity(catalogService.getProductsById(ids)).build();
 
+		}
+
+
+
+		@Override
+		public List<PriceListProductDto> getProducts(Integer categoryId) {
+			return catalogService.getProducts(categoryId, false);
 		}
 		
 

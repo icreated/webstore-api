@@ -13,7 +13,7 @@
   <properties>
     <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  	<swagger.version>2.0.8</swagger.version>
+  	<swagger.version>2.1.9</swagger.version>
   </properties>
   
   <build>
@@ -22,14 +22,47 @@
   
     <plugins>
     
-                
+		<plugin>
+		    <groupId>org.openapitools</groupId>
+		    <artifactId>openapi-generator-maven-plugin</artifactId>
+		    <version>6.2.1</version>
+		    <executions>
+		        <execution> 
+		            <goals>
+		                <goal>generate</goal>
+		            </goals>
+		            <configuration>
+		                <inputSpec>${project.basedir}/openapi.yaml</inputSpec>
+		                <output>${project.basedir}</output>
+		                <generatorName>jaxrs-spec</generatorName>
+		             
+		                <apiPackage>co.icreated.wstore.api.service</apiPackage>
+		                <modelPackage>co.icreated.wstore.api.model</modelPackage>
+		                <modelNameSuffix>Dto</modelNameSuffix>
+		                <typeMappings> 
+			                <typeMapping>Double=java.math.BigDecimal</typeMapping>
+			            </typeMappings>
+			            <generateSupportingFiles>false</generateSupportingFiles>
+			            <configOptions>
+		                   <sourceFolder>/src</sourceFolder>
+		                   <implFolder>/src</implFolder>
+		                   <interfaceOnly>true</interfaceOnly>
+		                   <useSwaggerAnnotations>false</useSwaggerAnnotations>
+		                   <openApiNullable>false</openApiNullable>
+		                   <hideGenerationTimestamp>true</hideGenerationTimestamp>
+		                   <useBeanValidation>true</useBeanValidation>
+		                </configOptions>
+		            </configuration>
+		        </execution>
+		    </executions>
+		</plugin>                
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-dependency-plugin</artifactId>
 			<executions>
 				<execution>
 					<id>copy_libs</id>
-					<phase>prepare-package</phase>
+					<phase>validate</phase>
 					<goals>
 						<goal>copy</goal>
 					</goals>
@@ -60,52 +93,31 @@
 
 							
 							<!-- Swagger -->
-					        <artifactItem>
-					            <groupId>io.swagger.core.v3</groupId>
-					            <artifactId>swagger-jaxrs2</artifactId>
-					            <version>${swagger.version}</version>
-					        </artifactItem>
-					        <artifactItem>
-					            <groupId>io.swagger.core.v3</groupId>
-					            <artifactId>swagger-core</artifactId>
-					            <version>${swagger.version}</version>
-					        </artifactItem>							        
-					        <artifactItem>
-					            <groupId>io.swagger.core.v3</groupId>
-					            <artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
-					            <version>${swagger.version}</version>
-					        </artifactItem>
 							<artifactItem>
 							    <groupId>io.swagger.core.v3</groupId>
 							    <artifactId>swagger-annotations</artifactId>
 							    <version>${swagger.version}</version>
-							</artifactItem>
+							</artifactItem>					
 							<artifactItem>
-							    <groupId>io.swagger.core.v3</groupId>
-							    <artifactId>swagger-models</artifactId>
+							    <groupId>io.swagger.parser.v3</groupId>
+							    <artifactId>swagger-parser</artifactId>
 							    <version>${swagger.version}</version>
 							</artifactItem>
 							<artifactItem>
-							    <groupId>io.swagger.core.v3</groupId>
-							    <artifactId>swagger-integration</artifactId>
-							    <version>${swagger.version}</version>
+							    <groupId>org.hibernate</groupId>
+							    <artifactId>hibernate-validator</artifactId>
+							    <version>6.0.23.Final</version>
 							</artifactItem>
 							<artifactItem>
-							    <groupId>com.fasterxml.jackson.dataformat</groupId>
-							    <artifactId>jackson-dataformat-yaml</artifactId>
-							    <version>2.9.9</version>
+							    <groupId>org.jboss.logging</groupId>
+							    <artifactId>jboss-logging</artifactId>
+							    <version>3.5.0.Final</version>
 							</artifactItem>
 							<artifactItem>
-							    <groupId>org.yaml</groupId>
-							    <artifactId>snakeyaml</artifactId>
-							    <version>1.24</version>
+							    <groupId>com.fasterxml</groupId>
+							    <artifactId>classmate</artifactId>
+							    <version>1.5.1</version>
 							</artifactItem>
-							<artifactItem>
-							    <groupId>io.github.classgraph</groupId>
-							    <artifactId>classgraph</artifactId>
-							    <version>4.8.43</version>
-							</artifactItem>
-							
 							<!-- End Swagger -->	
 																																																																																											
 						</artifactItems>

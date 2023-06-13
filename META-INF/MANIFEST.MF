@@ -2,13 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WebStore API
 Bundle-SymbolicName: co.icreated.wstore.api;singleton:=true
-Bundle-Version: 9.0.0.qualifier
+Bundle-Version: 10.0.0.qualifier
 Bundle-Vendor: ICreated
 Bundle-Activator: co.icreated.wstore.api.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  WEB-INF/classes/,
- WEB-INF/lib/classgraph.jar,
  WEB-INF/lib/jackson-dataformat-yaml.jar,
  WEB-INF/lib/jjwt-api.jar,
  WEB-INF/lib/jjwt-impl.jar,
@@ -19,7 +18,9 @@ Bundle-ClassPath: .,
  WEB-INF/lib/swagger-integration.jar,
  WEB-INF/lib/swagger-jaxrs2-servlet-initializer.jar,
  WEB-INF/lib/swagger-jaxrs2.jar,
- WEB-INF/lib/swagger-models.jar
+ WEB-INF/lib/swagger-models.jar,
+ WEB-INF/lib/hibernate-validator.jar,
+ WEB-INF/lib/swagger-parser.jar
 Automatic-Module-Name: org.icreated.wstore.api
 Comment: Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=11))"
@@ -47,6 +48,8 @@ Import-Package: com.fasterxml.jackson.annotation,
  javax.inject,
  javax.servlet;version="3.1.0",
  javax.servlet.http;version="3.1.0",
+ javax.validation;version="2.0.2",
+ javax.validation.constraints;version="2.0.2",
  javax.ws.rs,
  javax.ws.rs.container;version="2.1.5",
  javax.ws.rs.core,
