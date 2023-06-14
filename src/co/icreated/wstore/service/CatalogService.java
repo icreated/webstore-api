@@ -22,19 +22,23 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.compiere.model.MInvoice;
+import org.compiere.model.MProductCategory;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
+import co.icreated.wstore.utils.PQuery;
 import co.icreated.wstore.api.model.PriceListProductDto;
 import co.icreated.wstore.api.model.ProductCategoryDto;
-import co.icreated.wstore.bean.PriceListProduct;
-import co.icreated.wstore.bean.ProductCategory;
+import co.icreated.wstore.mapper.CatalogMapper;
+
 
 public class CatalogService extends AService {
 	
 	
 	CLogger log = CLogger.getCLogger(CatalogService.class);
+	CatalogMapper catalogMapper = CatalogMapper.INSTANCE;
 	
 	Properties ctx;
 	
@@ -47,38 +51,13 @@ public class CatalogService extends AService {
 	
 	public List<ProductCategoryDto> getCategories() {
 		
-		List<ProductCategoryDto> retValue = new ArrayList<ProductCategoryDto>();
-		 
-			String sql = "SELECT t.M_Product_Category_ID, t.Name, t.Description " +
-			"FROM M_Product_Category t " +
-			"WHERE t.AD_Org_ID= ?  AND t.IsActive='Y' AND t.IsSelfService='Y' " +
-			"ORDER BY t.Name";
-
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			try
-			{
-				pstmt = DB.prepareStatement (sql, null);
-				pstmt.setInt (1, Env.getAD_Org_ID(ctx));
-				
-				rs = pstmt.executeQuery ();
-
-				while (rs.next ()) {
-					retValue.add(new ProductCategoryDto().id(rs.getInt(1)).name(rs.getString(2)).description(rs.getString(3)));
-				}
-					
-
-			}
-			catch (SQLException ex) {
-				log.log(Level.SEVERE, "getCategories - " + sql + " - "+ ex);
-			}
-			
-			finally {
-				DB.close(rs, pstmt);
-				rs = null; pstmt = null;
-			}
-			
-			return retValue;
+	    List<MProductCategory> categories =
+	            new PQuery(ctx, MProductCategory.Table_Name, "isActive='Y' AND IsSelfService='Y' AND AD_Org_ID=?", null) //
+	            	.setParameters(Env.getAD_Org_ID(ctx)) //
+	                .setOrderBy("Name") //
+	                .list();
+		
+	    return catalogMapper.toDto(categories);
 	}	
 	
 	
