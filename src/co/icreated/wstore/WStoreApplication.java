@@ -25,10 +25,10 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import co.icreated.wstore.endpoints.AccountEndpoints;
 import co.icreated.wstore.endpoints.AuthenticationEndpoints;
-import co.icreated.wstore.endpoints.CatalogEndpoints;
 import co.icreated.wstore.endpoints.CheckoutEndpoints;
 import co.icreated.wstore.endpoints.CommonEndpoints;
 import co.icreated.wstore.api.service.CatalogApi;
+import co.icreated.wstore.controller.CatalogController;
 import co.icreated.wstore.factory.AccountServiceFactory;
 import co.icreated.wstore.factory.CatalogServiceFactory;
 import co.icreated.wstore.factory.ContextFactory;
@@ -48,7 +48,7 @@ public class WStoreApplication extends ResourceConfig {
        
  //   	register(RolesAllowedDynamicFeature.class);
     	register(AccountEndpoints.class);
-    	register(CatalogEndpoints.class);
+    	register(CatalogController.class);
     	
     	register(CommonEndpoints.class);
     	register(CheckoutEndpoints.class);

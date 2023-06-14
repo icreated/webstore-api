@@ -228,17 +228,23 @@ paths:
       description: Product List from id product list
       operationId: getCart
       parameters:
-        - name: id
+        - name: ids
           in: query
-          description: Product Category ID
+          description: Product ids
           required: true
           schema:
-            type: string
+            type: array
+            items:
+              type: integer
       responses:
         default:
           description: default response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceListProduct'
   /catalog/products/{categoryId}:
     get:
       tags:

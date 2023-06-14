@@ -20,7 +20,7 @@ public interface CatalogApi {
     @GET
     @Path("/cart")
     @Produces({ "application/json" })
-    void getCart(@QueryParam("id") @NotNull   String id);
+    List<PriceListProductDto> getCart(@QueryParam("ids") @NotNull   List<Integer> ids);
 
     @GET
     @Path("/categories")
