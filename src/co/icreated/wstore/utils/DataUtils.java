@@ -11,7 +11,7 @@
  *  with this program; if not, write to the Free Software Foundation, Inc., 
  *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  ******************************************************************************/
-package co.icreated.wstore.service;
+package co.icreated.wstore.utils;
 
 
 import java.sql.PreparedStatement;
@@ -28,10 +28,10 @@ import org.compiere.util.Env;
 
 import co.icreated.wstore.bean.Shipper;
 
-public class CommonService {
+public class DataUtils {
 	
 	
-	private static CLogger log = CLogger.getCLogger(CommonService.class);	
+	private static CLogger log = CLogger.getCLogger(DataUtils.class);	
 	
 	public static int getM_PriceList_Version_ID (int M_PriceList_ID, Timestamp day) {
 		String sql = "SELECT plv.M_PriceList_Version_ID, plv.Name, plv.Description, plv.ValidFrom " 	//	1..4

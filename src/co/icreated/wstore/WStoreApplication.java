@@ -15,7 +15,6 @@ package co.icreated.wstore;
 
 import java.util.Properties;
 
-import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.message.GZipEncoder;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -25,10 +24,9 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import co.icreated.wstore.endpoints.AccountEndpoints;
 import co.icreated.wstore.endpoints.AuthenticationEndpoints;
+import co.icreated.wstore.endpoints.CatalogEndpoints;
 import co.icreated.wstore.endpoints.CheckoutEndpoints;
 import co.icreated.wstore.endpoints.CommonEndpoints;
-import co.icreated.wstore.api.service.CatalogApi;
-import co.icreated.wstore.controller.CatalogController;
 import co.icreated.wstore.factory.AccountServiceFactory;
 import co.icreated.wstore.factory.CatalogServiceFactory;
 import co.icreated.wstore.factory.ContextFactory;
@@ -42,13 +40,15 @@ import co.icreated.wstore.service.CatalogService;
 import co.icreated.wstore.service.OrderService;
 import co.icreated.wstore.service.PaymentService;
 
+
+
 public class WStoreApplication extends ResourceConfig {
 	
     public WStoreApplication() {
        
  //   	register(RolesAllowedDynamicFeature.class);
     	register(AccountEndpoints.class);
-    	register(CatalogController.class);
+    	register(CatalogEndpoints.class);
     	
     	register(CommonEndpoints.class);
     	register(CheckoutEndpoints.class);

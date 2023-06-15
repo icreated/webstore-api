@@ -32,7 +32,7 @@ import co.icreated.wstore.bean.IdNameBean;
 import co.icreated.wstore.bean.Shipper;
 import co.icreated.wstore.bean.Token;
 import co.icreated.wstore.service.AccountService;
-import co.icreated.wstore.service.CommonService;
+import co.icreated.wstore.utils.DataUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -63,7 +63,7 @@ public class CommonEndpoints {
     @Operation(summary = "Shipper List", description = "List of all shippers")   
 	public List<Shipper> getShippers() {
 		
-		return CommonService.getShippers(Env.getAD_Client_ID(ctx));
+		return DataUtils.getShippers(Env.getAD_Client_ID(ctx));
 	}
 	
 	@POST
@@ -75,7 +75,7 @@ public class CommonEndpoints {
 			@Parameter(description = "Token Form", schema = @Schema(implementation =  Token.class), required = true) 
 			Token email) {
 
-		boolean ok = CommonService.isUnique(ctx, "Email", email.getToken());
+		boolean ok = DataUtils.isUnique(ctx, "Email", email.getToken());
 		System.out.println(email.getToken()+"   "+ok);
 		return Response.status(Response.Status.OK).entity(ok).build();
 
