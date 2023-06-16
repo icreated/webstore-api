@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("Shipment")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class ShipmentDto   {
+public class ShipmentDto {
   private @Valid Integer id;
   private @Valid String documentNo;
   private @Valid String poReference;
@@ -45,7 +45,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -63,7 +63,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("documentNo")
   public String getDocumentNo() {
     return documentNo;
@@ -81,7 +81,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("poReference")
   public String getPoReference() {
     return poReference;
@@ -99,7 +99,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("description")
   public String getDescription() {
     return description;
@@ -117,7 +117,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("docStatus")
   public String getDocStatus() {
     return docStatus;
@@ -135,7 +135,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("docStatusName")
   public String getDocStatusName() {
     return docStatusName;
@@ -153,7 +153,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("date")
   public Date getDate() {
     return date;
@@ -171,7 +171,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("totalLines")
   public BigDecimal getTotalLines() {
     return totalLines;
@@ -189,7 +189,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("grandTotal")
   public BigDecimal getGrandTotal() {
     return grandTotal;
@@ -207,7 +207,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -225,7 +225,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("lines")
   public List<DocumentLineDto> getLines() {
     return lines;
@@ -252,6 +252,7 @@ public class ShipmentDto   {
 
     return this;
   }
+
   /**
    **/
   public ShipmentDto shipAddress(AddressDto shipAddress) {
@@ -259,7 +260,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("shipAddress")
   public AddressDto getShipAddress() {
     return shipAddress;
@@ -277,7 +278,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("billAddress")
   public AddressDto getBillAddress() {
     return billAddress;
@@ -295,7 +296,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("shipper")
   public ShipperDto getShipper() {
     return shipper;
@@ -313,7 +314,7 @@ public class ShipmentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("trackingNo")
   public String getTrackingNo() {
     return trackingNo;
@@ -334,33 +335,33 @@ public class ShipmentDto   {
       return false;
     }
     ShipmentDto shipment = (ShipmentDto) o;
-    return Objects.equals(this.id, shipment.id) &&
-        Objects.equals(this.documentNo, shipment.documentNo) &&
-        Objects.equals(this.poReference, shipment.poReference) &&
-        Objects.equals(this.description, shipment.description) &&
-        Objects.equals(this.docStatus, shipment.docStatus) &&
-        Objects.equals(this.docStatusName, shipment.docStatusName) &&
-        Objects.equals(this.date, shipment.date) &&
-        Objects.equals(this.totalLines, shipment.totalLines) &&
-        Objects.equals(this.grandTotal, shipment.grandTotal) &&
-        Objects.equals(this.name, shipment.name) &&
-        Objects.equals(this.lines, shipment.lines) &&
-        Objects.equals(this.shipAddress, shipment.shipAddress) &&
-        Objects.equals(this.billAddress, shipment.billAddress) &&
-        Objects.equals(this.shipper, shipment.shipper) &&
-        Objects.equals(this.trackingNo, shipment.trackingNo);
+    return Objects.equals(this.id, shipment.id)
+        && Objects.equals(this.documentNo, shipment.documentNo)
+        && Objects.equals(this.poReference, shipment.poReference)
+        && Objects.equals(this.description, shipment.description)
+        && Objects.equals(this.docStatus, shipment.docStatus)
+        && Objects.equals(this.docStatusName, shipment.docStatusName)
+        && Objects.equals(this.date, shipment.date)
+        && Objects.equals(this.totalLines, shipment.totalLines)
+        && Objects.equals(this.grandTotal, shipment.grandTotal)
+        && Objects.equals(this.name, shipment.name) && Objects.equals(this.lines, shipment.lines)
+        && Objects.equals(this.shipAddress, shipment.shipAddress)
+        && Objects.equals(this.billAddress, shipment.billAddress)
+        && Objects.equals(this.shipper, shipment.shipper)
+        && Objects.equals(this.trackingNo, shipment.trackingNo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date, totalLines, grandTotal, name, lines, shipAddress, billAddress, shipper, trackingNo);
+    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date,
+        totalLines, grandTotal, name, lines, shipAddress, billAddress, shipper, trackingNo);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ShipmentDto {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    documentNo: ").append(toIndentedString(documentNo)).append("\n");
     sb.append("    poReference: ").append(toIndentedString(poReference)).append("\n");
@@ -381,8 +382,7 @@ public class ShipmentDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

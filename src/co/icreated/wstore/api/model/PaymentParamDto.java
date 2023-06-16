@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("PaymentParam")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class PaymentParamDto   {
+public class PaymentParamDto {
   private @Valid String type;
   private @Valid Integer orderId;
 
@@ -25,7 +25,7 @@ public class PaymentParamDto   {
     return this;
   }
 
-  
+
   @JsonProperty("type")
   public String getType() {
     return type;
@@ -43,7 +43,7 @@ public class PaymentParamDto   {
     return this;
   }
 
-  
+
   @JsonProperty("orderId")
   public Integer getOrderId() {
     return orderId;
@@ -64,8 +64,8 @@ public class PaymentParamDto   {
       return false;
     }
     PaymentParamDto paymentParam = (PaymentParamDto) o;
-    return Objects.equals(this.type, paymentParam.type) &&
-        Objects.equals(this.orderId, paymentParam.orderId);
+    return Objects.equals(this.type, paymentParam.type)
+        && Objects.equals(this.orderId, paymentParam.orderId);
   }
 
   @Override
@@ -77,7 +77,7 @@ public class PaymentParamDto   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class PaymentParamDto {\n");
-    
+
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    orderId: ").append(toIndentedString(orderId)).append("\n");
     sb.append("}");
@@ -85,8 +85,7 @@ public class PaymentParamDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

@@ -70,7 +70,24 @@
 		            </configuration>
 		        </execution>
 		    </executions>
-		</plugin>                
+		</plugin>
+		<plugin>
+			<groupId>net.revelc.code.formatter</groupId>
+			<artifactId>formatter-maven-plugin</artifactId>
+			<version>2.21.0</version>
+			<executions>
+			    <execution>
+			        <goals>
+			            <goal>format</goal>
+			        </goals>
+			        <configuration>
+			            <configFile>eclipse-java-google-style.xml</configFile>
+			            <encoding>UTF-8</encoding>
+			        </configuration>
+			    </execution>
+			</executions>
+		</plugin>
+				              
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-dependency-plugin</artifactId>

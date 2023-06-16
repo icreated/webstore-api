@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("AccountInfo")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class AccountInfoDto   {
+public class AccountInfoDto {
   private @Valid Integer id;
   private @Valid String value;
   private @Valid String name;
@@ -29,7 +29,7 @@ public class AccountInfoDto   {
     return this;
   }
 
-  
+
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -47,7 +47,7 @@ public class AccountInfoDto   {
     return this;
   }
 
-  
+
   @JsonProperty("value")
   public String getValue() {
     return value;
@@ -65,7 +65,7 @@ public class AccountInfoDto   {
     return this;
   }
 
-  
+
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -83,7 +83,7 @@ public class AccountInfoDto   {
     return this;
   }
 
-  
+
   @JsonProperty("email")
   public String getEmail() {
     return email;
@@ -101,7 +101,7 @@ public class AccountInfoDto   {
     return this;
   }
 
-  
+
   @JsonProperty("birthday")
   public Date getBirthday() {
     return birthday;
@@ -122,11 +122,10 @@ public class AccountInfoDto   {
       return false;
     }
     AccountInfoDto accountInfo = (AccountInfoDto) o;
-    return Objects.equals(this.id, accountInfo.id) &&
-        Objects.equals(this.value, accountInfo.value) &&
-        Objects.equals(this.name, accountInfo.name) &&
-        Objects.equals(this.email, accountInfo.email) &&
-        Objects.equals(this.birthday, accountInfo.birthday);
+    return Objects.equals(this.id, accountInfo.id) && Objects.equals(this.value, accountInfo.value)
+        && Objects.equals(this.name, accountInfo.name)
+        && Objects.equals(this.email, accountInfo.email)
+        && Objects.equals(this.birthday, accountInfo.birthday);
   }
 
   @Override
@@ -138,7 +137,7 @@ public class AccountInfoDto   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class AccountInfoDto {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
@@ -149,8 +148,7 @@ public class AccountInfoDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

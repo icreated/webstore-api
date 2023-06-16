@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
 public interface AuthApi {
 
-    @POST
-    @Consumes({ "application/json" })
-    void authenticateUser(@Valid @NotNull UserCredentialsDto userCredentialsDto);
+  @POST
+  @Consumes({"application/json"})
+  void authenticateUser(@Valid @NotNull UserCredentialsDto userCredentialsDto);
 }

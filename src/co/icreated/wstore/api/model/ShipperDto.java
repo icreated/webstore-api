@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("Shipper")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class ShipperDto   {
+public class ShipperDto {
   private @Valid Integer id;
   private @Valid String name;
   private @Valid String description;
@@ -26,7 +26,7 @@ public class ShipperDto   {
     return this;
   }
 
-  
+
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -44,7 +44,7 @@ public class ShipperDto   {
     return this;
   }
 
-  
+
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -62,7 +62,7 @@ public class ShipperDto   {
     return this;
   }
 
-  
+
   @JsonProperty("description")
   public String getDescription() {
     return description;
@@ -83,9 +83,8 @@ public class ShipperDto   {
       return false;
     }
     ShipperDto shipper = (ShipperDto) o;
-    return Objects.equals(this.id, shipper.id) &&
-        Objects.equals(this.name, shipper.name) &&
-        Objects.equals(this.description, shipper.description);
+    return Objects.equals(this.id, shipper.id) && Objects.equals(this.name, shipper.name)
+        && Objects.equals(this.description, shipper.description);
   }
 
   @Override
@@ -97,7 +96,7 @@ public class ShipperDto   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ShipperDto {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
@@ -106,8 +105,7 @@ public class ShipperDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

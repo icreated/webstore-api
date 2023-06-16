@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("UserCredentials")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class UserCredentialsDto   {
+public class UserCredentialsDto {
   private @Valid String username;
   private @Valid String password;
 
@@ -25,7 +25,7 @@ public class UserCredentialsDto   {
     return this;
   }
 
-  
+
   @JsonProperty("username")
   public String getUsername() {
     return username;
@@ -43,7 +43,7 @@ public class UserCredentialsDto   {
     return this;
   }
 
-  
+
   @JsonProperty("password")
   public String getPassword() {
     return password;
@@ -64,8 +64,8 @@ public class UserCredentialsDto   {
       return false;
     }
     UserCredentialsDto userCredentials = (UserCredentialsDto) o;
-    return Objects.equals(this.username, userCredentials.username) &&
-        Objects.equals(this.password, userCredentials.password);
+    return Objects.equals(this.username, userCredentials.username)
+        && Objects.equals(this.password, userCredentials.password);
   }
 
   @Override
@@ -77,7 +77,7 @@ public class UserCredentialsDto   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserCredentialsDto {\n");
-    
+
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");
@@ -85,8 +85,7 @@ public class UserCredentialsDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("DocumentLine")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class DocumentLineDto   {
+public class DocumentLineDto {
   private @Valid Integer id;
   private @Valid Integer productId;
   private @Valid Integer line;
@@ -33,7 +33,7 @@ public class DocumentLineDto   {
     return this;
   }
 
-  
+
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -51,7 +51,7 @@ public class DocumentLineDto   {
     return this;
   }
 
-  
+
   @JsonProperty("productId")
   public Integer getProductId() {
     return productId;
@@ -69,7 +69,7 @@ public class DocumentLineDto   {
     return this;
   }
 
-  
+
   @JsonProperty("line")
   public Integer getLine() {
     return line;
@@ -87,7 +87,7 @@ public class DocumentLineDto   {
     return this;
   }
 
-  
+
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -105,7 +105,7 @@ public class DocumentLineDto   {
     return this;
   }
 
-  
+
   @JsonProperty("description")
   public String getDescription() {
     return description;
@@ -123,7 +123,7 @@ public class DocumentLineDto   {
     return this;
   }
 
-  
+
   @JsonProperty("priceList")
   public BigDecimal getPriceList() {
     return priceList;
@@ -141,7 +141,7 @@ public class DocumentLineDto   {
     return this;
   }
 
-  
+
   @JsonProperty("price")
   public BigDecimal getPrice() {
     return price;
@@ -159,7 +159,7 @@ public class DocumentLineDto   {
     return this;
   }
 
-  
+
   @JsonProperty("qty")
   public BigDecimal getQty() {
     return qty;
@@ -177,7 +177,7 @@ public class DocumentLineDto   {
     return this;
   }
 
-  
+
   @JsonProperty("lineNetAmt")
   public BigDecimal getLineNetAmt() {
     return lineNetAmt;
@@ -198,15 +198,15 @@ public class DocumentLineDto   {
       return false;
     }
     DocumentLineDto documentLine = (DocumentLineDto) o;
-    return Objects.equals(this.id, documentLine.id) &&
-        Objects.equals(this.productId, documentLine.productId) &&
-        Objects.equals(this.line, documentLine.line) &&
-        Objects.equals(this.name, documentLine.name) &&
-        Objects.equals(this.description, documentLine.description) &&
-        Objects.equals(this.priceList, documentLine.priceList) &&
-        Objects.equals(this.price, documentLine.price) &&
-        Objects.equals(this.qty, documentLine.qty) &&
-        Objects.equals(this.lineNetAmt, documentLine.lineNetAmt);
+    return Objects.equals(this.id, documentLine.id)
+        && Objects.equals(this.productId, documentLine.productId)
+        && Objects.equals(this.line, documentLine.line)
+        && Objects.equals(this.name, documentLine.name)
+        && Objects.equals(this.description, documentLine.description)
+        && Objects.equals(this.priceList, documentLine.priceList)
+        && Objects.equals(this.price, documentLine.price)
+        && Objects.equals(this.qty, documentLine.qty)
+        && Objects.equals(this.lineNetAmt, documentLine.lineNetAmt);
   }
 
   @Override
@@ -218,7 +218,7 @@ public class DocumentLineDto   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class DocumentLineDto {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    productId: ").append(toIndentedString(productId)).append("\n");
     sb.append("    line: ").append(toIndentedString(line)).append("\n");
@@ -233,8 +233,7 @@ public class DocumentLineDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

@@ -17,28 +17,28 @@ import javax.validation.Valid;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
 public interface CatalogApi {
 
-    @GET
-    @Path("/cart")
-    @Produces({ "application/json" })
-    List<PriceListProductDto> getCart(@QueryParam("ids") @NotNull   List<Integer> ids);
+  @GET
+  @Path("/cart")
+  @Produces({"application/json"})
+  List<PriceListProductDto> getCart(@QueryParam("ids") @NotNull List<Integer> ids);
 
-    @GET
-    @Path("/categories")
-    @Produces({ "application/json" })
-    List<ProductCategoryDto> getCategories();
+  @GET
+  @Path("/categories")
+  @Produces({"application/json"})
+  List<ProductCategoryDto> getCategories();
 
-    @GET
-    @Path("/products/{categoryId}")
-    @Produces({ "application/json" })
-    List<PriceListProductDto> getProducts(@PathParam("categoryId") Integer categoryId);
+  @GET
+  @Path("/products/{categoryId}")
+  @Produces({"application/json"})
+  List<PriceListProductDto> getProducts(@PathParam("categoryId") Integer categoryId);
 
-    @GET
-    @Path("/products/featured")
-    @Produces({ "application/json" })
-    List<PriceListProductDto> getProductsFeatured();
+  @GET
+  @Path("/products/featured")
+  @Produces({"application/json"})
+  List<PriceListProductDto> getProductsFeatured();
 
-    @GET
-    @Path("/products/search/{searchString}")
-    @Produces({ "application/json" })
-    List<PriceListProductDto> getProductsSearch(@PathParam("searchString") String searchString);
+  @GET
+  @Path("/products/search/{searchString}")
+  @Produces({"application/json"})
+  List<PriceListProductDto> getProductsSearch(@PathParam("searchString") String searchString);
 }

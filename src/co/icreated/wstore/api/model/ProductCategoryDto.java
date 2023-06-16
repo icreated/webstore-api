@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("ProductCategory")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class ProductCategoryDto   {
+public class ProductCategoryDto {
   private @Valid Integer id;
   private @Valid String name;
   private @Valid String description;
@@ -26,7 +26,7 @@ public class ProductCategoryDto   {
     return this;
   }
 
-  
+
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -44,7 +44,7 @@ public class ProductCategoryDto   {
     return this;
   }
 
-  
+
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -62,7 +62,7 @@ public class ProductCategoryDto   {
     return this;
   }
 
-  
+
   @JsonProperty("description")
   public String getDescription() {
     return description;
@@ -83,9 +83,9 @@ public class ProductCategoryDto   {
       return false;
     }
     ProductCategoryDto productCategory = (ProductCategoryDto) o;
-    return Objects.equals(this.id, productCategory.id) &&
-        Objects.equals(this.name, productCategory.name) &&
-        Objects.equals(this.description, productCategory.description);
+    return Objects.equals(this.id, productCategory.id)
+        && Objects.equals(this.name, productCategory.name)
+        && Objects.equals(this.description, productCategory.description);
   }
 
   @Override
@@ -97,7 +97,7 @@ public class ProductCategoryDto   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ProductCategoryDto {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
@@ -106,8 +106,7 @@ public class ProductCategoryDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

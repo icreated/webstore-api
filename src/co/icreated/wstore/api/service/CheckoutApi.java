@@ -17,18 +17,18 @@ import javax.validation.Valid;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
 public interface CheckoutApi {
 
-    @POST
-    @Path("/order/create")
-    @Consumes({ "application/json" })
-    void createOrder(@Valid @NotNull OrderDto orderDto);
+  @POST
+  @Path("/order/create")
+  @Consumes({"application/json"})
+  void createOrder(@Valid @NotNull OrderDto orderDto);
 
-    @POST
-    @Path("/payment")
-    @Consumes({ "application/json" })
-    void payment(@Valid @NotNull PaymentParamDto paymentParamDto);
+  @POST
+  @Path("/payment")
+  @Consumes({"application/json"})
+  void payment(@Valid @NotNull PaymentParamDto paymentParamDto);
 
-    @POST
-    @Path("/order/void")
-    @Consumes({ "application/json" })
-    void voidOrder(@Valid @NotNull OrderDto orderDto);
+  @POST
+  @Path("/order/void")
+  @Consumes({"application/json"})
+  void voidOrder(@Valid @NotNull OrderDto orderDto);
 }

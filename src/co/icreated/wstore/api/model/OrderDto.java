@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("Order")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class OrderDto   {
+public class OrderDto {
   private @Valid Integer id;
   private @Valid String documentNo;
   private @Valid String poReference;
@@ -52,7 +52,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -70,7 +70,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("documentNo")
   public String getDocumentNo() {
     return documentNo;
@@ -88,7 +88,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("poReference")
   public String getPoReference() {
     return poReference;
@@ -106,7 +106,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("description")
   public String getDescription() {
     return description;
@@ -124,7 +124,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("docStatus")
   public String getDocStatus() {
     return docStatus;
@@ -142,7 +142,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("docStatusName")
   public String getDocStatusName() {
     return docStatusName;
@@ -160,7 +160,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("date")
   public Date getDate() {
     return date;
@@ -178,7 +178,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("totalLines")
   public BigDecimal getTotalLines() {
     return totalLines;
@@ -196,7 +196,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("grandTotal")
   public BigDecimal getGrandTotal() {
     return grandTotal;
@@ -214,7 +214,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -232,7 +232,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("lines")
   public List<DocumentLineDto> getLines() {
     return lines;
@@ -259,6 +259,7 @@ public class OrderDto   {
 
     return this;
   }
+
   /**
    **/
   public OrderDto shipAddress(AddressDto shipAddress) {
@@ -266,7 +267,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("shipAddress")
   public AddressDto getShipAddress() {
     return shipAddress;
@@ -284,7 +285,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("billAddress")
   public AddressDto getBillAddress() {
     return billAddress;
@@ -302,7 +303,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("shipper")
   public ShipperDto getShipper() {
     return shipper;
@@ -320,7 +321,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("shipments")
   public List<ShipmentDto> getShipments() {
     return shipments;
@@ -347,6 +348,7 @@ public class OrderDto   {
 
     return this;
   }
+
   /**
    **/
   public OrderDto payments(List<PaymentDto> payments) {
@@ -354,7 +356,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("payments")
   public List<PaymentDto> getPayments() {
     return payments;
@@ -381,6 +383,7 @@ public class OrderDto   {
 
     return this;
   }
+
   /**
    **/
   public OrderDto invoices(List<DocumentDto> invoices) {
@@ -388,7 +391,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("invoices")
   public List<DocumentDto> getInvoices() {
     return invoices;
@@ -415,6 +418,7 @@ public class OrderDto   {
 
     return this;
   }
+
   /**
    **/
   public OrderDto taxes(List<TaxDto> taxes) {
@@ -422,7 +426,7 @@ public class OrderDto   {
     return this;
   }
 
-  
+
   @JsonProperty("taxes")
   public List<TaxDto> getTaxes() {
     return taxes;
@@ -459,36 +463,35 @@ public class OrderDto   {
       return false;
     }
     OrderDto order = (OrderDto) o;
-    return Objects.equals(this.id, order.id) &&
-        Objects.equals(this.documentNo, order.documentNo) &&
-        Objects.equals(this.poReference, order.poReference) &&
-        Objects.equals(this.description, order.description) &&
-        Objects.equals(this.docStatus, order.docStatus) &&
-        Objects.equals(this.docStatusName, order.docStatusName) &&
-        Objects.equals(this.date, order.date) &&
-        Objects.equals(this.totalLines, order.totalLines) &&
-        Objects.equals(this.grandTotal, order.grandTotal) &&
-        Objects.equals(this.name, order.name) &&
-        Objects.equals(this.lines, order.lines) &&
-        Objects.equals(this.shipAddress, order.shipAddress) &&
-        Objects.equals(this.billAddress, order.billAddress) &&
-        Objects.equals(this.shipper, order.shipper) &&
-        Objects.equals(this.shipments, order.shipments) &&
-        Objects.equals(this.payments, order.payments) &&
-        Objects.equals(this.invoices, order.invoices) &&
-        Objects.equals(this.taxes, order.taxes);
+    return Objects.equals(this.id, order.id) && Objects.equals(this.documentNo, order.documentNo)
+        && Objects.equals(this.poReference, order.poReference)
+        && Objects.equals(this.description, order.description)
+        && Objects.equals(this.docStatus, order.docStatus)
+        && Objects.equals(this.docStatusName, order.docStatusName)
+        && Objects.equals(this.date, order.date)
+        && Objects.equals(this.totalLines, order.totalLines)
+        && Objects.equals(this.grandTotal, order.grandTotal)
+        && Objects.equals(this.name, order.name) && Objects.equals(this.lines, order.lines)
+        && Objects.equals(this.shipAddress, order.shipAddress)
+        && Objects.equals(this.billAddress, order.billAddress)
+        && Objects.equals(this.shipper, order.shipper)
+        && Objects.equals(this.shipments, order.shipments)
+        && Objects.equals(this.payments, order.payments)
+        && Objects.equals(this.invoices, order.invoices) && Objects.equals(this.taxes, order.taxes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date, totalLines, grandTotal, name, lines, shipAddress, billAddress, shipper, shipments, payments, invoices, taxes);
+    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date,
+        totalLines, grandTotal, name, lines, shipAddress, billAddress, shipper, shipments, payments,
+        invoices, taxes);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class OrderDto {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    documentNo: ").append(toIndentedString(documentNo)).append("\n");
     sb.append("    poReference: ").append(toIndentedString(poReference)).append("\n");
@@ -512,8 +515,7 @@ public class OrderDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

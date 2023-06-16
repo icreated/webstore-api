@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("PriceListProduct")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class PriceListProductDto   {
+public class PriceListProductDto {
   private @Valid Integer id;
   private @Valid String value;
   private @Valid String name;
@@ -34,7 +34,7 @@ public class PriceListProductDto   {
     return this;
   }
 
-  
+
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -52,7 +52,7 @@ public class PriceListProductDto   {
     return this;
   }
 
-  
+
   @JsonProperty("value")
   public String getValue() {
     return value;
@@ -70,7 +70,7 @@ public class PriceListProductDto   {
     return this;
   }
 
-  
+
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -88,7 +88,7 @@ public class PriceListProductDto   {
     return this;
   }
 
-  
+
   @JsonProperty("description")
   public String getDescription() {
     return description;
@@ -106,7 +106,7 @@ public class PriceListProductDto   {
     return this;
   }
 
-  
+
   @JsonProperty("help")
   public String getHelp() {
     return help;
@@ -124,7 +124,7 @@ public class PriceListProductDto   {
     return this;
   }
 
-  
+
   @JsonProperty("documentNote")
   public String getDocumentNote() {
     return documentNote;
@@ -142,7 +142,7 @@ public class PriceListProductDto   {
     return this;
   }
 
-  
+
   @JsonProperty("imageURL")
   public String getImageURL() {
     return imageURL;
@@ -160,7 +160,7 @@ public class PriceListProductDto   {
     return this;
   }
 
-  
+
   @JsonProperty("price")
   public BigDecimal getPrice() {
     return price;
@@ -178,7 +178,7 @@ public class PriceListProductDto   {
     return this;
   }
 
-  
+
   @JsonProperty("qty")
   public Integer getQty() {
     return qty;
@@ -196,7 +196,7 @@ public class PriceListProductDto   {
     return this;
   }
 
-  
+
   @JsonProperty("line")
   public Integer getLine() {
     return line;
@@ -217,28 +217,29 @@ public class PriceListProductDto   {
       return false;
     }
     PriceListProductDto priceListProduct = (PriceListProductDto) o;
-    return Objects.equals(this.id, priceListProduct.id) &&
-        Objects.equals(this.value, priceListProduct.value) &&
-        Objects.equals(this.name, priceListProduct.name) &&
-        Objects.equals(this.description, priceListProduct.description) &&
-        Objects.equals(this.help, priceListProduct.help) &&
-        Objects.equals(this.documentNote, priceListProduct.documentNote) &&
-        Objects.equals(this.imageURL, priceListProduct.imageURL) &&
-        Objects.equals(this.price, priceListProduct.price) &&
-        Objects.equals(this.qty, priceListProduct.qty) &&
-        Objects.equals(this.line, priceListProduct.line);
+    return Objects.equals(this.id, priceListProduct.id)
+        && Objects.equals(this.value, priceListProduct.value)
+        && Objects.equals(this.name, priceListProduct.name)
+        && Objects.equals(this.description, priceListProduct.description)
+        && Objects.equals(this.help, priceListProduct.help)
+        && Objects.equals(this.documentNote, priceListProduct.documentNote)
+        && Objects.equals(this.imageURL, priceListProduct.imageURL)
+        && Objects.equals(this.price, priceListProduct.price)
+        && Objects.equals(this.qty, priceListProduct.qty)
+        && Objects.equals(this.line, priceListProduct.line);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, value, name, description, help, documentNote, imageURL, price, qty, line);
+    return Objects.hash(id, value, name, description, help, documentNote, imageURL, price, qty,
+        line);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class PriceListProductDto {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
@@ -254,8 +255,7 @@ public class PriceListProductDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

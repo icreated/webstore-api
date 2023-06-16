@@ -1,15 +1,12 @@
 /*******************************************************************************
  * @author Copyright (C) 2019 ICreated, Sergey Polyarus
- *  @date 2019
- *  This program is free software; you can redistribute it and/or modify it
- *  under the terms version 2 of the GNU General Public License as published
- *  by the Free Software Foundation. This program is distributed in the hope
- *  that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- *  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *  See the GNU General Public License for more details.
- *  You should have received a copy of the GNU General Public License along
- *  with this program; if not, write to the Free Software Foundation, Inc., 
- *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+ * @date 2019 This program is free software; you can redistribute it and/or modify it under the
+ *       terms version 2 of the GNU General Public License as published by the Free Software
+ *       Foundation. This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ *       WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ *       PURPOSE. See the GNU General Public License for more details. You should have received a
+ *       copy of the GNU General Public License along with this program; if not, write to the Free
+ *       Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  ******************************************************************************/
 package co.icreated.wstore.endpoints;
 
@@ -43,43 +40,42 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Path("/common")
 @Tag(name = "Common services")
 public class CommonEndpoints {
-	
-	@Context
-	Properties ctx;
-	
-	
-	@GET
-	@Path("countries")
-	@Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Country List", description = "List of all countries")   
-	public List<IdNameBean> getCountries() {
-		
-		return AccountService.getCountries();
-	}
-	
-	@GET
-	@Path("shippers")
-	@Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Shipper List", description = "List of all shippers")   
-	public List<Shipper> getShippers() {
-		
-		return DataUtils.getShippers(Env.getAD_Client_ID(ctx));
-	}
-	
-	@POST
-	@Path("lookup/email")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Email lookup", description = "Lookup Email")  
-	public Response lookupEmail(
-			@Parameter(description = "Token Form", schema = @Schema(implementation =  Token.class), required = true) 
-			Token email) {
 
-		boolean ok = DataUtils.isUnique(ctx, "Email", email.getToken());
-		System.out.println(email.getToken()+"   "+ok);
-		return Response.status(Response.Status.OK).entity(ok).build();
+  @Context
+  Properties ctx;
 
-	}	
-	
+
+  @GET
+  @Path("countries")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Operation(summary = "Country List", description = "List of all countries")
+  public List<IdNameBean> getCountries() {
+
+    return AccountService.getCountries();
+  }
+
+  @GET
+  @Path("shippers")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Operation(summary = "Shipper List", description = "List of all shippers")
+  public List<Shipper> getShippers() {
+
+    return DataUtils.getShippers(Env.getAD_Client_ID(ctx));
+  }
+
+  @POST
+  @Path("lookup/email")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Operation(summary = "Email lookup", description = "Lookup Email")
+  public Response lookupEmail(@Parameter(description = "Token Form",
+      schema = @Schema(implementation = Token.class), required = true) Token email) {
+
+    boolean ok = DataUtils.isUnique(ctx, "Email", email.getToken());
+    System.out.println(email.getToken() + "   " + ok);
+    return Response.status(Response.Status.OK).entity(ok).build();
+
+  }
+
 
 }

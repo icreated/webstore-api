@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("IdNameBean")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class IdNameBeanDto   {
+public class IdNameBeanDto {
   private @Valid Integer id;
   private @Valid String name;
 
@@ -25,7 +25,7 @@ public class IdNameBeanDto   {
     return this;
   }
 
-  
+
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -43,7 +43,7 @@ public class IdNameBeanDto   {
     return this;
   }
 
-  
+
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -64,8 +64,7 @@ public class IdNameBeanDto   {
       return false;
     }
     IdNameBeanDto idNameBean = (IdNameBeanDto) o;
-    return Objects.equals(this.id, idNameBean.id) &&
-        Objects.equals(this.name, idNameBean.name);
+    return Objects.equals(this.id, idNameBean.id) && Objects.equals(this.name, idNameBean.name);
   }
 
   @Override
@@ -77,7 +76,7 @@ public class IdNameBeanDto   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class IdNameBeanDto {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
@@ -85,8 +84,7 @@ public class IdNameBeanDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

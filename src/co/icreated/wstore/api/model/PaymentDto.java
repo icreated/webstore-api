@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("Payment")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class PaymentDto   {
+public class PaymentDto {
   private @Valid Integer id;
   private @Valid String documentNo;
   private @Valid String description;
@@ -32,7 +32,7 @@ public class PaymentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -50,7 +50,7 @@ public class PaymentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("documentNo")
   public String getDocumentNo() {
     return documentNo;
@@ -68,7 +68,7 @@ public class PaymentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("description")
   public String getDescription() {
     return description;
@@ -86,7 +86,7 @@ public class PaymentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("docStatus")
   public String getDocStatus() {
     return docStatus;
@@ -104,7 +104,7 @@ public class PaymentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("payAmt")
   public BigDecimal getPayAmt() {
     return payAmt;
@@ -122,7 +122,7 @@ public class PaymentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("trxid")
   public String getTrxid() {
     return trxid;
@@ -140,7 +140,7 @@ public class PaymentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("currency")
   public String getCurrency() {
     return currency;
@@ -158,7 +158,7 @@ public class PaymentDto   {
     return this;
   }
 
-  
+
   @JsonProperty("tenderType")
   public String getTenderType() {
     return tenderType;
@@ -179,26 +179,26 @@ public class PaymentDto   {
       return false;
     }
     PaymentDto payment = (PaymentDto) o;
-    return Objects.equals(this.id, payment.id) &&
-        Objects.equals(this.documentNo, payment.documentNo) &&
-        Objects.equals(this.description, payment.description) &&
-        Objects.equals(this.docStatus, payment.docStatus) &&
-        Objects.equals(this.payAmt, payment.payAmt) &&
-        Objects.equals(this.trxid, payment.trxid) &&
-        Objects.equals(this.currency, payment.currency) &&
-        Objects.equals(this.tenderType, payment.tenderType);
+    return Objects.equals(this.id, payment.id)
+        && Objects.equals(this.documentNo, payment.documentNo)
+        && Objects.equals(this.description, payment.description)
+        && Objects.equals(this.docStatus, payment.docStatus)
+        && Objects.equals(this.payAmt, payment.payAmt) && Objects.equals(this.trxid, payment.trxid)
+        && Objects.equals(this.currency, payment.currency)
+        && Objects.equals(this.tenderType, payment.tenderType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, documentNo, description, docStatus, payAmt, trxid, currency, tenderType);
+    return Objects.hash(id, documentNo, description, docStatus, payAmt, trxid, currency,
+        tenderType);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class PaymentDto {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    documentNo: ").append(toIndentedString(documentNo)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
@@ -212,8 +212,7 @@ public class PaymentDto   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {
