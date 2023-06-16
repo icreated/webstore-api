@@ -45,7 +45,7 @@ import co.icreated.wstore.bean.Shipper;
 import co.icreated.wstore.bean.Tax;
 
 
-public class OrderService extends AService {
+public class OrderService extends AbstractService {
 
 
 

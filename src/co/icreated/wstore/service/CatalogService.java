@@ -29,7 +29,7 @@ import co.icreated.wstore.mapper.CatalogMapper;
 import co.icreated.wstore.utils.PQuery;
 
 
-public class CatalogService extends AService {
+public class CatalogService extends AbstractService {
 
   CLogger log = CLogger.getCLogger(CatalogService.class);
   Properties ctx;

@@ -35,7 +35,7 @@ import co.icreated.wstore.bean.IdNameBean;
 import co.icreated.wstore.bean.NewAccountForm;
 import co.icreated.wstore.bean.SessionUser;
 
-public class AccountService extends AService {
+public class AccountService extends AbstractService {
 
 
   private static CLogger log = CLogger.getCLogger(AccountService.class);

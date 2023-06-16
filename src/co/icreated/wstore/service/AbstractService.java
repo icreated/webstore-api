@@ -14,20 +14,20 @@ import java.util.Properties;
 
 import co.icreated.wstore.bean.SessionUser;
 
-public abstract class AService {
+public abstract class AbstractService {
 
 
   Properties ctx = null;
   SessionUser sessionUser;
 
-  AService() {}
+  AbstractService() {}
 
-  AService(Properties ctx) {
+  AbstractService(Properties ctx) {
 
     this.ctx = ctx;
   }
 
-  AService(Properties ctx, SessionUser sessionUser) {
+  AbstractService(Properties ctx, SessionUser sessionUser) {
 
     this.ctx = ctx;
     this.sessionUser = sessionUser;

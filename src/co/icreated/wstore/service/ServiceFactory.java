@@ -19,7 +19,7 @@ public class ServiceFactory {
 
 
 
-  public static <T extends AService> T create(Properties ctx, Class<T> type) {
+  public static <T extends AbstractService> T create(Properties ctx, Class<T> type) {
 
     Class[] cArg = new Class[1];
     cArg[0] = Properties.class;
@@ -51,7 +51,7 @@ public class ServiceFactory {
   }
 
 
-  public static <T extends AService> T create(Properties ctx, SessionUser sessionUser,
+  public static <T extends AbstractService> T create(Properties ctx, SessionUser sessionUser,
       Class<T> type) {
 
     Class[] cArg = new Class[2];

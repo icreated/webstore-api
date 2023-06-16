@@ -37,7 +37,7 @@ import co.icreated.wstore.bean.PaymentInfo;
 import co.icreated.wstore.bean.SessionUser;
 
 
-public class PaymentService extends AService {
+public class PaymentService extends AbstractService {
 
 
 
