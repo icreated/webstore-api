@@ -16,6 +16,7 @@ import com.google.common.base.Preconditions;
 
 import co.icreated.wstore.bean.SessionUser;
 import co.icreated.wstore.exception.UnauthorizedException;
+import co.icreated.wstore.service.AuthService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -27,10 +28,10 @@ public final class TokenHandler {
 
   public final static Key SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-  private final IdempiereUserService userService;
+  private final AuthService authService;
 
-  public TokenHandler(IdempiereUserService userService) {
-    this.userService = Preconditions.checkNotNull(userService);
+  public TokenHandler(AuthService authService) {
+    this.authService = Preconditions.checkNotNull(authService);
   }
 
   public SessionUser parseUserFromToken(String token) {
@@ -42,7 +43,7 @@ public final class TokenHandler {
       throw new UnauthorizedException("Error signature");
     }
 
-    return userService.loadUserByUsername(username, false);
+    return authService.loadUserByUsername(username, false, false);
   }
 
   public String createTokenForUser(SessionUser user) {

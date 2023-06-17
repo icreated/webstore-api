@@ -8,29 +8,38 @@
  *       copy of the GNU General Public License along with this program; if not, write to the Free
  *       Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  ******************************************************************************/
-package co.icreated.wstore.service;
+package co.icreated.wstore.factory;
 
 import java.util.Properties;
 
-import co.icreated.wstore.bean.SessionUser;
+import javax.inject.Inject;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 
-public abstract class AbstractService {
+import org.glassfish.hk2.api.Factory;
+
+import co.icreated.wstore.service.AuthService;
+import co.icreated.wstore.service.CatalogService;
+
+public class AuthServiceFactory implements Factory<AuthService> {
+
+  final static String SERVICE_NAME = "authService";
+  private final ContainerRequestContext context;
 
 
-  Properties ctx = null;
-  SessionUser sessionUser;
+  @Inject
+  public AuthServiceFactory(@Context ContainerRequestContext context, @Context Properties ctx) {
 
-  AbstractService() {}
+    this.context = context;
+    context.setProperty(SERVICE_NAME, new AuthService(ctx));
 
-  protected AbstractService(Properties ctx) {
-
-    this.ctx = ctx;
   }
 
-  AbstractService(Properties ctx, SessionUser sessionUser) {
-
-    this.ctx = ctx;
-    this.sessionUser = sessionUser;
+  @Override
+  public AuthService provide() {
+    return (AuthService) context.getProperty(SERVICE_NAME);
   }
 
+  @Override
+  public void dispose(AuthService t) {}
 }

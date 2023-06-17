@@ -32,11 +32,10 @@ import co.icreated.wstore.utils.PQuery;
 public class CatalogService extends AbstractService {
 
   CLogger log = CLogger.getCLogger(CatalogService.class);
-  Properties ctx;
 
 
   public CatalogService(Properties ctx) {
-    this.ctx = ctx;
+	super(ctx);
   }
 
 

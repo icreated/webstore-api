@@ -42,7 +42,7 @@
 		    <artifactId>openapi-generator-maven-plugin</artifactId>
 		    <version>6.2.1</version>
 		    <executions>
-		        <execution> 
+		        <execution>
 		            <goals>
 		                <goal>generate</goal>
 		            </goals>

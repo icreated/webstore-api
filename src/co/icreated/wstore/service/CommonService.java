@@ -25,11 +25,10 @@ import co.icreated.wstore.api.model.ShipperDto;
 import co.icreated.wstore.mapper.CommonMapper;
 import co.icreated.wstore.utils.PQuery;
 
-public class CommonService {
+public class CommonService extends AbstractService {
 
 
   private static CLogger log = CLogger.getCLogger(CommonService.class);
-  Properties ctx;
 
 
   public CommonService(Properties ctx) {

@@ -1,5 +1,6 @@
 package co.icreated.wstore.api.service;
 
+import co.icreated.wstore.api.model.TokenDto;
 import co.icreated.wstore.api.model.UserCredentialsDto;
 
 import javax.ws.rs.*;
@@ -18,5 +19,6 @@ public interface AuthApi {
 
     @POST
     @Consumes({ "application/json" })
-    void authenticateUser(@Valid @NotNull UserCredentialsDto userCredentialsDto);
+    @Produces({ "application/json" })
+    TokenDto authenticateUser(@Valid @NotNull UserCredentialsDto userCredentialsDto);
 }

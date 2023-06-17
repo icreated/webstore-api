@@ -19,12 +19,13 @@ import org.glassfish.jersey.server.filter.EncodingFilter;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
+import co.icreated.wstore.controller.AuthController;
 import co.icreated.wstore.controller.CatalogController;
 import co.icreated.wstore.controller.CommonController;
 import co.icreated.wstore.endpoints.AccountEndpoints;
-import co.icreated.wstore.endpoints.AuthenticationEndpoints;
 import co.icreated.wstore.endpoints.CheckoutEndpoints;
 import co.icreated.wstore.factory.AccountServiceFactory;
+import co.icreated.wstore.factory.AuthServiceFactory;
 import co.icreated.wstore.factory.CatalogServiceFactory;
 import co.icreated.wstore.factory.CommonServiceFactory;
 import co.icreated.wstore.factory.ContextFactory;
@@ -34,6 +35,7 @@ import co.icreated.wstore.security.CORSFilter;
 import co.icreated.wstore.security.CheckRequestFilter;
 import co.icreated.wstore.security.JwtAuthenticationFilter;
 import co.icreated.wstore.service.AccountService;
+import co.icreated.wstore.service.AuthService;
 import co.icreated.wstore.service.CatalogService;
 import co.icreated.wstore.service.CommonService;
 import co.icreated.wstore.service.OrderService;
@@ -55,7 +57,7 @@ public class WStoreApplication extends ResourceConfig {
     register(CORSFilter.class);
     register(CheckRequestFilter.class);
     register(JwtAuthenticationFilter.class);
-    register(AuthenticationEndpoints.class);
+    register(AuthController.class);
 
     // register(new LoggingFilter());
 
@@ -78,6 +80,13 @@ public class WStoreApplication extends ResourceConfig {
         bindFactory(CommonServiceFactory.class).to(CommonService.class);
       }
     });
+    
+    register(new AbstractBinder() {
+        @Override
+        protected void configure() {
+          bindFactory(AuthServiceFactory.class).to(AuthService.class);
+        }
+      });
 
     register(new AbstractBinder() {
       @Override

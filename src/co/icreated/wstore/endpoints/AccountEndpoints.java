@@ -44,9 +44,9 @@ import co.icreated.wstore.bean.Order;
 import co.icreated.wstore.bean.Password;
 import co.icreated.wstore.bean.SessionUser;
 import co.icreated.wstore.bean.Token;
-import co.icreated.wstore.security.IdempiereUserService;
 import co.icreated.wstore.security.TokenHandler;
 import co.icreated.wstore.service.AccountService;
+import co.icreated.wstore.service.AuthService;
 import co.icreated.wstore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -63,6 +63,9 @@ public class AccountEndpoints {
 
   @Context
   Properties ctx;
+  
+  @Context
+  AuthService authService;
 
   @POST
   @Path("signup")
@@ -99,11 +102,10 @@ public class AccountEndpoints {
 
 
     if (user.getAD_User_ID() > 0) {
-      IdempiereUserService userService = new IdempiereUserService(true);
-      final SessionUser sessionUser = userService.loadUserByUsername(user.getEMail(), true);
+      final SessionUser sessionUser = authService.loadUserByUsername(user.getEMail(), true, true);
 
 
-      TokenHandler tokenHandler = new TokenHandler(userService);
+      TokenHandler tokenHandler = new TokenHandler(authService);
       token = tokenHandler.createTokenForUser(sessionUser);
 
     }
@@ -136,10 +138,9 @@ public class AccountEndpoints {
 
     boolean ok = accountService.changePassword(passwordBean.getConfirmPassword());
     if (ok) {
-      IdempiereUserService userService = new IdempiereUserService(true);
       final SessionUser authenticatedUser =
-          userService.loadUserByUsername(sessionUser.getEmail(), true);
-      TokenHandler tokenHandler = new TokenHandler(userService);
+          authService.loadUserByUsername(sessionUser.getEmail(), true, true);
+      TokenHandler tokenHandler = new TokenHandler(authService);
       token = tokenHandler.createTokenForUser(authenticatedUser);
       return Response.status(Response.Status.OK).entity(new Token(token)).build();
     }
@@ -198,9 +199,8 @@ public class AccountEndpoints {
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     else {
 
-      IdempiereUserService userService = new IdempiereUserService();
-      final SessionUser sessionUser = userService.loadUserByUsername(account.getEmail(), true);
-      TokenHandler tokenHandler = new TokenHandler(userService);
+      final SessionUser sessionUser = authService.loadUserByUsername(account.getEmail(), true, false);
+      TokenHandler tokenHandler = new TokenHandler(authService);
       String token = tokenHandler.createTokenForUser(sessionUser);
 
       return Response.status(Response.Status.CREATED).entity(new Token(token)).build();

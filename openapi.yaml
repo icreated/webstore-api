@@ -218,6 +218,12 @@ paths:
               $ref: '#/components/schemas/UserCredentials'
         required: true
       responses:
+        '200':
+          description: JWT Token      
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
         '401':
           description: Unauthorized
   /catalog/cart:

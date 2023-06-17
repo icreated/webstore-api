@@ -28,6 +28,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import co.icreated.wstore.bean.SessionUser;
+import co.icreated.wstore.service.AuthService;
 
 
 // @Secured
@@ -37,6 +38,9 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
 
   @Context
   private ResourceInfo resourceInfo;
+  
+  @Context
+  AuthService authService;
 
   private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
       .entity("You cannot access this resource").build();
@@ -93,8 +97,7 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
 
   private SessionUser getUserFromToken(String token) {
 
-    IdempiereUserService userService = new IdempiereUserService();
-    TokenHandler tokenHandler = new TokenHandler(userService);
+    TokenHandler tokenHandler = new TokenHandler(authService);
     SessionUser user = tokenHandler.parseUserFromToken(token);
     return user;
   }
