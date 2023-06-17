@@ -22,7 +22,7 @@
     <sourceDirectory>src</sourceDirectory>
   	<outputDirectory>WEB-INF/classes</outputDirectory>
   
-    <plugins>
+    <plugins> 
 		<plugin>
 			<groupId>org.eclipse.tycho</groupId>
 			<artifactId>tycho-compiler-plugin</artifactId>
@@ -83,6 +83,10 @@
 			        <configuration>
 			            <configFile>eclipse-java-google-style.xml</configFile>
 			            <encoding>UTF-8</encoding>
+			            <excludes>
+					      <exclude>**/*Dto.java</exclude>
+					      <exclude>**/*Api.java</exclude>
+					    </excludes>
 			        </configuration>
 			    </execution>
 			</executions>

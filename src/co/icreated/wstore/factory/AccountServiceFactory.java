@@ -24,6 +24,7 @@ import co.icreated.wstore.service.AccountService;
 
 public class AccountServiceFactory implements Factory<AccountService> {
 
+  final static String SERVICE_NAME = "accountService";
   private final ContainerRequestContext context;
 
 
@@ -33,13 +34,13 @@ public class AccountServiceFactory implements Factory<AccountService> {
 
     this.context = context;
     SessionUser sessionUser = (SessionUser) sc.getUserPrincipal();
-    context.setProperty("accountService", new AccountService(ctx, sessionUser));
+    context.setProperty(SERVICE_NAME, new AccountService(ctx, sessionUser));
 
   }
 
   @Override
   public AccountService provide() {
-    return (AccountService) context.getProperty("accountService");
+    return (AccountService) context.getProperty(SERVICE_NAME);
   }
 
   @Override

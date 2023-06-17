@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("Tax")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class TaxDto {
+public class TaxDto   {
   private @Valid String name;
   private @Valid BigDecimal tax;
 
@@ -26,7 +26,7 @@ public class TaxDto {
     return this;
   }
 
-
+  
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -44,7 +44,7 @@ public class TaxDto {
     return this;
   }
 
-
+  
   @JsonProperty("tax")
   public BigDecimal getTax() {
     return tax;
@@ -65,7 +65,8 @@ public class TaxDto {
       return false;
     }
     TaxDto tax = (TaxDto) o;
-    return Objects.equals(this.name, tax.name) && Objects.equals(this.tax, tax.tax);
+    return Objects.equals(this.name, tax.name) &&
+        Objects.equals(this.tax, tax.tax);
   }
 
   @Override
@@ -77,7 +78,7 @@ public class TaxDto {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class TaxDto {\n");
-
+    
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    tax: ").append(toIndentedString(tax)).append("\n");
     sb.append("}");
@@ -85,7 +86,8 @@ public class TaxDto {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

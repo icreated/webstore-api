@@ -2,6 +2,7 @@ package co.icreated.wstore.api.service;
 
 import co.icreated.wstore.api.model.IdNameBeanDto;
 import co.icreated.wstore.api.model.ShipperDto;
+import co.icreated.wstore.api.model.StatusDto;
 import co.icreated.wstore.api.model.TokenDto;
 
 import javax.ws.rs.*;
@@ -18,19 +19,19 @@ import javax.validation.Valid;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
 public interface CommonApi {
 
-  @GET
-  @Path("/countries")
-  @Produces({"application/json"})
-  List<IdNameBeanDto> getCountries();
+    @GET
+    @Path("/countries")
+    @Produces({ "application/json" })
+    List<IdNameBeanDto> getCountries();
 
-  @GET
-  @Path("/shippers")
-  @Produces({"application/json"})
-  List<ShipperDto> getShippers();
+    @GET
+    @Path("/shippers")
+    @Produces({ "application/json" })
+    List<ShipperDto> getShippers();
 
-  @POST
-  @Path("/lookup/email")
-  @Consumes({"application/json"})
-  @Produces({"application/json"})
-  void lookupEmail(@Valid @NotNull TokenDto tokenDto);
+    @POST
+    @Path("/lookup/email")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    StatusDto lookupEmail(@Valid @NotNull TokenDto tokenDto);
 }

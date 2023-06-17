@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("NewAccountForm")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class NewAccountFormDto {
+public class NewAccountFormDto   {
   private @Valid String name;
   private @Valid String email;
   private @Valid String password;
@@ -26,7 +26,7 @@ public class NewAccountFormDto {
     return this;
   }
 
-
+  
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -44,7 +44,7 @@ public class NewAccountFormDto {
     return this;
   }
 
-
+  
   @JsonProperty("email")
   public String getEmail() {
     return email;
@@ -62,7 +62,7 @@ public class NewAccountFormDto {
     return this;
   }
 
-
+  
   @JsonProperty("password")
   public String getPassword() {
     return password;
@@ -83,9 +83,9 @@ public class NewAccountFormDto {
       return false;
     }
     NewAccountFormDto newAccountForm = (NewAccountFormDto) o;
-    return Objects.equals(this.name, newAccountForm.name)
-        && Objects.equals(this.email, newAccountForm.email)
-        && Objects.equals(this.password, newAccountForm.password);
+    return Objects.equals(this.name, newAccountForm.name) &&
+        Objects.equals(this.email, newAccountForm.email) &&
+        Objects.equals(this.password, newAccountForm.password);
   }
 
   @Override
@@ -97,7 +97,7 @@ public class NewAccountFormDto {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class NewAccountFormDto {\n");
-
+    
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
@@ -106,7 +106,8 @@ public class NewAccountFormDto {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

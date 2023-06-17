@@ -19,13 +19,14 @@ import org.glassfish.jersey.server.filter.EncodingFilter;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
+import co.icreated.wstore.controller.CatalogController;
+import co.icreated.wstore.controller.CommonController;
 import co.icreated.wstore.endpoints.AccountEndpoints;
 import co.icreated.wstore.endpoints.AuthenticationEndpoints;
-import co.icreated.wstore.endpoints.CatalogEndpoints;
 import co.icreated.wstore.endpoints.CheckoutEndpoints;
-import co.icreated.wstore.endpoints.CommonEndpoints;
 import co.icreated.wstore.factory.AccountServiceFactory;
 import co.icreated.wstore.factory.CatalogServiceFactory;
+import co.icreated.wstore.factory.CommonServiceFactory;
 import co.icreated.wstore.factory.ContextFactory;
 import co.icreated.wstore.factory.OrderServiceFactory;
 import co.icreated.wstore.factory.PaymentServiceFactory;
@@ -34,6 +35,7 @@ import co.icreated.wstore.security.CheckRequestFilter;
 import co.icreated.wstore.security.JwtAuthenticationFilter;
 import co.icreated.wstore.service.AccountService;
 import co.icreated.wstore.service.CatalogService;
+import co.icreated.wstore.service.CommonService;
 import co.icreated.wstore.service.OrderService;
 import co.icreated.wstore.service.PaymentService;
 
@@ -45,9 +47,9 @@ public class WStoreApplication extends ResourceConfig {
 
     // register(RolesAllowedDynamicFeature.class);
     register(AccountEndpoints.class);
-    register(CatalogEndpoints.class);
+    register(CatalogController.class);
 
-    register(CommonEndpoints.class);
+    register(CommonController.class);
     register(CheckoutEndpoints.class);
 
     register(CORSFilter.class);
@@ -67,6 +69,13 @@ public class WStoreApplication extends ResourceConfig {
       @Override
       protected void configure() {
         bindFactory(ContextFactory.class).to(Properties.class);
+      }
+    });
+
+    register(new AbstractBinder() {
+      @Override
+      protected void configure() {
+        bindFactory(CommonServiceFactory.class).to(CommonService.class);
       }
     });
 

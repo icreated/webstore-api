@@ -19,26 +19,27 @@ import javax.ws.rs.core.Context;
 import org.glassfish.hk2.api.Factory;
 
 import co.icreated.wstore.service.CatalogService;
+import co.icreated.wstore.service.CommonService;
 
-public class CatalogServiceFactory implements Factory<CatalogService> {
+public class CommonServiceFactory implements Factory<CommonService> {
 
-  final static String SERVICE_NAME = "catalogService";
+  final static String SERVICE_NAME = "commonService";
   private final ContainerRequestContext context;
 
 
   @Inject
-  public CatalogServiceFactory(@Context ContainerRequestContext context, @Context Properties ctx) {
+  public CommonServiceFactory(@Context ContainerRequestContext context, @Context Properties ctx) {
 
     this.context = context;
-    context.setProperty(SERVICE_NAME, new CatalogService(ctx));
+    context.setProperty(SERVICE_NAME, new CommonService(ctx));
 
   }
 
   @Override
-  public CatalogService provide() {
-    return (CatalogService) context.getProperty(SERVICE_NAME);
+  public CommonService provide() {
+    return (CommonService) context.getProperty(SERVICE_NAME);
   }
 
   @Override
-  public void dispose(CatalogService t) {}
+  public void dispose(CommonService t) {}
 }

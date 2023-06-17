@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("Token")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class TokenDto {
+public class TokenDto   {
   private @Valid String token;
   private @Valid String msg;
 
@@ -25,7 +25,7 @@ public class TokenDto {
     return this;
   }
 
-
+  
   @JsonProperty("token")
   public String getToken() {
     return token;
@@ -43,7 +43,7 @@ public class TokenDto {
     return this;
   }
 
-
+  
   @JsonProperty("msg")
   public String getMsg() {
     return msg;
@@ -64,7 +64,8 @@ public class TokenDto {
       return false;
     }
     TokenDto token = (TokenDto) o;
-    return Objects.equals(this.token, token.token) && Objects.equals(this.msg, token.msg);
+    return Objects.equals(this.token, token.token) &&
+        Objects.equals(this.msg, token.msg);
   }
 
   @Override
@@ -76,7 +77,7 @@ public class TokenDto {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class TokenDto {\n");
-
+    
     sb.append("    token: ").append(toIndentedString(token)).append("\n");
     sb.append("    msg: ").append(toIndentedString(msg)).append("\n");
     sb.append("}");
@@ -84,7 +85,8 @@ public class TokenDto {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

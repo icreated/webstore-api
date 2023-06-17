@@ -48,7 +48,6 @@ public class CatalogService extends AbstractService {
         .<MProductCategory>stream() //
         .map(CatalogMapper.INSTANCE::toDto) //
         .collect(Collectors.toList());
-
   }
 
 

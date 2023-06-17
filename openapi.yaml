@@ -419,7 +419,9 @@ paths:
         default:
           description: default response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
   /common/shippers:
     get:
       tags:
@@ -669,8 +671,6 @@ components:
           format: int32
         name:
           type: string
-        description:
-          type: string
     Tax:
       type: object
       properties:
@@ -744,6 +744,14 @@ components:
           type: string
         msg:
           type: string
+    Status:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - OK
+            - NOT_FOUND
   securitySchemes:
     bearerAuth:
       type: http

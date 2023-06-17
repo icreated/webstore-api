@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("Address")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class AddressDto {
+public class AddressDto   {
   private @Valid Integer id;
   private @Valid String label;
   private @Valid String name;
@@ -33,7 +33,7 @@ public class AddressDto {
     return this;
   }
 
-
+  
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -51,7 +51,7 @@ public class AddressDto {
     return this;
   }
 
-
+  
   @JsonProperty("label")
   public String getLabel() {
     return label;
@@ -69,7 +69,7 @@ public class AddressDto {
     return this;
   }
 
-
+  
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -87,7 +87,7 @@ public class AddressDto {
     return this;
   }
 
-
+  
   @JsonProperty("address1")
   public String getAddress1() {
     return address1;
@@ -105,7 +105,7 @@ public class AddressDto {
     return this;
   }
 
-
+  
   @JsonProperty("address2")
   public String getAddress2() {
     return address2;
@@ -123,7 +123,7 @@ public class AddressDto {
     return this;
   }
 
-
+  
   @JsonProperty("postal")
   public String getPostal() {
     return postal;
@@ -141,7 +141,7 @@ public class AddressDto {
     return this;
   }
 
-
+  
   @JsonProperty("city")
   public String getCity() {
     return city;
@@ -159,7 +159,7 @@ public class AddressDto {
     return this;
   }
 
-
+  
   @JsonProperty("phone")
   public String getPhone() {
     return phone;
@@ -177,7 +177,7 @@ public class AddressDto {
     return this;
   }
 
-
+  
   @JsonProperty("countryId")
   public Integer getCountryId() {
     return countryId;
@@ -195,7 +195,7 @@ public class AddressDto {
     return this;
   }
 
-
+  
   @JsonProperty("countryName")
   public String getCountryName() {
     return countryName;
@@ -216,27 +216,28 @@ public class AddressDto {
       return false;
     }
     AddressDto address = (AddressDto) o;
-    return Objects.equals(this.id, address.id) && Objects.equals(this.label, address.label)
-        && Objects.equals(this.name, address.name)
-        && Objects.equals(this.address1, address.address1)
-        && Objects.equals(this.address2, address.address2)
-        && Objects.equals(this.postal, address.postal) && Objects.equals(this.city, address.city)
-        && Objects.equals(this.phone, address.phone)
-        && Objects.equals(this.countryId, address.countryId)
-        && Objects.equals(this.countryName, address.countryName);
+    return Objects.equals(this.id, address.id) &&
+        Objects.equals(this.label, address.label) &&
+        Objects.equals(this.name, address.name) &&
+        Objects.equals(this.address1, address.address1) &&
+        Objects.equals(this.address2, address.address2) &&
+        Objects.equals(this.postal, address.postal) &&
+        Objects.equals(this.city, address.city) &&
+        Objects.equals(this.phone, address.phone) &&
+        Objects.equals(this.countryId, address.countryId) &&
+        Objects.equals(this.countryName, address.countryName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, label, name, address1, address2, postal, city, phone, countryId,
-        countryName);
+    return Objects.hash(id, label, name, address1, address2, postal, city, phone, countryId, countryName);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class AddressDto {\n");
-
+    
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
@@ -252,7 +253,8 @@ public class AddressDto {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

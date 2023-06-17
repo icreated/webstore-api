@@ -25,6 +25,7 @@ import co.icreated.wstore.service.OrderService;
 
 public class OrderServiceFactory implements Factory<OrderService> {
 
+  final static String SERVICE_NAME = "orderService";
   private final ContainerRequestContext context;
 
 
@@ -40,13 +41,13 @@ public class OrderServiceFactory implements Factory<OrderService> {
     }
 
 
-    context.setProperty("orderService", new OrderService(ctx, sessionUser));
+    context.setProperty(SERVICE_NAME, new OrderService(ctx, sessionUser));
 
   }
 
   @Override
   public OrderService provide() {
-    return (OrderService) context.getProperty("orderService");
+    return (OrderService) context.getProperty(SERVICE_NAME);
   }
 
   @Override

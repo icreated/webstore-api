@@ -25,6 +25,7 @@ import co.icreated.wstore.service.PaymentService;
 
 public class PaymentServiceFactory implements Factory<PaymentService> {
 
+  final static String SERVICE_NAME = "paymentService";
   private final ContainerRequestContext context;
 
 
@@ -41,13 +42,13 @@ public class PaymentServiceFactory implements Factory<PaymentService> {
     }
 
 
-    context.setProperty("paymentService", new PaymentService(ctx, sessionUser));
+    context.setProperty(SERVICE_NAME, new PaymentService(ctx, sessionUser));
 
   }
 
   @Override
   public PaymentService provide() {
-    return (PaymentService) context.getProperty("paymentService");
+    return (PaymentService) context.getProperty(SERVICE_NAME);
   }
 
   @Override

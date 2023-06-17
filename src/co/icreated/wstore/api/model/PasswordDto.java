@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("Password")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class PasswordDto {
+public class PasswordDto   {
   private @Valid String password;
   private @Valid String newPassword;
   private @Valid String confirmPassword;
@@ -26,7 +26,7 @@ public class PasswordDto {
     return this;
   }
 
-
+  
   @JsonProperty("password")
   public String getPassword() {
     return password;
@@ -44,7 +44,7 @@ public class PasswordDto {
     return this;
   }
 
-
+  
   @JsonProperty("newPassword")
   public String getNewPassword() {
     return newPassword;
@@ -62,7 +62,7 @@ public class PasswordDto {
     return this;
   }
 
-
+  
   @JsonProperty("confirmPassword")
   public String getConfirmPassword() {
     return confirmPassword;
@@ -83,9 +83,9 @@ public class PasswordDto {
       return false;
     }
     PasswordDto password = (PasswordDto) o;
-    return Objects.equals(this.password, password.password)
-        && Objects.equals(this.newPassword, password.newPassword)
-        && Objects.equals(this.confirmPassword, password.confirmPassword);
+    return Objects.equals(this.password, password.password) &&
+        Objects.equals(this.newPassword, password.newPassword) &&
+        Objects.equals(this.confirmPassword, password.confirmPassword);
   }
 
   @Override
@@ -97,7 +97,7 @@ public class PasswordDto {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class PasswordDto {\n");
-
+    
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    newPassword: ").append(toIndentedString(newPassword)).append("\n");
     sb.append("    confirmPassword: ").append(toIndentedString(confirmPassword)).append("\n");
@@ -106,7 +106,8 @@ public class PasswordDto {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

@@ -22,6 +22,7 @@ import co.icreated.wstore.Envs;
 
 public class ContextFactory implements Factory<Properties> {
 
+  final static String SERVICE_NAME = "ctx";
   private final ContainerRequestContext context;
 
   @Inject
@@ -30,13 +31,13 @@ public class ContextFactory implements Factory<Properties> {
     this.context = context;
     int W_Store_ID = Integer.parseInt((String) context.getProperty("W_Store_ID"));
     Properties ctx = Envs.getCtx(W_Store_ID);
-    context.setProperty("ctx", ctx);
+    context.setProperty(SERVICE_NAME, ctx);
 
   }
 
   @Override
   public Properties provide() {
-    return (Properties) context.getProperty("ctx");
+    return (Properties) context.getProperty(SERVICE_NAME);
   }
 
   @Override

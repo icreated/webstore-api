@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("Document")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
-public class DocumentDto {
+public class DocumentDto   {
   private @Valid Integer id;
   private @Valid String documentNo;
   private @Valid String poReference;
@@ -42,7 +42,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("id")
   public Integer getId() {
     return id;
@@ -60,7 +60,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("documentNo")
   public String getDocumentNo() {
     return documentNo;
@@ -78,7 +78,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("poReference")
   public String getPoReference() {
     return poReference;
@@ -96,7 +96,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("description")
   public String getDescription() {
     return description;
@@ -114,7 +114,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("docStatus")
   public String getDocStatus() {
     return docStatus;
@@ -132,7 +132,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("docStatusName")
   public String getDocStatusName() {
     return docStatusName;
@@ -150,7 +150,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("date")
   public Date getDate() {
     return date;
@@ -168,7 +168,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("totalLines")
   public BigDecimal getTotalLines() {
     return totalLines;
@@ -186,7 +186,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("grandTotal")
   public BigDecimal getGrandTotal() {
     return grandTotal;
@@ -204,7 +204,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -222,7 +222,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("lines")
   public List<DocumentLineDto> getLines() {
     return lines;
@@ -249,7 +249,6 @@ public class DocumentDto {
 
     return this;
   }
-
   /**
    **/
   public DocumentDto shipAddress(AddressDto shipAddress) {
@@ -257,7 +256,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("shipAddress")
   public AddressDto getShipAddress() {
     return shipAddress;
@@ -275,7 +274,7 @@ public class DocumentDto {
     return this;
   }
 
-
+  
   @JsonProperty("billAddress")
   public AddressDto getBillAddress() {
     return billAddress;
@@ -296,31 +295,31 @@ public class DocumentDto {
       return false;
     }
     DocumentDto document = (DocumentDto) o;
-    return Objects.equals(this.id, document.id)
-        && Objects.equals(this.documentNo, document.documentNo)
-        && Objects.equals(this.poReference, document.poReference)
-        && Objects.equals(this.description, document.description)
-        && Objects.equals(this.docStatus, document.docStatus)
-        && Objects.equals(this.docStatusName, document.docStatusName)
-        && Objects.equals(this.date, document.date)
-        && Objects.equals(this.totalLines, document.totalLines)
-        && Objects.equals(this.grandTotal, document.grandTotal)
-        && Objects.equals(this.name, document.name) && Objects.equals(this.lines, document.lines)
-        && Objects.equals(this.shipAddress, document.shipAddress)
-        && Objects.equals(this.billAddress, document.billAddress);
+    return Objects.equals(this.id, document.id) &&
+        Objects.equals(this.documentNo, document.documentNo) &&
+        Objects.equals(this.poReference, document.poReference) &&
+        Objects.equals(this.description, document.description) &&
+        Objects.equals(this.docStatus, document.docStatus) &&
+        Objects.equals(this.docStatusName, document.docStatusName) &&
+        Objects.equals(this.date, document.date) &&
+        Objects.equals(this.totalLines, document.totalLines) &&
+        Objects.equals(this.grandTotal, document.grandTotal) &&
+        Objects.equals(this.name, document.name) &&
+        Objects.equals(this.lines, document.lines) &&
+        Objects.equals(this.shipAddress, document.shipAddress) &&
+        Objects.equals(this.billAddress, document.billAddress);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date,
-        totalLines, grandTotal, name, lines, shipAddress, billAddress);
+    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date, totalLines, grandTotal, name, lines, shipAddress, billAddress);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class DocumentDto {\n");
-
+    
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    documentNo: ").append(toIndentedString(documentNo)).append("\n");
     sb.append("    poReference: ").append(toIndentedString(poReference)).append("\n");
@@ -339,7 +338,8 @@ public class DocumentDto {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {

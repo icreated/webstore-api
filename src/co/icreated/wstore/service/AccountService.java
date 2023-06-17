@@ -88,34 +88,6 @@ public class AccountService extends AbstractService {
   }
 
 
-  public static List<IdNameBean> getCountries() {
-
-
-    String sql = "SELECT C_Country_ID, Name FROM C_Country WHERE isActive='Y' ORDER BY Name";
-
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    List<IdNameBean> list = new ArrayList<IdNameBean>();
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-      rs = pstmt.executeQuery();
-
-      while (rs.next()) {
-        list.add(new IdNameBean(rs.getInt(1), rs.getString(2)));
-      }
-    } catch (Exception e) {
-      log.log(Level.SEVERE, "getCountries", e);
-
-    } finally {
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-
-    return list;
-  }
-
-
   public Address saveAddress(Address form) {
 
     X_C_BPartner_Location bpl = null;
