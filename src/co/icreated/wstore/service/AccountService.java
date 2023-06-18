@@ -29,11 +29,15 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Trx;
 
+import co.icreated.wstore.api.model.AccountInfoDto;
+import co.icreated.wstore.api.model.AddressDto;
+import co.icreated.wstore.api.model.NewAccountFormDto;
 import co.icreated.wstore.bean.AccountInfo;
 import co.icreated.wstore.bean.Address;
 import co.icreated.wstore.bean.IdNameBean;
 import co.icreated.wstore.bean.NewAccountForm;
 import co.icreated.wstore.bean.SessionUser;
+import co.icreated.wstore.mapper.AccountMapper;
 
 public class AccountService extends AbstractService {
 
@@ -49,16 +53,12 @@ public class AccountService extends AbstractService {
   }
 
 
-  public AccountInfo getAccountInfo() {
-
-    MUser user = new MUser(ctx, sessionUser.getAD_User_ID(), null);
-    AccountInfo bean = new AccountInfo(user.getAD_User_ID(), user.getValue(), user.getName(),
-        user.getEMail(), user.getBirthday());
-    return bean;
+  public AccountInfoDto getAccountInfo() {
+    return AccountMapper.INSTANCE.toDto(MUser.get(sessionUser.getAD_User_ID()));
   }
 
 
-  public AccountInfo updateUserAccount(AccountInfo account) {
+  public AccountInfoDto updateUserAccount(AccountInfoDto account) {
 
     X_AD_User user = new X_AD_User(ctx, sessionUser.getAD_User_ID(), null);
     user.setName(account.getName());
@@ -68,7 +68,7 @@ public class AccountService extends AbstractService {
   }
 
 
-  public MUser createNewAccount(NewAccountForm newUser) {
+  public MUser createNewAccount(NewAccountFormDto newUser) {
 
     log.log(Level.FINE, "new account ", newUser);
     int SalesRep_ID = Env.getContextAsInt(ctx, "#SalesRep_ID");
@@ -88,7 +88,7 @@ public class AccountService extends AbstractService {
   }
 
 
-  public Address saveAddress(Address form) {
+  public AddressDto saveAddress(AddressDto form) {
 
     X_C_BPartner_Location bpl = null;
     MLocation loc = null;
@@ -146,8 +146,7 @@ public class AccountService extends AbstractService {
 
 
 
-  public List<Address> getAddresses() {
-
+  public List<AddressDto> getAddresses() {
 
     String sql =
         "SELECT bpl.C_BPartner_Location_ID, bpl.Name, u.Name, l.Address1, l.Address2, l.Postal, "
@@ -160,7 +159,7 @@ public class AccountService extends AbstractService {
 
     PreparedStatement pstmt = null;
     ResultSet rs = null;
-    List<Address> list = new ArrayList<Address>();
+    List<AddressDto> list = new ArrayList<AddressDto>();
     try {
       pstmt = DB.prepareStatement(sql, null);
       pstmt.setInt(1, sessionUser.getC_BPartner_ID());
@@ -168,9 +167,17 @@ public class AccountService extends AbstractService {
 
       while (rs.next()) {
 
-        list.add(new Address(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-            rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getInt(9),
-            rs.getString(10)));
+        list.add(new AddressDto() //
+        		.id(rs.getInt(1)) //
+        		.label(rs.getString(2)) //
+        		.name(rs.getString(3)) //
+        		.address1(rs.getString(4)) //
+        		.address2(rs.getString(5)) //
+        		.postal(rs.getString(6)) //
+        		.city(rs.getString(7)) //
+        		.phone(rs.getString(8)) //
+        		.countryId(rs.getInt(9)) //
+        		.countryName(rs.getString(10)));
       }
     } catch (Exception e) {
       log.log(Level.SEVERE, "getAddresses", e);

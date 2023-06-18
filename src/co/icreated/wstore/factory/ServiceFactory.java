@@ -8,12 +8,13 @@
  *       copy of the GNU General Public License along with this program; if not, write to the Free
  *       Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  ******************************************************************************/
-package co.icreated.wstore.service;
+package co.icreated.wstore.factory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 import co.icreated.wstore.bean.SessionUser;
+import co.icreated.wstore.service.AbstractService;
 
 public class ServiceFactory {
 
@@ -28,22 +29,8 @@ public class ServiceFactory {
     try {
       return (T) type.getDeclaredConstructor(cArg).newInstance(ctx);
 
-    } catch (IllegalArgumentException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (SecurityException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (InstantiationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
+    } catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+        | SecurityException | InstantiationException | IllegalAccessException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
@@ -61,22 +48,8 @@ public class ServiceFactory {
     try {
       return (T) type.getDeclaredConstructor(cArg).newInstance(ctx, sessionUser);
 
-    } catch (IllegalArgumentException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (SecurityException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (InstantiationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
+    } catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+        | SecurityException | InstantiationException | IllegalAccessException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
