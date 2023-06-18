@@ -42,8 +42,12 @@ paths:
               $ref: '#/components/schemas/NewAccountForm'
         required: true
       responses:
-        '201':
+        '200':
           description: Account created, Token in return
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'            
         '400':
           description: Missing Account Info or Email
   /account/address/create_update:
@@ -63,8 +67,10 @@ paths:
       responses:
         '200':
           description: Address updated
-        '500':
-          description: Address not created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
   /account/addresses:
     get:
       tags:
@@ -98,6 +104,10 @@ paths:
       responses:
         '200':
           description: Password updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'          
         '202':
           description: Old password not correct
         '500':
@@ -117,10 +127,12 @@ paths:
               $ref: '#/components/schemas/AccountInfo'
         required: true
       responses:
-        '201':
+        '200':
           description: Account updated
-        '500':
-          description: Account not updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'          
   /account/address/delete/{id}:
     delete:
       tags:
@@ -137,10 +149,12 @@ paths:
             type: integer
             format: int32
       responses:
-        '202':
+        '200':
           description: Address deactivated
-        '500':
-          description: Address not deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
   /account/pdf/{type}/{id}:
     get:
       tags:
@@ -166,7 +180,9 @@ paths:
         default:
           description: default response
           content:
-            application/pdf: {}
+            application/pdf:
+              schema:
+                type: file
   /account/order/{id}:
     get:
       tags:

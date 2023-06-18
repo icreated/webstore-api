@@ -45,9 +45,7 @@ public class PaymentService extends AbstractService {
 
 
   public PaymentService(Properties ctx, SessionUser user) {
-
-    this.ctx = ctx;
-    this.sessionUser = user;
+    super(ctx, user);
   }
 
 

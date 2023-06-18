@@ -22,9 +22,12 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.compiere.model.MInOut;
+import org.compiere.model.MInvoice;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrderTax;
+import org.compiere.model.MPayment;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRefList;
 import org.compiere.model.MTax;
@@ -34,15 +37,17 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Trx;
 
-import co.icreated.wstore.bean.Address;
-import co.icreated.wstore.bean.Document;
-import co.icreated.wstore.bean.DocumentLine;
-import co.icreated.wstore.bean.Order;
-import co.icreated.wstore.bean.Payment;
+import co.icreated.wstore.api.model.AddressDto;
+import co.icreated.wstore.api.model.DocumentDto;
+import co.icreated.wstore.api.model.DocumentLineDto;
+import co.icreated.wstore.api.model.OrderDto;
+import co.icreated.wstore.api.model.PaymentDto;
+import co.icreated.wstore.api.model.ShipmentDto;
+import co.icreated.wstore.api.model.ShipperDto;
+import co.icreated.wstore.api.model.TaxDto;
 import co.icreated.wstore.bean.SessionUser;
-import co.icreated.wstore.bean.Shipment;
-import co.icreated.wstore.bean.Shipper;
-import co.icreated.wstore.bean.Tax;
+import co.icreated.wstore.mapper.OrderMapper;
+import co.icreated.wstore.utils.PQuery;
 
 
 public class OrderService extends AbstractService {
@@ -54,15 +59,12 @@ public class OrderService extends AbstractService {
 
 
   public OrderService(Properties ctx, SessionUser user) {
-
-    this.ctx = ctx;
-    this.sessionUser = user;
-    Env.setCtx(ctx);
+    super(ctx, user);
   }
 
 
 
-  public Order createOrder(Order orderBean) {
+  public OrderDto createOrder(OrderDto orderDto) {
 
 
     int C_PaymentTerm_ID = sessionUser.getC_PaymentTerm_ID() > 0 ? sessionUser.getC_PaymentTerm_ID()
@@ -72,8 +74,8 @@ public class OrderService extends AbstractService {
 
     int C_BPartner_ID = sessionUser.getC_BPartner_ID();
     int AD_User_ID = sessionUser.getAD_User_ID();
-    int C_BPartner_Location_ID = orderBean.getShipAddress().getId();
-    int Bill_BPartner_Location_ID = orderBean.getBillAddress().getId();
+    int C_BPartner_Location_ID = orderDto.getShipAddress().getId();
+    int Bill_BPartner_Location_ID = orderDto.getBillAddress().getId();
 
     String trxName = Trx.createTrxName("createApiOrder");
     Trx trx = Trx.get(trxName, true);
@@ -101,7 +103,7 @@ public class OrderService extends AbstractService {
     order.setBill_Location_ID(Bill_BPartner_Location_ID);
     order.setAD_User_ID(AD_User_ID);
 
-    order.setM_Shipper_ID(orderBean.getShipper().getId());
+    order.setM_Shipper_ID(orderDto.getShipper().getId());
     order.setSendEMail(true);
     order.setDocAction(MOrder.DOCACTION_Prepare);
 
@@ -110,7 +112,7 @@ public class OrderService extends AbstractService {
     log.log(Level.FINE, "ID=" + order.getC_Order_ID() + ", DocNo=" + order.getDocumentNo());
 
 
-    for (DocumentLine wbl : orderBean.getLines()) {
+    for (DocumentLineDto wbl : orderDto.getLines()) {
 
       MOrderLine ol = new MOrderLine(order);
       ol.setM_Product_ID(wbl.getId(), true);
@@ -133,24 +135,25 @@ public class OrderService extends AbstractService {
     if (trx.commit()) {
 
       order = new MOrder(ctx, order.getC_Order_ID(), order.get_TrxName()); // Refresh it!
-      orderBean.setId(order.getC_Order_ID());
-      orderBean.setDocumentNo(order.getDocumentNo());
-      orderBean.setGrandTotal(order.getGrandTotal());
-      orderBean.setTotalLines(order.getTotalLines());
-      orderBean.setTaxes(Stream.of(order.getTaxes(true))
-          .map(t -> new Tax(MTax.get(ctx, t.getC_Tax_ID()).getName(), t.getTaxAmt()))
+      orderDto.setId(order.getC_Order_ID());
+      orderDto.setDocumentNo(order.getDocumentNo());
+      orderDto.setGrandTotal(order.getGrandTotal());
+      orderDto.setTotalLines(order.getTotalLines());
+      orderDto.setTaxes(Stream.of(order.getTaxes(true))
+          .map(t -> new TaxDto().name(MTax.get(ctx, t.getC_Tax_ID()).getName()).tax(t.getTaxAmt()))
           .collect(Collectors.toList()));
 
-      List<DocumentLine> list = new ArrayList<DocumentLine>();
+      List<DocumentLineDto> list = new ArrayList<DocumentLineDto>();
       for (MOrderLine orderLine : order.getLines()) {
         MProduct product = orderLine.getProduct();
-        list.add(new DocumentLine(orderLine.getC_OrderLine_ID(), product.getM_Product_ID(),
-            orderLine.getLine(), product.getName(), product.getDescription(),
-            orderLine.getPriceList(), orderLine.getPriceActual(), orderLine.getQtyOrdered(),
-            orderLine.getLineNetAmt()));
+        list.add(new DocumentLineDto().id(orderLine.getC_OrderLine_ID())
+            .productId(product.getM_Product_ID()).line(orderLine.getLine()).name(product.getName())
+            .description(product.getDescription()).priceList(orderLine.getPriceList())
+            .price(orderLine.getPriceActual()).qty(orderLine.getQtyOrdered())
+            .lineNetAmt(orderLine.getLineNetAmt()));
 
       }
-      orderBean.setLines(list);
+      orderDto.setLines(list);
 
       log.log(Level.INFO, "Order created, #" + order.getDocumentNo());
     } else {
@@ -164,15 +167,15 @@ public class OrderService extends AbstractService {
     BigDecimal amt = order.getGrandTotal();
     log.info("Amt=" + amt);
 
-    return orderBean;
+    return orderDto;
   } // createOrder
 
 
 
-  public List<Document> getOrders() {
+  public List<DocumentDto> getOrders() {
 
 
-    List<Document> list = new ArrayList<Document>();
+    List<DocumentDto> list = new ArrayList<DocumentDto>();
 
     String sql =
         "SELECT C_Order_ID, DocumentNo, POReference, Description, docStatus, dateOrdered, totalLines, grandTotal FROM C_Order "
@@ -192,11 +195,16 @@ public class OrderService extends AbstractService {
       rs = pstmt.executeQuery();
       while (rs.next()) {
         docStatusName = MRefList.getListName(ctx, 131, rs.getString(5));
-
-        Document bean = new Document(rs.getInt(1), rs.getString(2), rs.getString(3),
-            rs.getString(4), rs.getString(5), rs.getDate(6), rs.getBigDecimal(7),
-            rs.getBigDecimal(8), docStatusName);
-        list.add(bean);
+        list.add(new DocumentDto().id(rs.getInt(1)) //
+            .documentNo(rs.getString(2)) //
+            .poReference(rs.getString(3)) //
+            .description(rs.getString(4)) //
+            .docStatus(rs.getString(5)) //
+            .date(rs.getDate(6)) //
+            .totalLines(rs.getBigDecimal(7)) //
+            .grandTotal(rs.getBigDecimal(8)) //
+            .docStatusName(docStatusName) //
+        );
       }
 
     } catch (Exception e) {
@@ -260,7 +268,7 @@ public class OrderService extends AbstractService {
   }
 
 
-  public Order getOrder(int C_Order_ID) {
+  public OrderDto getOrder(int C_Order_ID) {
 
     String sql =
         "SELECT o.C_Order_ID, o.DocumentNo, o.POReference, o.Description, o.docStatus, o.dateOrdered, o.totalLines,  "
@@ -277,7 +285,7 @@ public class OrderService extends AbstractService {
             + "LEFT JOIN M_Shipper sh ON o.M_Shipper_ID = sh.M_Shipper_ID "
             + "WHERE o.C_Order_ID = ? AND o.C_BPartner_ID = ?";
 
-    Order bean = null;
+    OrderDto orderDto = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     String docStatusName;
@@ -289,30 +297,54 @@ public class OrderService extends AbstractService {
       if (rs.next()) {
         docStatusName = MRefList.getListName(ctx, 131, rs.getString(5));
 
-        Address deliveryAddress = new Address(rs.getInt(8), rs.getString(9), rs.getString(10),
-            rs.getString(11), rs.getString(12), rs.getString(13), rs.getString(14),
-            rs.getString(15), rs.getInt(16), rs.getString(17));
-        Address invoiceAddress = new Address(rs.getInt(18), rs.getString(19), rs.getString(20),
-            rs.getString(21), rs.getString(22), rs.getString(23), rs.getString(24),
-            rs.getString(25), rs.getInt(26), rs.getString(27));
+        AddressDto deliveryAddress = new AddressDto() //
+            .id(rs.getInt(8)) //
+            .label(rs.getString(9)) //
+            .name(rs.getString(10)) //
+            .address1(rs.getString(11)) //
+            .address2(rs.getString(12)) //
+            .postal(rs.getString(13)) //
+            .city(rs.getString(14)) //
+            .phone(rs.getString(15)) //
+            .countryId(rs.getInt(16)) //
+            .countryName(rs.getString(17));
 
-        bean = new Order(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-            rs.getString(5), rs.getDate(6), rs.getBigDecimal(7), rs.getBigDecimal(29),
-            docStatusName);
+        AddressDto invoiceAddress = new AddressDto() //
+            .id(rs.getInt(18)) //
+            .label(rs.getString(19)) //
+            .name(rs.getString(20)) //
+            .address1(rs.getString(21)) //
+            .address2(rs.getString(22)) //
+            .postal(rs.getString(23)) //
+            .city(rs.getString(24)) //
+            .phone(rs.getString(26)) //
+            .countryName(rs.getString(27));
 
-        bean.setShipper(new Shipper(rs.getInt(30), rs.getString(28), null));
-        bean.setShipAddress(deliveryAddress);
-        bean.setBillAddress(invoiceAddress);
-        bean.setLines(getOrderLines(C_Order_ID));
-        bean.setShipments(getShipments(C_Order_ID));
-        bean.setPayments(getPayments(C_Order_ID));
-        bean.setInvoices(getInvoices(C_Order_ID));
+        orderDto = new OrderDto().id(rs.getInt(1)) //
+            .documentNo(rs.getString(2)) //
+            .poReference(rs.getString(3)) //
+            .description(rs.getString(4)) //
+            .docStatus(rs.getString(5)) //
+            .date(rs.getDate(6)) //
+            .totalLines(rs.getBigDecimal(7)) //
+            .grandTotal(rs.getBigDecimal(29)) //
+            .docStatusName(docStatusName); //
+
+
+        orderDto.setShipper(new ShipperDto().id(rs.getInt(30)).name(rs.getString(28)));
+        orderDto.setShipAddress(deliveryAddress);
+        orderDto.setBillAddress(invoiceAddress);
+        orderDto.setLines(getOrderLines(C_Order_ID));
+        orderDto.setShipments(getShipments(C_Order_ID));
+        orderDto.setPayments(getPayments(C_Order_ID));
+        orderDto.setInvoices(getInvoices(C_Order_ID));
 
         List<MOrderTax> orderTaxes = new Query(ctx, MOrderTax.Table_Name, "C_Order_ID=?", null)
             .setParameters(C_Order_ID).list();
 
-        bean.setTaxes(orderTaxes.stream()
-            .map(t -> new Tax(MTax.get(ctx, t.getC_Tax_ID()).getName(), t.getTaxAmt()))
+        orderDto.setTaxes(orderTaxes.stream()
+            .map(
+                t -> new TaxDto().name(MTax.get(ctx, t.getC_Tax_ID()).getName()).tax(t.getTaxAmt()))
             .collect(Collectors.toList()));
 
       }
@@ -327,246 +359,86 @@ public class OrderService extends AbstractService {
     }
 
 
-    return bean;
+    return orderDto;
 
   }
 
-  private List<DocumentLine> getOrderLines(int C_Order_ID) {
-
-    String sql = "SELECT ol.C_OrderLine_ID, ol.M_Product_ID, ol.Line, p.Name, p.Description, "
-        + "ol.PriceList, ol.PriceActual, ol.qtyOrdered, ol.LineNetAmt " + "FROM C_OrderLine ol "
-        + "INNER JOIN M_Product p ON ol.M_Product_ID = p.M_Product_ID "
-        + "WHERE ol.C_Order_ID = ? ORDER BY ol.Line";
-
-    List<DocumentLine> lines = new ArrayList<DocumentLine>();
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-      pstmt.setInt(1, C_Order_ID);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-
-        lines.add(new DocumentLine(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4),
-            rs.getString(5), rs.getBigDecimal(6), rs.getBigDecimal(7), rs.getBigDecimal(8),
-            rs.getBigDecimal(9)));
-      }
+  private List<DocumentLineDto> getOrderLines(int C_Order_ID) {
 
 
-    } catch (Exception e) {
-      log.log(Level.SEVERE, "getOrderLine", e);
-    } finally {
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-
-    return lines;
+    return new PQuery(ctx, MOrderLine.Table_Name, "C_Order_ID=?", null) //
+        .setClient_ID() //
+        .setOnlyActiveRecords(true) //
+        .setParameters(C_Order_ID).setOrderBy("Line") //
+        .<MOrderLine>stream() //
+        .map(OrderMapper.INSTANCE::toDto) //
+        .collect(Collectors.toList());
   }
 
-  /**
-   * Get Shipments
-   *
-   * @return shipments of BP
-   */
-  public List<Shipment> getShipments(int id, boolean byUser) {
-    List<Shipment> list = new ArrayList<Shipment>();
-    String sql =
-        "SELECT io.M_InOut_ID, io.DocumentNo, sh.Name, io.Description, io.docStatus, io.shipDate, io.TrackingNo "
-            + "FROM M_InOut io INNER JOIN M_Shipper sh ON sh.M_Shipper_ID=io.M_Shipper_ID "
-            + "WHERE ";
-    if (byUser)
-      sql += "io.AD_User_ID=? ";
-    else
-      sql += "io.C_BPartner_ID=? ";
-    sql += "AND io.DocStatus NOT IN ('DR') ORDER BY io.DocumentNo DESC";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    String docStatusName;
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-      pstmt.setInt(1, id);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        docStatusName = MRefList.getListName(ctx, 131, rs.getString(5));
 
-        Shipment bean = new Shipment(rs.getInt(1), rs.getString(2), null, rs.getString(4),
-            rs.getString(5), rs.getDate(6), null, null, docStatusName);
-        bean.setShipper(new Shipper(rs.getString(3)));
-        bean.setTrackingNo(rs.getString(7));
-        list.add(bean);
-      }
+  public List<ShipmentDto> getShipments(int id, boolean byUser) {
 
+    String whereClause = "docStatus NOT IN ('DR') AND ";
+    whereClause += byUser ? "AD_User_ID=?" : "C_BPartner_ID=?";
 
-    } catch (Exception e) {
-      log.log(Level.SEVERE, "getShipments", e);
-    } finally {
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-
-    return list;
-  } // getShipments
+    return new PQuery(ctx, MInOut.Table_Name, whereClause, null) //
+        .setClient_ID() //
+        .setOnlyActiveRecords(true) //
+        .setParameters(id).setOrderBy("DocumentNo DESC") //
+        .<MInOut>stream() //
+        .map(OrderMapper.INSTANCE::toDto) //
+        .collect(Collectors.toList());
+  }
 
 
 
-  public List<Shipment> getShipments(int C_Order_ID) {
-    List<Shipment> list = new ArrayList<Shipment>();
-    String sql =
-        "SELECT io.M_InOut_ID, io.DocumentNo, sh.Name, io.Description, io.docStatus, io.shipDate, io.TrackingNo "
-            + "FROM M_InOut io INNER JOIN M_Shipper sh ON sh.M_Shipper_ID=io.M_Shipper_ID "
-            + "WHERE io.C_Order_ID=? ";
-    sql += "AND io.DocStatus NOT IN ('DR') ORDER BY io.DocumentNo DESC";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    String docStatusName;
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-      pstmt.setInt(1, C_Order_ID);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        docStatusName = MRefList.getListName(ctx, 131, rs.getString(5));
+  public List<ShipmentDto> getShipments(int C_Order_ID) {
 
-        Shipment bean = new Shipment(rs.getInt(1), rs.getString(2), null, rs.getString(4),
-            rs.getString(5), rs.getDate(6), null, null, docStatusName);
-        bean.setShipper(new Shipper(rs.getString(3)));
-        bean.setTrackingNo(rs.getString(7));
-        list.add(bean);
-      }
-
-    } catch (Exception e) {
-      log.log(Level.SEVERE, "getShipments", e);
-    } finally {
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-
-    return list;
-  } // getShipments
+    return new PQuery(ctx, MInOut.Table_Name, "C_Order_ID=? AND DocStatus NOT IN ('DR')", null) //
+        .setClient_ID() //
+        .setOnlyActiveRecords(true) //
+        .setParameters(C_Order_ID).setOrderBy("DocumentNo DESC") //
+        .<MInOut>stream() //
+        .map(OrderMapper.INSTANCE::toDto) //
+        .collect(Collectors.toList());
+  }
 
 
+  public List<PaymentDto> getPayments(int C_Order_ID) {
 
-  public List<Payment> getPayments(int C_Order_ID) {
-    List<Payment> list = new ArrayList<Payment>();
+    return new PQuery(ctx, MPayment.Table_Name, "C_Order_ID=? AND DocStatus NOT IN ('DR')", null) //
+        .setClient_ID() //
+        .setOnlyActiveRecords(true) //
+        .setParameters(C_Order_ID).setOrderBy("DocumentNo DESC") //
+        .<MPayment>stream() //
+        .map(OrderMapper.INSTANCE::toDto) //
+        .collect(Collectors.toList());
+  }
 
-    String sql =
-        "SELECT p.C_Payment_ID, p.DocumentNo, p.Description, p.docStatus, p.payAmt, p.orig_trxid, c.iso_code, p.tenderType "
-            + "FROM C_Payment p " + "INNER JOIN C_Currency c ON p.C_Currency_ID = c.C_Currency_ID "
-            + "WHERE C_Order_ID=? " + "AND DocStatus NOT IN ('DR') ORDER BY DocumentNo DESC";
 
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
+  public List<DocumentDto> getInvoices(int id, boolean byUser) {
 
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-      pstmt.setInt(1, C_Order_ID);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        Payment bean = new Payment(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-            rs.getBigDecimal(5), rs.getString(6), rs.getString(7), rs.getString(8));
-        list.add(bean);
-      }
-
-    } catch (Exception e) {
-      log.log(Level.SEVERE, "getPayments", e);
-
-    } finally {
-
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-
-    return list;
-  } // getShipments
+    return new PQuery(ctx, MInvoice.Table_Name, byUser ? "AD_User_ID=?" : "C_BPartner_ID=?", null) //
+        .setClient_ID() //
+        .setOnlyActiveRecords(true) //
+        .setParameters(id).setOrderBy("DocumentNo DESC") //
+        .<MInvoice>stream() //
+        .map(OrderMapper.INSTANCE::toDto) //
+        .collect(Collectors.toList());
+  }
 
 
 
-  public List<Document> getInvoices(int id, boolean byUser) {
+  public List<DocumentDto> getInvoices(int C_Order_ID) {
+    return new PQuery(ctx, MInvoice.Table_Name, "C_Order_ID=?", null) //
+        .setClient_ID() //
+        .setOnlyActiveRecords(true) //
+        .setParameters(C_Order_ID).setOrderBy("DocumentNo DESC") //
+        .<MInvoice>stream() //
+        .map(OrderMapper.INSTANCE::toDto) //
+        .collect(Collectors.toList());
 
-    List<Document> list = new ArrayList<Document>();
-
-
-    String sql =
-        "SELECT C_Invoice_ID, DocumentNo, null, Description, docStatus, dateInvoiced, totalLines, grandTotal FROM C_Invoice WHERE ";
-    if (byUser)
-      sql += "AD_User_ID=? ";
-    else
-      sql += "C_BPartner_ID=? ";
-    sql += "ORDER BY DocumentNo DESC";
-
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    String docStatusName;
-
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-      pstmt.setInt(1, id);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        docStatusName = MRefList.getListName(ctx, 131, rs.getString(5));
-
-        Document bean = new Document(rs.getInt(1), rs.getString(2), rs.getString(3),
-            rs.getString(4), rs.getString(5), rs.getDate(6), rs.getBigDecimal(7),
-            rs.getBigDecimal(8), docStatusName);
-        list.add(bean);
-      }
-
-    } catch (Exception e) {
-      log.log(Level.SEVERE, sql, e);
-    } finally {
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-    log.log(Level.FINE, "#" + list.size());
-
-    return list;
-  } // getOrders
-
-
-
-  public List<Document> getInvoices(int C_Order_ID) {
-
-    List<Document> list = new ArrayList<Document>();
-
-
-    String sql =
-        "SELECT C_Invoice_ID, DocumentNo, null, Description, docStatus, dateInvoiced, totalLines, grandTotal "
-            + "FROM C_Invoice WHERE C_Order_ID=? ";
-    sql += "ORDER BY DocumentNo DESC";
-
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    String docStatusName;
-
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-      pstmt.setInt(1, C_Order_ID);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        docStatusName = MRefList.getListName(ctx, 131, rs.getString(5));
-
-        Document bean = new Document(rs.getInt(1), rs.getString(2), rs.getString(3),
-            rs.getString(4), rs.getString(5), rs.getDate(6), rs.getBigDecimal(7),
-            rs.getBigDecimal(8), docStatusName);
-        list.add(bean);
-      }
-
-    } catch (Exception e) {
-      log.log(Level.SEVERE, sql, e);
-    } finally {
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-    log.log(Level.FINE, "#" + list.size());
-
-    return list;
-  } // getOrders
+  }
 
 
 

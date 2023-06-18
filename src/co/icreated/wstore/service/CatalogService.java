@@ -35,7 +35,7 @@ public class CatalogService extends AbstractService {
 
 
   public CatalogService(Properties ctx) {
-	super(ctx);
+    super(ctx);
   }
 
 

@@ -3,9 +3,12 @@ package co.icreated.wstore.api.service;
 import co.icreated.wstore.api.model.AccountInfoDto;
 import co.icreated.wstore.api.model.AddressDto;
 import co.icreated.wstore.api.model.DocumentDto;
+import java.io.File;
 import co.icreated.wstore.api.model.NewAccountFormDto;
 import co.icreated.wstore.api.model.OrderDto;
 import co.icreated.wstore.api.model.PasswordDto;
+import co.icreated.wstore.api.model.StatusDto;
+import co.icreated.wstore.api.model.TokenDto;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -24,16 +27,19 @@ public interface AccountApi {
     @POST
     @Path("/password/change")
     @Consumes({ "application/json" })
-    void changePassword(@Valid @NotNull PasswordDto passwordDto);
+    @Produces({ "application/json" })
+    TokenDto changePassword(@Valid @NotNull PasswordDto passwordDto);
 
     @POST
     @Path("/address/create_update")
     @Consumes({ "application/json" })
-    void createAddress(@Valid @NotNull AddressDto addressDto);
+    @Produces({ "application/json" })
+    StatusDto createAddress(@Valid @NotNull AddressDto addressDto);
 
     @DELETE
     @Path("/address/delete/{id}")
-    void deleteAddress(@PathParam("id") Integer id);
+    @Produces({ "application/json" })
+    StatusDto deleteAddress(@PathParam("id") Integer id);
 
     @GET
     @Path("/addresses")
@@ -53,7 +59,7 @@ public interface AccountApi {
     @GET
     @Path("/pdf/{type}/{id}")
     @Produces({ "application/pdf" })
-    void getOrderFile(@PathParam("type") String type,@PathParam("id") Integer id);
+    File getOrderFile(@PathParam("type") String type,@PathParam("id") Integer id);
 
     @GET
     @Path("/orders")
@@ -63,9 +69,11 @@ public interface AccountApi {
     @POST
     @Path("/signup")
     @Consumes({ "application/json" })
-    void signup(@Valid @NotNull NewAccountFormDto newAccountFormDto);
+    @Produces({ "application/json" })
+    TokenDto signup(@Valid @NotNull NewAccountFormDto newAccountFormDto);
 
     @POST
     @Path("/info/update")
-    void updateAccount(@Valid @NotNull AccountInfoDto accountInfoDto);
+    @Produces({ "application/json" })
+    TokenDto updateAccount(@Valid @NotNull AccountInfoDto accountInfoDto);
 }

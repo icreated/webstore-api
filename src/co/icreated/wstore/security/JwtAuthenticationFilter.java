@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
 
   @Context
   private ResourceInfo resourceInfo;
-  
+
   @Context
   AuthService authService;
 

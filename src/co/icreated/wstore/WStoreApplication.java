@@ -19,10 +19,10 @@ import org.glassfish.jersey.server.filter.EncodingFilter;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
+import co.icreated.wstore.controller.AccountController;
 import co.icreated.wstore.controller.AuthController;
 import co.icreated.wstore.controller.CatalogController;
 import co.icreated.wstore.controller.CommonController;
-import co.icreated.wstore.endpoints.AccountEndpoints;
 import co.icreated.wstore.endpoints.CheckoutEndpoints;
 import co.icreated.wstore.factory.AccountServiceFactory;
 import co.icreated.wstore.factory.AuthServiceFactory;
@@ -48,7 +48,7 @@ public class WStoreApplication extends ResourceConfig {
   public WStoreApplication() {
 
     // register(RolesAllowedDynamicFeature.class);
-    register(AccountEndpoints.class);
+    register(AccountController.class);
     register(CatalogController.class);
 
     register(CommonController.class);
@@ -80,13 +80,13 @@ public class WStoreApplication extends ResourceConfig {
         bindFactory(CommonServiceFactory.class).to(CommonService.class);
       }
     });
-    
+
     register(new AbstractBinder() {
-        @Override
-        protected void configure() {
-          bindFactory(AuthServiceFactory.class).to(AuthService.class);
-        }
-      });
+      @Override
+      protected void configure() {
+        bindFactory(AuthServiceFactory.class).to(AuthService.class);
+      }
+    });
 
     register(new AbstractBinder() {
       @Override

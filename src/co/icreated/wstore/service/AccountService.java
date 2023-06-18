@@ -168,16 +168,16 @@ public class AccountService extends AbstractService {
       while (rs.next()) {
 
         list.add(new AddressDto() //
-        		.id(rs.getInt(1)) //
-        		.label(rs.getString(2)) //
-        		.name(rs.getString(3)) //
-        		.address1(rs.getString(4)) //
-        		.address2(rs.getString(5)) //
-        		.postal(rs.getString(6)) //
-        		.city(rs.getString(7)) //
-        		.phone(rs.getString(8)) //
-        		.countryId(rs.getInt(9)) //
-        		.countryName(rs.getString(10)));
+            .id(rs.getInt(1)) //
+            .label(rs.getString(2)) //
+            .name(rs.getString(3)) //
+            .address1(rs.getString(4)) //
+            .address2(rs.getString(5)) //
+            .postal(rs.getString(6)) //
+            .city(rs.getString(7)) //
+            .phone(rs.getString(8)) //
+            .countryId(rs.getInt(9)) //
+            .countryName(rs.getString(10)));
       }
     } catch (Exception e) {
       log.log(Level.SEVERE, "getAddresses", e);

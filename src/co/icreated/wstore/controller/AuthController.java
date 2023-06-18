@@ -24,25 +24,24 @@ import co.icreated.wstore.service.AuthService;
 
 @Path("/auth")
 public class AuthController implements AuthApi {
-	
-	@Context
-	AuthService authService;
+
+  @Context
+  AuthService authService;
 
 
-@Override
-public TokenDto authenticateUser(@Valid @NotNull UserCredentialsDto userCredentialsDto) {
+  @Override
+  public TokenDto authenticateUser(@Valid @NotNull UserCredentialsDto userCredentialsDto) {
 
     try {
-      SessionUser sessionUser =
-          authService.authenticate(userCredentialsDto.getUsername(), userCredentialsDto.getPassword());
+      SessionUser sessionUser = authService.authenticate(userCredentialsDto.getUsername(),
+          userCredentialsDto.getPassword());
       String token = authService.issueToken(sessionUser);
       return new TokenDto().token(token);
 
     } catch (Exception e) {
-    	throw new UnauthorizedException("Not authenticated");
+      throw new UnauthorizedException("Not authenticated");
     }
-}
-
+  }
 
 
 

@@ -31,10 +31,10 @@ public class AuthService extends AbstractService {
 
   CCache<String, SessionUser> s_cache = new CCache<String, SessionUser>("SessionUser", 100, 30);
   private static CLogger log = CLogger.getCLogger(AuthService.class);
-  
+
 
   public AuthService(Properties ctx) {
-	super(ctx);
+    super(ctx);
   }
 
 
@@ -64,32 +64,32 @@ public class AuthService extends AbstractService {
 
     return retValue;
   }
-  
-  
+
+
   public String issueToken(SessionUser sessionUser) {
 
-	    TokenHandler tokenHandler = new TokenHandler(this);
-	    String token = tokenHandler.createTokenForUser(sessionUser);
-	    return token;
+    TokenHandler tokenHandler = new TokenHandler(this);
+    String token = tokenHandler.createTokenForUser(sessionUser);
+    return token;
   }
-  
-  
+
+
   public SessionUser authenticate(String username, String password) throws Exception {
 
 
-	    SessionUser sessionUser = (SessionUser)loadUserByUsername(username, true, false);
-	    if (sessionUser == null) {
-	      throw new UnauthorizedException("User not found");
-	    }
+    SessionUser sessionUser = (SessionUser) loadUserByUsername(username, true, false);
+    if (sessionUser == null) {
+      throw new UnauthorizedException("User not found");
+    }
 
 
-	    boolean isValid = sessionUser.getPassword().equals(password);
-	    if (!isValid) {
-	      throw new UnauthorizedException("Wrong password");
-	    }
+    boolean isValid = sessionUser.getPassword().equals(password);
+    if (!isValid) {
+      throw new UnauthorizedException("Wrong password");
+    }
 
-	    return sessionUser;
-	  }
+    return sessionUser;
+  }
 
 
 
@@ -100,8 +100,7 @@ public class AuthService extends AbstractService {
     String sql = "SELECT u.AD_User_ID, u.Value, u.Name, u.Email, u.Password, u.salt, "
         + "bp.C_BPartner_ID, bp.C_BP_Group_ID, bp.M_PriceList_ID, bp.C_PaymentTerm_ID, "
         + "u.Description, u.isActive, u.isLocked, bp.isActive, bp.SOCreditStatus "
-        + "FROM AD_User u " 
-        + "INNER JOIN C_BPartner bp ON bp.C_BPartner_ID = u.C_BPartner_ID "
+        + "FROM AD_User u " + "INNER JOIN C_BPartner bp ON bp.C_BPartner_ID = u.C_BPartner_ID "
         + "WHERE u.isActive='Y' AND %s LIKE trim(?) ";
 
     SessionUser user = null;
