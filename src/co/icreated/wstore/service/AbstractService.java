@@ -12,7 +12,7 @@ package co.icreated.wstore.service;
 
 import java.util.Properties;
 
-import co.icreated.wstore.bean.SessionUser;
+import co.icreated.wstore.model.SessionUser;
 
 public abstract class AbstractService {
 

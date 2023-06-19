@@ -32,12 +32,8 @@ import org.compiere.util.Trx;
 import co.icreated.wstore.api.model.AccountInfoDto;
 import co.icreated.wstore.api.model.AddressDto;
 import co.icreated.wstore.api.model.NewAccountFormDto;
-import co.icreated.wstore.bean.AccountInfo;
-import co.icreated.wstore.bean.Address;
-import co.icreated.wstore.bean.IdNameBean;
-import co.icreated.wstore.bean.NewAccountForm;
-import co.icreated.wstore.bean.SessionUser;
 import co.icreated.wstore.mapper.AccountMapper;
+import co.icreated.wstore.model.SessionUser;
 
 public class AccountService extends AbstractService {
 

@@ -20,7 +20,8 @@ public interface CheckoutApi {
     @POST
     @Path("/order/create")
     @Consumes({ "application/json" })
-    void createOrder(@Valid @NotNull OrderDto orderDto);
+    @Produces({ "application/json" })
+    OrderDto createOrder(@Valid @NotNull OrderDto orderDto);
 
     @POST
     @Path("/payment")

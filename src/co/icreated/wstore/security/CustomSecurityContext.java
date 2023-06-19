@@ -14,7 +14,7 @@ import java.security.Principal;
 
 import javax.ws.rs.core.SecurityContext;
 
-import co.icreated.wstore.bean.SessionUser;
+import co.icreated.wstore.model.SessionUser;
 
 public class CustomSecurityContext implements SecurityContext {
 

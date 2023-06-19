@@ -20,9 +20,9 @@ import org.compiere.util.CCache;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 
-import co.icreated.wstore.bean.SessionUser;
 import co.icreated.wstore.exception.CustomNotFoundException;
 import co.icreated.wstore.exception.UnauthorizedException;
+import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.TokenHandler;
 
 

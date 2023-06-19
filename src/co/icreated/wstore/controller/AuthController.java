@@ -18,8 +18,8 @@ import javax.ws.rs.core.Context;
 import co.icreated.wstore.api.model.TokenDto;
 import co.icreated.wstore.api.model.UserCredentialsDto;
 import co.icreated.wstore.api.service.AuthApi;
-import co.icreated.wstore.bean.SessionUser;
 import co.icreated.wstore.exception.UnauthorizedException;
+import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.AuthService;
 
 @Path("/auth")

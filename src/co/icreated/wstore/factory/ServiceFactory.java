@@ -13,7 +13,7 @@ package co.icreated.wstore.factory;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
-import co.icreated.wstore.bean.SessionUser;
+import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.AbstractService;
 
 public class ServiceFactory {

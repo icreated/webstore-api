@@ -14,8 +14,8 @@ import java.security.Key;
 
 import com.google.common.base.Preconditions;
 
-import co.icreated.wstore.bean.SessionUser;
 import co.icreated.wstore.exception.UnauthorizedException;
+import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.AuthService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

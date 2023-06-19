@@ -45,8 +45,8 @@ import co.icreated.wstore.api.model.PaymentDto;
 import co.icreated.wstore.api.model.ShipmentDto;
 import co.icreated.wstore.api.model.ShipperDto;
 import co.icreated.wstore.api.model.TaxDto;
-import co.icreated.wstore.bean.SessionUser;
 import co.icreated.wstore.mapper.OrderMapper;
+import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.utils.PQuery;
 
 

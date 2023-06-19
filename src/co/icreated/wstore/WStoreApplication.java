@@ -22,8 +22,8 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import co.icreated.wstore.controller.AccountController;
 import co.icreated.wstore.controller.AuthController;
 import co.icreated.wstore.controller.CatalogController;
+import co.icreated.wstore.controller.CheckoutController;
 import co.icreated.wstore.controller.CommonController;
-import co.icreated.wstore.endpoints.CheckoutEndpoints;
 import co.icreated.wstore.factory.AccountServiceFactory;
 import co.icreated.wstore.factory.AuthServiceFactory;
 import co.icreated.wstore.factory.CatalogServiceFactory;
@@ -52,7 +52,7 @@ public class WStoreApplication extends ResourceConfig {
     register(CatalogController.class);
 
     register(CommonController.class);
-    register(CheckoutEndpoints.class);
+    register(CheckoutController.class);
 
     register(CORSFilter.class);
     register(CheckRequestFilter.class);

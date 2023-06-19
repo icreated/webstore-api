@@ -362,7 +362,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Order processed
+          description: Order processed      
         '403':
           description: Order forbidden
         '500':
@@ -383,7 +383,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Order processed
+          description: Order processed              
         '403':
           description: Order forbidden
         '500':
@@ -405,6 +405,10 @@ paths:
       responses:
         '200':
           description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
         '500':
           description: Missing address or shipper or lines
   /common/countries:

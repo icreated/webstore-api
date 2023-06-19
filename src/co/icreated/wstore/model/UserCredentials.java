@@ -8,48 +8,42 @@
  *       copy of the GNU General Public License along with this program; if not, write to the Free
  *       Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  ******************************************************************************/
-package co.icreated.wstore.bean;
+package co.icreated.wstore.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Token {
+public class UserCredentials {
 
-  @JsonProperty("token")
-  String token = null;
+  @JsonProperty("username")
+  String username;
+  @JsonProperty("password")
+  String password;
 
-  @JsonProperty("msg")
-  String msg;
+  public UserCredentials() {
 
+  }
 
-  public Token() {}
-
-  public Token(String token) {
+  public UserCredentials(String username, String password) {
     super();
-    this.token = token;
+    this.username = username;
+    this.password = password;
   }
 
-  public Token(String token, String msg) {
-    super();
-    this.token = token;
-    this.msg = msg;
+
+  public String getUsername() {
+    return username;
   }
 
-  public String getToken() {
-    return token;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
-  public void setToken(String token) {
-    this.token = token;
+  public String getPassword() {
+    return password;
   }
 
-  public String getMsg() {
-    return msg;
-  }
-
-  public void setMsg(String msg) {
-    this.msg = msg;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
 

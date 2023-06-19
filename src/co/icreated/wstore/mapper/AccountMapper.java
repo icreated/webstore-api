@@ -14,7 +14,8 @@ public interface AccountMapper {
   public AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
 
-  @Mapping(source = "aD_User_ID", target = "id")
+  @Mapping(source = "AD_User_ID", target = "id")
+  @Mapping(source = "EMail", target = "email")
   public AccountInfoDto toDto(MUser user);
 
 

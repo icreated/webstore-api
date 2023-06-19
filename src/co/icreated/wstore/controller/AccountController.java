@@ -11,29 +11,17 @@
 package co.icreated.wstore.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Properties;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.ForbiddenException;
-import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrder;
@@ -51,23 +39,11 @@ import co.icreated.wstore.api.model.StatusDto;
 import co.icreated.wstore.api.model.StatusDto.StatusEnum;
 import co.icreated.wstore.api.model.TokenDto;
 import co.icreated.wstore.api.service.AccountApi;
-import co.icreated.wstore.bean.AccountInfo;
-import co.icreated.wstore.bean.Address;
-import co.icreated.wstore.bean.Document;
-import co.icreated.wstore.bean.NewAccountForm;
-import co.icreated.wstore.bean.Order;
-import co.icreated.wstore.bean.Password;
-import co.icreated.wstore.bean.SessionUser;
-import co.icreated.wstore.bean.Token;
+import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.TokenHandler;
 import co.icreated.wstore.service.AccountService;
 import co.icreated.wstore.service.AuthService;
 import co.icreated.wstore.service.OrderService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RolesAllowed({"ROLE_USER"})

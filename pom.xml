@@ -46,7 +46,7 @@
 		            <goals>
 		                <goal>generate</goal>
 		            </goals>
-		            <configuration>
+		            <configuration> 
 		                <inputSpec>${project.basedir}/openapi.yaml</inputSpec>
 		                <output>${project.basedir}</output>
 		                <generatorName>jaxrs-spec</generatorName>

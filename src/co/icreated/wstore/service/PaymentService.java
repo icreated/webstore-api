@@ -33,8 +33,8 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
-import co.icreated.wstore.bean.PaymentInfo;
-import co.icreated.wstore.bean.SessionUser;
+import co.icreated.wstore.model.PaymentInfo;
+import co.icreated.wstore.model.SessionUser;
 
 
 public class PaymentService extends AbstractService {

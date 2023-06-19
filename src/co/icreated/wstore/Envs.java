@@ -21,7 +21,7 @@ import org.compiere.util.CCache;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
-import co.icreated.wstore.bean.WStore;
+import co.icreated.wstore.model.WStore;
 
 public enum Envs {
   INSTANCE;

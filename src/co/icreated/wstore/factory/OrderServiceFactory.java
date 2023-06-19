@@ -20,7 +20,7 @@ import javax.ws.rs.core.SecurityContext;
 
 import org.glassfish.hk2.api.Factory;
 
-import co.icreated.wstore.bean.SessionUser;
+import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.OrderService;
 
 public class OrderServiceFactory implements Factory<OrderService> {
