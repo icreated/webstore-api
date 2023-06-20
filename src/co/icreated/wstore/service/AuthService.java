@@ -32,6 +32,7 @@ public class AuthService extends AbstractService {
   CCache<String, SessionUser> s_cache = new CCache<String, SessionUser>("SessionUser", 100, 30);
   private static CLogger log = CLogger.getCLogger(AuthService.class);
 
+  public AuthService() {}
 
   public AuthService(Properties ctx) {
     super(ctx);

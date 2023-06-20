@@ -11,14 +11,54 @@
 package co.icreated.wstore.factory;
 
 import java.lang.reflect.InvocationTargetException;
+import java.security.Principal;
 import java.util.Properties;
+import java.util.function.Supplier;
+
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.hk2.api.Factory;
 
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.AbstractService;
 
-public class ServiceFactory {
+
+public class AbstractServiceFactory<T> implements Factory<T> {
+
+  final String serviceName;
+  private final ContainerRequestContext context;
+
+  public AbstractServiceFactory(ContainerRequestContext context, String serviceName,
+      Supplier<T> contextSupplier) {
+    context.setProperty(serviceName, contextSupplier.get());
+    this.context = context;
+    this.serviceName = serviceName;
+  }
 
 
+  static SessionUser checkUserConnected(ContainerRequestContext context, Principal principal) {
+    SessionUser sessionUser = (SessionUser) principal;
+    if (sessionUser == null) {
+      context.abortWith(
+          Response.status(Response.Status.UNAUTHORIZED).entity("You are not authorized.").build());
+    }
+    return sessionUser;
+  }
+
+
+
+  @Override
+  public T provide() {
+    return (T) context.getProperty(serviceName);
+  }
+
+
+  @Override
+  public void dispose(T instance) {
+    // TODO Auto-generated method stub
+
+  }
 
   public static <T extends AbstractService> T create(Properties ctx, Class<T> type) {
 
@@ -55,5 +95,7 @@ public class ServiceFactory {
     }
     return null;
   }
+
+
 
 }

@@ -23,33 +23,16 @@ import org.glassfish.hk2.api.Factory;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.OrderService;
 
-public class OrderServiceFactory implements Factory<OrderService> {
-
-  final static String SERVICE_NAME = "orderService";
-  private final ContainerRequestContext context;
-
+public class OrderServiceFactory extends AbstractServiceFactory<OrderService> {
 
   @Inject
   public OrderServiceFactory(@Context ContainerRequestContext context, @Context SecurityContext sc,
       @Context Properties ctx) {
 
-    this.context = context;
-    SessionUser sessionUser = (SessionUser) sc.getUserPrincipal();
-    if (sessionUser == null) {
-      context.abortWith(
-          Response.status(Response.Status.UNAUTHORIZED).entity("You are not authorized.").build());
-    }
-
-
-    context.setProperty(SERVICE_NAME, new OrderService(ctx, sessionUser));
-
+    super(context, "orderService", () -> {
+      SessionUser user = checkUserConnected(context, sc.getUserPrincipal());
+      return new OrderService(ctx, user);
+    });
   }
 
-  @Override
-  public OrderService provide() {
-    return (OrderService) context.getProperty(SERVICE_NAME);
-  }
-
-  @Override
-  public void dispose(OrderService t) {}
 }

@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.message.GZipEncoder;
+import org.glassfish.jersey.process.internal.RequestScoped;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.EncodingFilter;
 
@@ -84,7 +85,8 @@ public class WStoreApplication extends ResourceConfig {
     register(new AbstractBinder() {
       @Override
       protected void configure() {
-        bindFactory(AuthServiceFactory.class).to(AuthService.class);
+        bindFactory(AuthServiceFactory.class).proxy(true).proxyForSameScope(false)
+            .to(AuthService.class).in(RequestScoped.class);
       }
     });
 

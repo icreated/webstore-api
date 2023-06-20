@@ -16,30 +16,15 @@ import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 
-import org.glassfish.hk2.api.Factory;
-
 import co.icreated.wstore.service.AuthService;
-import co.icreated.wstore.service.CatalogService;
 
-public class AuthServiceFactory implements Factory<AuthService> {
-
-  final static String SERVICE_NAME = "authService";
-  private final ContainerRequestContext context;
+public class AuthServiceFactory extends AbstractServiceFactory<AuthService> {
 
 
   @Inject
   public AuthServiceFactory(@Context ContainerRequestContext context, @Context Properties ctx) {
-
-    this.context = context;
-    context.setProperty(SERVICE_NAME, new AuthService(ctx));
-
+    super(context, "authService", () -> new AuthService(ctx));
   }
 
-  @Override
-  public AuthService provide() {
-    return (AuthService) context.getProperty(SERVICE_NAME);
-  }
 
-  @Override
-  public void dispose(AuthService t) {}
 }

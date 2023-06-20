@@ -17,32 +17,17 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 
-import org.glassfish.hk2.api.Factory;
-
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.AccountService;
 
-public class AccountServiceFactory implements Factory<AccountService> {
-
-  final static String SERVICE_NAME = "accountService";
-  private final ContainerRequestContext context;
-
+public class AccountServiceFactory extends AbstractServiceFactory<AccountService> {
 
   @Inject
   public AccountServiceFactory(@Context ContainerRequestContext context,
       @Context SecurityContext sc, @Context Properties ctx) {
-
-    this.context = context;
-    SessionUser sessionUser = (SessionUser) sc.getUserPrincipal();
-    context.setProperty(SERVICE_NAME, new AccountService(ctx, sessionUser));
-
+    super(context, "accountService", () -> {
+      SessionUser user = checkUserConnected(context, sc.getUserPrincipal());
+      return new AccountService(ctx, user);
+    });
   }
-
-  @Override
-  public AccountService provide() {
-    return (AccountService) context.getProperty(SERVICE_NAME);
-  }
-
-  @Override
-  public void dispose(AccountService t) {}
 }

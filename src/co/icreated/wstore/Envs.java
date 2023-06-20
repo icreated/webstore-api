@@ -12,10 +12,11 @@ package co.icreated.wstore;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
+import javax.ws.rs.NotFoundException;
+
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MClient;
 import org.compiere.util.CCache;
 import org.compiere.util.DB;
@@ -27,28 +28,19 @@ public enum Envs {
   INSTANCE;
 
   private static CCache<Integer, Properties> s_cacheCtx =
-      new CCache<Integer, Properties>("EnvCtx", 10, 0);
+      new CCache<Integer, Properties>("EnvCtx", 1, 0);
   public static final String CTX_DOCUMENT_DIR = "documentDir";
-
-  static {
-
-    List<WStore> stores = getListWebStore();
-    for (WStore store : stores) {
-      s_cacheCtx.put(store.getW_Store_ID(), getCtx(store));
-    }
-  }
 
 
   public static Properties getCtx(int W_Store_ID) {
 
-    if (s_cacheCtx == null || s_cacheCtx.size() == 0) {
-      List<WStore> stores = getListWebStore();
-      for (WStore store : stores) {
-        s_cacheCtx.put(store.getW_Store_ID(), getCtx(store));
-      }
+    if (s_cacheCtx.containsKey(W_Store_ID)) {
+      return s_cacheCtx.get(W_Store_ID);
     }
 
-    return s_cacheCtx.get(W_Store_ID);
+    Properties ctx = getCtx(getWebStore(W_Store_ID));
+    s_cacheCtx.put(W_Store_ID, ctx);
+    return ctx;
   }
 
 
@@ -114,19 +106,18 @@ public enum Envs {
 
 
 
-  private static List<WStore> getListWebStore() {
+  private static WStore getWebStore(int W_Store_ID) {
 
-
-    String sql = "SELECT * FROM W_Store WHERE isActive='Y'";
+    String sql = "SELECT * FROM W_Store WHERE W_Store_ID = ?";
 
     PreparedStatement pstmt = null;
-
-    List<WStore> list = new ArrayList<WStore>();
+    WStore store = null;
     try {
       pstmt = DB.prepareStatement(sql, null);
+      pstmt.setInt(1, W_Store_ID);
       ResultSet rs = pstmt.executeQuery();
-      while (rs.next()) {
-        WStore store =
+      if (rs.next()) {
+        store =
             new WStore(rs.getInt("W_Store_ID"), rs.getInt("AD_Client_ID"), rs.getInt("AD_Org_ID"),
                 rs.getInt("salesRep_ID"), rs.getInt("M_PriceList_ID"), rs.getInt("M_Warehouse_ID"),
                 rs.getString("name"), rs.getString("description"), rs.getString("help"),
@@ -134,15 +125,19 @@ public enum Envs {
                 rs.getString("webParam4"), rs.getString("webParam5"), rs.getString("webParam6"),
                 rs.getString("stylesheet"), rs.getInt("C_PaymentTerm_ID"), rs.getString("url"));
 
-        list.add(store);
       }
       DB.close(rs, pstmt);
       rs = null;
       pstmt = null;
     } catch (Exception e) {
+      throw new AdempiereException("Error finding WebStore with W_Store_ID=" + W_Store_ID);
     }
 
-    return list;
+    if (store == null) {
+      throw new NotFoundException("WebStore not found");
+    }
+
+    return store;
   }
 
 

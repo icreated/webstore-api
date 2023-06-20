@@ -16,30 +16,15 @@ import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 
-import org.glassfish.hk2.api.Factory;
-
 import co.icreated.wstore.Envs;
 
-public class ContextFactory implements Factory<Properties> {
-
-  final static String SERVICE_NAME = "ctx";
-  private final ContainerRequestContext context;
+public class ContextFactory extends AbstractServiceFactory<Properties> {
 
   @Inject
   public ContextFactory(@Context ContainerRequestContext context) {
-
-    this.context = context;
-    int W_Store_ID = Integer.parseInt((String) context.getProperty("W_Store_ID"));
-    Properties ctx = Envs.getCtx(W_Store_ID);
-    context.setProperty(SERVICE_NAME, ctx);
-
+    super(context, "ctx", () -> {
+      int W_Store_ID = Integer.parseInt((String) context.getProperty("W_Store_ID"));
+      return Envs.getCtx(W_Store_ID);
+    });
   }
-
-  @Override
-  public Properties provide() {
-    return (Properties) context.getProperty(SERVICE_NAME);
-  }
-
-  @Override
-  public void dispose(Properties t) {}
 }

@@ -16,29 +16,13 @@ import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 
-import org.glassfish.hk2.api.Factory;
-
 import co.icreated.wstore.service.CatalogService;
 
-public class CatalogServiceFactory implements Factory<CatalogService> {
-
-  final static String SERVICE_NAME = "catalogService";
-  private final ContainerRequestContext context;
-
+public class CatalogServiceFactory extends AbstractServiceFactory<CatalogService> {
 
   @Inject
   public CatalogServiceFactory(@Context ContainerRequestContext context, @Context Properties ctx) {
-
-    this.context = context;
-    context.setProperty(SERVICE_NAME, new CatalogService(ctx));
-
+    super(context, "catalogService", () -> new CatalogService(ctx));
   }
 
-  @Override
-  public CatalogService provide() {
-    return (CatalogService) context.getProperty(SERVICE_NAME);
-  }
-
-  @Override
-  public void dispose(CatalogService t) {}
 }

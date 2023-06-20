@@ -15,42 +15,19 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-
-import org.glassfish.hk2.api.Factory;
 
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.PaymentService;
 
-public class PaymentServiceFactory implements Factory<PaymentService> {
-
-  final static String SERVICE_NAME = "paymentService";
-  private final ContainerRequestContext context;
-
+public class PaymentServiceFactory extends AbstractServiceFactory<PaymentService> {
 
   @Inject
   public PaymentServiceFactory(@Context ContainerRequestContext context,
       @Context SecurityContext sc, @Context Properties ctx) {
-
-    this.context = context;
-
-    SessionUser sessionUser = (SessionUser) sc.getUserPrincipal();
-    if (sessionUser == null) {
-      context.abortWith(
-          Response.status(Response.Status.UNAUTHORIZED).entity("You are not authorized.").build());
-    }
-
-
-    context.setProperty(SERVICE_NAME, new PaymentService(ctx, sessionUser));
-
+    super(context, "paymentService", () -> {
+      SessionUser user = checkUserConnected(context, sc.getUserPrincipal());
+      return new PaymentService(ctx, user);
+    });
   }
-
-  @Override
-  public PaymentService provide() {
-    return (PaymentService) context.getProperty(SERVICE_NAME);
-  }
-
-  @Override
-  public void dispose(PaymentService t) {}
 }

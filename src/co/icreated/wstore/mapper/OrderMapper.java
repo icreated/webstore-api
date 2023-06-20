@@ -39,7 +39,7 @@ public interface OrderMapper {
 
   @Mapping(source = "m_InOut_ID", target = "id")
   @Mapping(target = "docStatusName",
-      expression = "java(MRefList.getListName(shipment.getCtx(), 131, shipment.getDocStatus()))")
+      expression = "java(org.compiere.model.MRefList.getListName(shipment.getCtx(), 131, shipment.getDocStatus()))")
   public ShipmentDto toDto(MInOut shipment);
 
 

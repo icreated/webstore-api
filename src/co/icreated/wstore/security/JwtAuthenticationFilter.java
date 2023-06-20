@@ -12,6 +12,7 @@ package co.icreated.wstore.security;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Properties;
 
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
@@ -38,6 +39,7 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
 
   @Context
   private ResourceInfo resourceInfo;
+
 
   @Context
   AuthService authService;

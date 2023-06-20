@@ -16,30 +16,13 @@ import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 
-import org.glassfish.hk2.api.Factory;
-
-import co.icreated.wstore.service.CatalogService;
 import co.icreated.wstore.service.CommonService;
 
-public class CommonServiceFactory implements Factory<CommonService> {
-
-  final static String SERVICE_NAME = "commonService";
-  private final ContainerRequestContext context;
-
+public class CommonServiceFactory extends AbstractServiceFactory<CommonService> {
 
   @Inject
   public CommonServiceFactory(@Context ContainerRequestContext context, @Context Properties ctx) {
-
-    this.context = context;
-    context.setProperty(SERVICE_NAME, new CommonService(ctx));
-
+    super(context, "commonService", () -> new CommonService(ctx));
   }
 
-  @Override
-  public CommonService provide() {
-    return (CommonService) context.getProperty(SERVICE_NAME);
-  }
-
-  @Override
-  public void dispose(CommonService t) {}
 }
