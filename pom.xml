@@ -36,7 +36,7 @@
                     </path>
                 </annotationProcessorPaths>
             </configuration>
-		</plugin>    
+		</plugin>
 		<plugin>
 		    <groupId>org.openapitools</groupId>
 		    <artifactId>openapi-generator-maven-plugin</artifactId>

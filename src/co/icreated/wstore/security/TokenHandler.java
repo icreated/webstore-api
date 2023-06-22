@@ -40,7 +40,7 @@ public final class TokenHandler {
     try {
       username = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody().getSubject();
     } catch (SignatureException e) {
-      throw new UnauthorizedException("Error signature");
+      throw new UnauthorizedException("Error Decoding Token");
     }
 
     return authService.loadUserByUsername(username, false, false);

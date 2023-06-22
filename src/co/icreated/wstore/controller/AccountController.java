@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -92,17 +93,20 @@ public class AccountController implements AccountApi {
 
 
   @Override
-  public StatusDto createAddress(@Valid @NotNull AddressDto addressDto) {
-    addressDto = accountService.saveAddress(addressDto);
-    return new StatusDto().status(addressDto == null ? StatusEnum.OK : StatusEnum.NOT_FOUND);
-
+  public AddressDto createAddress(@Valid @NotNull AddressDto addressDto) {
+    return accountService.createAddress(addressDto);
   }
 
 
   @Override
-  public StatusDto deleteAddress(Integer id) {
-    boolean ok = accountService.deleteAddress(id);
-    return new StatusDto().status(ok ? StatusEnum.OK : StatusEnum.NOT_FOUND);
+  public void updateAddress(@Valid @NotNull AddressDto addressDto) {
+    accountService.updateAddress(addressDto);
+  }
+
+
+  @Override
+  public void deleteAddress(Integer id) {
+    accountService.deleteAddress(id);
   }
 
 
@@ -131,6 +135,7 @@ public class AccountController implements AccountApi {
 
 
   @Override
+  @PermitAll
   public TokenDto signup(@Valid @NotNull NewAccountFormDto newAccountFormDto) {
 
     String token = null;
@@ -145,10 +150,10 @@ public class AccountController implements AccountApi {
       if (AD_User_ID > 0) {
         user = MUser.get(ctx, AD_User_ID);
       } else {
-        user = accountService.createNewAccount(newAccountFormDto);
+        user = accountService.createUserAccount(newAccountFormDto);
       }
     } else {
-      user = accountService.createNewAccount(newAccountFormDto);
+      user = accountService.createUserAccount(newAccountFormDto);
     }
 
 

@@ -47,7 +47,6 @@ public enum Envs {
 
   private static Properties getCtx(WStore wstore) {
 
-
     Properties newCtx = new Properties();
 
     Env.setContext(newCtx, "#W_Store_ID", wstore.getW_Store_ID());
@@ -99,8 +98,6 @@ public enum Envs {
     if (newCtx.getProperty("#AD_Language") == null) {
       Env.setContext(newCtx, "#AD_Language", "en_US");
     }
-
-
     return newCtx;
   }
 

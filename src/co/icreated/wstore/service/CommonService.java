@@ -32,7 +32,7 @@ public class CommonService extends AbstractService {
 
 
   public CommonService(Properties ctx) {
-    this.ctx = ctx;
+    super(ctx);
   }
 
 

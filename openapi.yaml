@@ -27,7 +27,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Document'
-  /account/signup:
+  /account:
     post:
       tags:
         - Account services
@@ -50,27 +50,7 @@ paths:
                 $ref: '#/components/schemas/Token'            
         '400':
           description: Missing Account Info or Email
-  /account/address/create_update:
-    post:
-      tags:
-        - Account services
-      summary: Update address info
-      description: Updating address info
-      operationId: createAddress
-      requestBody:
-        description: Address Form
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Address'
-        required: true
-      responses:
-        '200':
-          description: Address updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
+
   /account/addresses:
     get:
       tags:
@@ -87,6 +67,59 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Address'
+    post:
+      tags:
+        - Account services
+      summary: Create address info
+      description: Create address info
+      operationId: createAddress
+      requestBody:
+        description: Address Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+        required: true
+      responses:
+        '200':
+          description: Address created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'                  
+    put:
+      tags:
+        - Account services
+      summary: Update address info
+      description: Updating address info
+      operationId: updateAddress
+      requestBody:
+        description: Address Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+        required: true
+      responses:
+        '200':
+          description: Address updated
+    delete:
+      tags:
+        - Account services
+      summary: Deactivating address
+      description: Deactivating address
+      operationId: deleteAddress
+      parameters:
+        - name: id
+          in: path
+          description: C_BPartner_Location_ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Address deactivated                              
   /account/password/change:
     post:
       tags:
@@ -112,49 +145,7 @@ paths:
           description: Old password not correct
         '500':
           description: Password not changed
-  /account/info/update:
-    post:
-      tags:
-        - Account services
-      summary: Update Account Info
-      description: Update account info like name, email
-      operationId: updateAccount
-      requestBody:
-        description: Account Form
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/AccountInfo'
-        required: true
-      responses:
-        '200':
-          description: Account updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Token'          
-  /account/address/delete/{id}:
-    delete:
-      tags:
-        - Account services
-      summary: Deactivating address
-      description: Deactivating address
-      operationId: deleteAddress
-      parameters:
-        - name: id
-          in: path
-          description: C_BPartner_Location_ID
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Address deactivated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
+    
   /account/pdf/{type}/{id}:
     get:
       tags:
@@ -219,6 +210,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountInfo'
+    put:
+      tags:
+        - Account services
+      summary: Update Account Info
+      description: Update account info like name, email
+      operationId: updateAccount
+      requestBody:
+        description: Account Form
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AccountInfo'
+        required: true
+      responses:
+        '200':
+          description: Account updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'                
   /auth/login:
     post:
       tags:

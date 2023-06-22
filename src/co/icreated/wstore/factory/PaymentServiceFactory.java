@@ -24,10 +24,9 @@ public class PaymentServiceFactory extends AbstractServiceFactory<PaymentService
 
   @Inject
   public PaymentServiceFactory(@Context ContainerRequestContext context,
-      @Context SecurityContext sc, @Context Properties ctx) {
+      @Context SecurityContext securityContext, @Context Properties ctx) {
     super(context, "paymentService", () -> {
-      SessionUser user = checkUserConnected(context, sc.getUserPrincipal());
-      return new PaymentService(ctx, user);
+      return new PaymentService(ctx, securityContext);
     });
   }
 }

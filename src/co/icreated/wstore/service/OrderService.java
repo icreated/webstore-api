@@ -22,6 +22,9 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.inject.Provider;
+import javax.ws.rs.core.SecurityContext;
+
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrder;
@@ -46,20 +49,16 @@ import co.icreated.wstore.api.model.ShipmentDto;
 import co.icreated.wstore.api.model.ShipperDto;
 import co.icreated.wstore.api.model.TaxDto;
 import co.icreated.wstore.mapper.OrderMapper;
-import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.utils.PQuery;
 
 
 public class OrderService extends AbstractService {
 
-
-
   CLogger log = CLogger.getCLogger(OrderService.class);
 
 
-
-  public OrderService(Properties ctx, SessionUser user) {
-    super(ctx, user);
+  public OrderService(Properties ctx, SecurityContext securityContext) {
+    super(ctx, securityContext);
   }
 
 
@@ -67,13 +66,14 @@ public class OrderService extends AbstractService {
   public OrderDto createOrder(OrderDto orderDto) {
 
 
-    int C_PaymentTerm_ID = sessionUser.getC_PaymentTerm_ID() > 0 ? sessionUser.getC_PaymentTerm_ID()
-        : Env.getContextAsInt(ctx, "#C_PaymentTerm_ID");
+    int C_PaymentTerm_ID =
+        getSessionUser().getC_PaymentTerm_ID() > 0 ? getSessionUser().getC_PaymentTerm_ID()
+            : Env.getContextAsInt(ctx, "#C_PaymentTerm_ID");
 
     int M_PriceList_ID = Env.getContextAsInt(ctx, "#M_PriceList_ID");
 
-    int C_BPartner_ID = sessionUser.getC_BPartner_ID();
-    int AD_User_ID = sessionUser.getAD_User_ID();
+    int C_BPartner_ID = getSessionUser().getC_BPartner_ID();
+    int AD_User_ID = getSessionUser().getAD_User_ID();
     int C_BPartner_Location_ID = orderDto.getShipAddress().getId();
     int Bill_BPartner_Location_ID = orderDto.getBillAddress().getId();
 
@@ -190,7 +190,7 @@ public class OrderService extends AbstractService {
 
     try {
       pstmt = DB.prepareStatement(sql, null);
-      pstmt.setInt(1, sessionUser.getC_BPartner_ID());
+      pstmt.setInt(1, getSessionUser().getC_BPartner_ID());
 
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -292,7 +292,7 @@ public class OrderService extends AbstractService {
     try {
       pstmt = DB.prepareStatement(sql, null);
       pstmt.setInt(1, C_Order_ID);
-      pstmt.setInt(2, sessionUser.getC_BPartner_ID());
+      pstmt.setInt(2, getSessionUser().getC_BPartner_ID());
       rs = pstmt.executeQuery();
       if (rs.next()) {
         docStatusName = MRefList.getListName(ctx, 131, rs.getString(5));
@@ -444,7 +444,7 @@ public class OrderService extends AbstractService {
 
   public boolean orderBelongsToUser(MOrder order) {
 
-    return (sessionUser.getC_BPartner_ID() == order.getC_BPartner_ID());
+    return (getSessionUser().getC_BPartner_ID() == order.getC_BPartner_ID());
   }
 
 

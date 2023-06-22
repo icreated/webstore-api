@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import javax.inject.Provider;
+import javax.ws.rs.core.SecurityContext;
+
 import org.compiere.model.MBPBankAccount;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBankAccount;
@@ -34,7 +37,6 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import co.icreated.wstore.model.PaymentInfo;
-import co.icreated.wstore.model.SessionUser;
 
 
 public class PaymentService extends AbstractService {
@@ -44,8 +46,8 @@ public class PaymentService extends AbstractService {
   CLogger log = CLogger.getCLogger(PaymentService.class);
 
 
-  public PaymentService(Properties ctx, SessionUser user) {
-    super(ctx, user);
+  public PaymentService(Properties ctx, SecurityContext securityContext) {
+    super(ctx, securityContext);
   }
 
 
@@ -54,7 +56,7 @@ public class PaymentService extends AbstractService {
     List<MPayment> list = new ArrayList<MPayment>();
 
     if (C_BPartner_ID == 0)
-      C_BPartner_ID = sessionUser.getC_BPartner_ID();
+      C_BPartner_ID = getSessionUser().getC_BPartner_ID();
 
     String sql = "SELECT * FROM C_Payment WHERE C_BPartner_ID=? " + "ORDER BY DocumentNo DESC";
     PreparedStatement pstmt = null;
@@ -127,7 +129,7 @@ public class PaymentService extends AbstractService {
 
     try {
 
-      payment.setA_EMail(sessionUser.getEmail());
+      payment.setA_EMail(getSessionUser().getEmail());
       if (paymentInfo.getTenderType().equals(MPayment.TENDERTYPE_CreditCard)) {
         payment.setCreditCardType(paymentInfo.getCreditCardType());
         payment.setCreditCardNumber(paymentInfo.getCreditCardNumber());
@@ -266,16 +268,16 @@ public class PaymentService extends AbstractService {
     // Find Bank Account for exact User
     MBPBankAccount[] bas = bp.getBankAccounts(true);
     for (int i = 0; i < bas.length; i++) {
-      if (bas[i].getAD_User_ID() == sessionUser.getAD_User_ID() && bas[i].isActive())
+      if (bas[i].getAD_User_ID() == getSessionUser().getAD_User_ID() && bas[i].isActive())
         retValue = bas[i];
     }
 
     // create new
     if (retValue == null) {
-      MUser user = MUser.get(ctx, sessionUser.getAD_User_ID());
+      MUser user = MUser.get(ctx, getSessionUser().getAD_User_ID());
       MLocation location = MLocation.get(ctx, order.getBill_Location_ID(), null);
       retValue = new MBPBankAccount(ctx, bp, user, location);
-      retValue.setAD_User_ID(sessionUser.getAD_User_ID());
+      retValue.setAD_User_ID(getSessionUser().getAD_User_ID());
       retValue.save();
     }
 

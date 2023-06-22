@@ -36,18 +36,6 @@ public class AbstractServiceFactory<T> implements Factory<T> {
     this.serviceName = serviceName;
   }
 
-
-  static SessionUser checkUserConnected(ContainerRequestContext context, Principal principal) {
-    SessionUser sessionUser = (SessionUser) principal;
-    if (sessionUser == null) {
-      context.abortWith(
-          Response.status(Response.Status.UNAUTHORIZED).entity("You are not authorized.").build());
-    }
-    return sessionUser;
-  }
-
-
-
   @Override
   public T provide() {
     return (T) context.getProperty(serviceName);

@@ -15,23 +15,17 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-import org.glassfish.hk2.api.Factory;
-
-import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.OrderService;
 
 public class OrderServiceFactory extends AbstractServiceFactory<OrderService> {
 
   @Inject
-  public OrderServiceFactory(@Context ContainerRequestContext context, @Context SecurityContext sc,
-      @Context Properties ctx) {
-
+  public OrderServiceFactory(@Context ContainerRequestContext context,
+      @Context SecurityContext securityContext, @Context Properties ctx) {
     super(context, "orderService", () -> {
-      SessionUser user = checkUserConnected(context, sc.getUserPrincipal());
-      return new OrderService(ctx, user);
+      return new OrderService(ctx, securityContext);
     });
   }
 

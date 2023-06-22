@@ -24,10 +24,9 @@ public class AccountServiceFactory extends AbstractServiceFactory<AccountService
 
   @Inject
   public AccountServiceFactory(@Context ContainerRequestContext context,
-      @Context SecurityContext sc, @Context Properties ctx) {
+      @Context SecurityContext securityContext, @Context Properties ctx) {
     super(context, "accountService", () -> {
-      SessionUser user = checkUserConnected(context, sc.getUserPrincipal());
-      return new AccountService(ctx, user);
+      return new AccountService(ctx, securityContext);
     });
   }
 }

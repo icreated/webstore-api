@@ -18,10 +18,12 @@ import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -41,8 +43,10 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
   private ResourceInfo resourceInfo;
 
 
-  @Context
-  AuthService authService;
+  // @Context
+  // AuthService authService;
+  @Inject
+  private javax.inject.Provider<AuthService> serviceProvider;
 
   private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
       .entity("You cannot access this resource").build();
@@ -99,7 +103,7 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
 
   private SessionUser getUserFromToken(String token) {
 
-    TokenHandler tokenHandler = new TokenHandler(authService);
+    TokenHandler tokenHandler = new TokenHandler(serviceProvider.get());
     SessionUser user = tokenHandler.parseUserFromToken(token);
     return user;
   }

@@ -7,7 +7,6 @@ import java.io.File;
 import co.icreated.wstore.api.model.NewAccountFormDto;
 import co.icreated.wstore.api.model.OrderDto;
 import co.icreated.wstore.api.model.PasswordDto;
-import co.icreated.wstore.api.model.StatusDto;
 import co.icreated.wstore.api.model.TokenDto;
 
 import javax.ws.rs.*;
@@ -31,15 +30,14 @@ public interface AccountApi {
     TokenDto changePassword(@Valid @NotNull PasswordDto passwordDto);
 
     @POST
-    @Path("/address/create_update")
+    @Path("/addresses")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    StatusDto createAddress(@Valid @NotNull AddressDto addressDto);
+    AddressDto createAddress(@Valid @NotNull AddressDto addressDto);
 
     @DELETE
-    @Path("/address/delete/{id}")
-    @Produces({ "application/json" })
-    StatusDto deleteAddress(@PathParam("id") Integer id);
+    @Path("/addresses")
+    void deleteAddress(@PathParam("id") Integer id);
 
     @GET
     @Path("/addresses")
@@ -67,13 +65,17 @@ public interface AccountApi {
     List<DocumentDto> getOrders();
 
     @POST
-    @Path("/signup")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     TokenDto signup(@Valid @NotNull NewAccountFormDto newAccountFormDto);
 
-    @POST
-    @Path("/info/update")
+    @PUT
+    @Path("/info")
     @Produces({ "application/json" })
     TokenDto updateAccount(@Valid @NotNull AccountInfoDto accountInfoDto);
+
+    @PUT
+    @Path("/addresses")
+    @Consumes({ "application/json" })
+    void updateAddress(@Valid @NotNull AddressDto addressDto);
 }

@@ -12,7 +12,6 @@ package co.icreated.wstore.controller;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 
 import co.icreated.wstore.api.model.TokenDto;
@@ -22,7 +21,6 @@ import co.icreated.wstore.exception.UnauthorizedException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.AuthService;
 
-@Path("/auth")
 public class AuthController implements AuthApi {
 
   @Context
