@@ -145,7 +145,7 @@ public class AccountService extends AbstractService {
   }
 
   public boolean deleteAddress(int C_BPartner_Location_ID) {
-	  
+
     transaction(trxName -> {
       MBPartnerLocation bpl = new MBPartnerLocation(ctx, C_BPartner_Location_ID, trxName);
       bpl.setIsActive(false);
@@ -158,7 +158,7 @@ public class AccountService extends AbstractService {
 
 
   public List<AddressDto> getAddresses() {
-	  
+
     String sql =
         "SELECT bpl.C_BPartner_Location_ID, bpl.Name, u.Name, l.Address1, l.Address2, l.Postal, "
             + "l.City, bpl.phone, l.C_Country_ID, c.Name " + "FROM C_BPartner bp "
@@ -203,7 +203,7 @@ public class AccountService extends AbstractService {
 
 
   public boolean changePassword(String newPassword) {
-	  
+
     transaction(trxName -> {
       MUser user = new MUser(ctx, getSessionUser().getAD_User_ID(), trxName);
       user.setPassword(newPassword);

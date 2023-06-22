@@ -11,7 +11,7 @@ servers:
 security:
   - bearerAuth: []
 paths:
-  /account/orders:
+  /account/orders:  
     get:
       tags:
         - Account services
@@ -26,7 +26,29 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Document'
+                  $ref: '#/components/schemas/Document'        
+  /account/orders/{id}:                   
+    get:
+      tags:
+        - Account services
+      summary: Order information
+      description: Get order by ID
+      operationId: getOrder
+      parameters:
+        - name: id
+          in: path
+          description: C_Order_ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
   /account:
     post:
       tags:
@@ -51,7 +73,7 @@ paths:
         '400':
           description: Missing Account Info or Email
 
-  /account/addresses:
+  /account/addresses:   
     get:
       tags:
         - Account services
@@ -103,6 +125,7 @@ paths:
       responses:
         '200':
           description: Address updated
+  /account/addresses/{id}:            
     delete:
       tags:
         - Account services
@@ -120,8 +143,8 @@ paths:
       responses:
         '200':
           description: Address deactivated                              
-  /account/password/change:
-    post:
+  /account/password:
+    put:
       tags:
         - Account services
       summary: Password change
@@ -173,29 +196,9 @@ paths:
           content:
             application/pdf:
               schema:
-                type: file
-  /account/order/{id}:
-    get:
-      tags:
-        - Account services
-      summary: Order information
-      description: Get order by ID
-      operationId: getOrder
-      parameters:
-        - name: id
-          in: path
-          description: C_Order_ID
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        default:
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
+                type: string
+                format: binary
+
   /account/info:
     get:
       tags:

@@ -23,8 +23,8 @@ import javax.validation.Valid;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
 public interface AccountApi {
 
-    @POST
-    @Path("/password/change")
+    @PUT
+    @Path("/password")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     TokenDto changePassword(@Valid @NotNull PasswordDto passwordDto);
@@ -36,7 +36,7 @@ public interface AccountApi {
     AddressDto createAddress(@Valid @NotNull AddressDto addressDto);
 
     @DELETE
-    @Path("/addresses")
+    @Path("/addresses/{id}")
     void deleteAddress(@PathParam("id") Integer id);
 
     @GET
@@ -50,7 +50,7 @@ public interface AccountApi {
     AccountInfoDto getInfo();
 
     @GET
-    @Path("/order/{id}")
+    @Path("/orders/{id}")
     @Produces({ "application/json" })
     OrderDto getOrder(@PathParam("id") Integer id);
 
