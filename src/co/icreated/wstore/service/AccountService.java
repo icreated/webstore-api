@@ -12,10 +12,10 @@ import javax.ws.rs.core.SecurityContext;
 
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
-import org.compiere.model.MLocation;
 import org.compiere.model.MUser;
 import org.compiere.model.X_AD_User;
 import org.compiere.model.X_C_BPartner_Location;
+import org.compiere.model.X_C_Location;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
@@ -83,19 +83,14 @@ public class AccountService extends AbstractService {
     log.log(Level.FINE, "new address ", addressDto);
 
     X_C_BPartner_Location created = Utils.trx(trxName -> {
-      MLocation location = new MLocation(ctx, 0, trxName);
-      location.setAddress1(addressDto.getLocation().getAddress1());
-      location.setAddress2(addressDto.getLocation().getAddress2());
-      location.setCity(addressDto.getLocation().getCity());
-      location.setPostal(addressDto.getLocation().getPostal());
-      location.setC_Country_ID(addressDto.getLocation().getCountry().getId());
+    	X_C_Location location =
+          AccountMapper.INSTANCE.to(addressDto.getLocation(), new X_C_Location(ctx, 0, trxName));
       location.save();
 
-      X_C_BPartner_Location bpl = new MBPartnerLocation(ctx, 0, trxName);
-      bpl.setName(addressDto.getName());
+      X_C_BPartner_Location bpl =
+          AccountMapper.INSTANCE.to(addressDto, new MBPartnerLocation(ctx, 0, trxName));
       bpl.setC_BPartner_ID(getSessionUser().getC_BPartner_ID());
       bpl.setC_Location_ID(location.getC_Location_ID());
-      bpl.setPhone(addressDto.getPhone());
       bpl.save();
       return bpl;
     });
@@ -110,17 +105,12 @@ public class AccountService extends AbstractService {
     log.log(Level.FINE, "update address ", addressDto);
 
     Utils.trx(trxName -> {
-      X_C_BPartner_Location bpl = new X_C_BPartner_Location(ctx, addressDto.getId(), trxName);
-      bpl.setName(addressDto.getName());
-      bpl.setPhone(addressDto.getPhone());
+      X_C_BPartner_Location bpl = AccountMapper.INSTANCE.to(addressDto,
+          new X_C_BPartner_Location(ctx, addressDto.getId(), trxName));
       bpl.save();
 
-      MLocation location = MLocation.get(ctx, bpl.getC_Location_ID(), trxName);
-      location.setAddress1(addressDto.getLocation().getAddress1());
-      location.setAddress2(addressDto.getLocation().getAddress2());
-      location.setCity(addressDto.getLocation().getCity());
-      location.setPostal(addressDto.getLocation().getPostal());
-      location.setC_Country_ID(addressDto.getLocation().getCountry().getId());
+      X_C_Location location = AccountMapper.INSTANCE.to(addressDto.getLocation(),
+    		  new X_C_Location(ctx, bpl.getC_Location_ID(), trxName));
       location.save();
       return bpl;
     });
@@ -144,8 +134,8 @@ public class AccountService extends AbstractService {
   public List<AddressDto> getAddresses() {
     return Stream
         .of(MBPartnerLocation.getForBPartner(ctx, getSessionUser().getC_BPartner_ID(), null))
-        .filter(bpl -> bpl.isActive()).map(AccountMapper.INSTANCE::toDto)
-        .collect(Collectors.toList());
+        .filter(bpl -> bpl.isActive()) //
+        .map(AccountMapper.INSTANCE::toDto).collect(Collectors.toList());
   }
 
 

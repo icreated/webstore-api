@@ -2,8 +2,6 @@ package co.icreated.wstore.utils;
 
 import java.util.function.Function;
 
-import javax.ws.rs.InternalServerErrorException;
-
 import org.compiere.util.Trx;
 
 public class Utils {
