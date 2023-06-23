@@ -42,10 +42,10 @@ public class AccountService extends AbstractService {
 
 
   public AccountInfoDto updateUserAccount(AccountInfoDto accountInfoDto) {
-	  
-   log.log(Level.FINE, "update user account ", accountInfoDto);	  
 
-   Utils.trx(trxName -> {
+    log.log(Level.FINE, "update user account ", accountInfoDto);
+
+    Utils.trx(trxName -> {
       X_AD_User user = new X_AD_User(ctx, getSessionUser().getAD_User_ID(), trxName);
       user.setName(accountInfoDto.getName());
       user.setEMail(accountInfoDto.getEmail());
@@ -59,7 +59,7 @@ public class AccountService extends AbstractService {
   public MUser createUserAccount(NewAccountFormDto newAccountFormDto) {
 
     log.log(Level.FINE, "new account ", newAccountFormDto);
-    
+
     int SalesRep_ID = Env.getContextAsInt(ctx, "#SalesRep_ID");
 
     return Utils.trx(trxName -> {
@@ -108,7 +108,7 @@ public class AccountService extends AbstractService {
   public void updateAddress(AddressDto addressDto) {
 
     log.log(Level.FINE, "update address ", addressDto);
-    
+
     Utils.trx(trxName -> {
       X_C_BPartner_Location bpl = new X_C_BPartner_Location(ctx, addressDto.getId(), trxName);
       bpl.setName(addressDto.getName());
@@ -127,14 +127,14 @@ public class AccountService extends AbstractService {
 
   }
 
-  
+
   public boolean deleteAddress(int C_BPartner_Location_ID) {
 
     Utils.trx(trxName -> {
       MBPartnerLocation bpl = new MBPartnerLocation(ctx, C_BPartner_Location_ID, trxName);
       bpl.setIsActive(false);
       bpl.save();
-  	  log.log(Level.FINE, "deactivating address " + bpl.getName());
+      log.log(Level.FINE, "deactivating address " + bpl.getName());
       return bpl;
     });
     return true;
@@ -142,10 +142,10 @@ public class AccountService extends AbstractService {
 
 
   public List<AddressDto> getAddresses() {
-	  
-	  return Stream.of(MBPartnerLocation.getForBPartner(ctx, getSessionUser().getC_BPartner_ID(), null))
-	  .map(AccountMapper.INSTANCE::toDto)
-	  .collect(Collectors.toList());
+    return Stream
+        .of(MBPartnerLocation.getForBPartner(ctx, getSessionUser().getC_BPartner_ID(), null))
+        .filter(bpl -> bpl.isActive()).map(AccountMapper.INSTANCE::toDto)
+        .collect(Collectors.toList());
   }
 
 

@@ -8,7 +8,7 @@ public abstract class AbstractService {
 
   Properties ctx = null;
   private SecurityContext securityContext;
-  
+
   protected AbstractService(Properties ctx) {
     this.ctx = ctx;
   }
@@ -18,9 +18,9 @@ public abstract class AbstractService {
     this.securityContext = securityContext;
   }
 
-  
+
   protected SessionUser getSessionUser() {
-	  return (SessionUser)securityContext.getUserPrincipal();
+    return (SessionUser) securityContext.getUserPrincipal();
   }
 
 }

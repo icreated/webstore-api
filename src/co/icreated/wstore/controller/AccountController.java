@@ -137,13 +137,13 @@ public class AccountController implements AccountApi {
   public TokenDto signup(@Valid @NotNull NewAccountFormDto newAccountFormDto) {
 
     int AD_User_ID =
-            DB.getSQLValue(null, "SELECT max(AD_User_ID) FROM AD_User WHERE UPPER(email) LIKE ?",
-                newAccountFormDto.getEmail().toUpperCase());
+        DB.getSQLValue(null, "SELECT max(AD_User_ID) FROM AD_User WHERE UPPER(email) LIKE ?",
+            newAccountFormDto.getEmail().toUpperCase());
     if (AD_User_ID > 0) {
-        throw new WebStoreBadRequestException("Account already exists");
-      } 
-      
-     MUser user = accountService.createUserAccount(newAccountFormDto);
+      throw new WebStoreBadRequestException("Account already exists");
+    }
+
+    MUser user = accountService.createUserAccount(newAccountFormDto);
     if (user.getAD_User_ID() > 0) {
       final SessionUser sessionUser = authService.loadUserByUsername(user.getEMail(), true, true);
       TokenHandler tokenHandler = new TokenHandler(authService);

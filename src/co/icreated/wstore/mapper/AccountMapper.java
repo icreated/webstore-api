@@ -25,13 +25,13 @@ public interface AccountMapper {
   public AccountInfoDto toDto(MUser user);
 
   @Mapping(source = "c_BPartner_Location_ID", target = "id")
-  @Mapping(expression = "java(toDto(bpl.getLocation(true)))", target="location")
+  @Mapping(expression = "java(toDto(bpl.getLocation(true)))", target = "location")
   public AddressDto toDto(MBPartnerLocation bpl);
-  
-  @Mapping(source="c_Location_ID", target = "id")
+
+  @Mapping(source = "c_Location_ID", target = "id")
   public LocationDto toDto(MLocation location);
-  
-  @Mapping(source="c_Country_ID", target = "id")
+
+  @Mapping(source = "c_Country_ID", target = "id")
   public CountryDto toDto(MCountry country);
-  
+
 }
