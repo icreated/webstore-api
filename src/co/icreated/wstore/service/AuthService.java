@@ -10,25 +10,17 @@
  ******************************************************************************/
 package co.icreated.wstore.service;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import org.compiere.model.MBPartner;
-import org.compiere.model.MProduct;
-import org.compiere.model.MUser;
 import org.compiere.util.CCache;
 import org.compiere.util.CLogger;
-import org.compiere.util.DB;
 
 import co.icreated.wstore.exception.WebStoreNotFoundException;
 import co.icreated.wstore.exception.WebStoreUnauthorizedException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.TokenHandler;
-import co.icreated.wstore.utils.PQuery;
 import co.icreated.wstore.utils.Utils;
 
 
@@ -98,7 +90,6 @@ public class AuthService extends AbstractService {
   }
 
 
-
   public SessionUser getUser(String login, boolean isEmail) {
 
     log.info(login);
@@ -111,18 +102,25 @@ public class AuthService extends AbstractService {
         + "WHERE u.isActive='Y' AND %s LIKE trim(?) ";
 
     sql = isEmail ? String.format(sql, "u.EMail") : String.format(sql, "u.Value");
-    
-    Map<Integer, Object> params = Map.of(1, login.trim());
-    return  Utils.nativeFirstQuery(sql, params, rs -> {
-			boolean enabled = rs.getString(12).equals("Y") & rs.getString(14).equals("Y");
-	        boolean accountNonLocked = !rs.getString(7).equals(MBPartner.SOCREDITSTATUS_CreditStop);
 
-	        return new SessionUser(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-	            rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(9), rs.getInt(9),
-	            rs.getInt(10), enabled, accountNonLocked);
-		});
-  } 
+    return Utils.nativeFirstQuery(sql, Map.of(1, login.trim()), rs -> {
+      boolean enabled = rs.getString(12).equals("Y") & rs.getString(14).equals("Y");
+      boolean accountNonLocked = !rs.getString(7).equals(MBPartner.SOCREDITSTATUS_CreditStop);
 
-
+      return new SessionUser.Builder().AD_User_ID(rs.getInt(1)) //
+          .value(rs.getString(2)) //
+          .name(rs.getString(3)) //
+          .email(rs.getString(4)) //
+          .password(rs.getString(5)) //
+          .salt(rs.getString(6)) //
+          .C_BPartner_ID(rs.getInt(7)) //
+          .C_BP_Group_ID(rs.getInt(8)) //
+          .M_PriceList_ID(rs.getInt(9)) //
+          .C_PaymentTerm_ID(rs.getInt(10)) //
+          .enabled(enabled) //
+          .accountNonLocked(accountNonLocked) //
+          .build();
+    });
+  }
 
 }

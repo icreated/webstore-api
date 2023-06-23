@@ -83,7 +83,7 @@ public class AccountService extends AbstractService {
     log.log(Level.FINE, "new address ", addressDto);
 
     X_C_BPartner_Location created = Utils.trx(trxName -> {
-    	X_C_Location location =
+      X_C_Location location =
           AccountMapper.INSTANCE.to(addressDto.getLocation(), new X_C_Location(ctx, 0, trxName));
       location.save();
 
@@ -110,7 +110,7 @@ public class AccountService extends AbstractService {
       bpl.save();
 
       X_C_Location location = AccountMapper.INSTANCE.to(addressDto.getLocation(),
-    		  new X_C_Location(ctx, bpl.getC_Location_ID(), trxName));
+          new X_C_Location(ctx, bpl.getC_Location_ID(), trxName));
       location.save();
       return bpl;
     });
