@@ -14,25 +14,16 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public class UnauthorizedException extends WebApplicationException {
+public class WebStoreBadRequestException extends WebApplicationException {
 
+  private static final long serialVersionUID = 3025267653935141609L;
 
-  private static final long serialVersionUID = 3879914897309582139L;
-
-  /**
-   * Create a HTTP 404 (Not Found) exception.
-   */
-  public UnauthorizedException() {
-    super(Response.status(Response.Status.UNAUTHORIZED).build());
+  public WebStoreBadRequestException() {
+    super(Response.status(Response.Status.BAD_REQUEST).build());
   }
 
-  /**
-   * Create a HTTP 404 (Not Found) exception.
-   *
-   * @param message the String that is the entity of the 404 response.
-   */
-  public UnauthorizedException(String message) {
-    super(Response.status(Response.Status.UNAUTHORIZED).entity(message).type(MediaType.TEXT_PLAIN)
+  public WebStoreBadRequestException(String message) {
+    super(Response.status(Response.Status.BAD_REQUEST).entity(message).type(MediaType.TEXT_PLAIN)
         .build());
   }
 }

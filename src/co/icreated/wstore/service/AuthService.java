@@ -20,8 +20,8 @@ import org.compiere.util.CCache;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 
-import co.icreated.wstore.exception.CustomNotFoundException;
-import co.icreated.wstore.exception.UnauthorizedException;
+import co.icreated.wstore.exception.WebStoreNotFoundException;
+import co.icreated.wstore.exception.WebStoreUnauthorizedException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.TokenHandler;
 
@@ -60,7 +60,7 @@ public class AuthService extends AbstractService {
     }
 
     if (retValue == null) {
-      throw new CustomNotFoundException("user not found");
+      throw new WebStoreNotFoundException("user not found");
     }
 
     return retValue;
@@ -80,13 +80,13 @@ public class AuthService extends AbstractService {
 
     SessionUser sessionUser = (SessionUser) loadUserByUsername(username, true, false);
     if (sessionUser == null) {
-      throw new UnauthorizedException("User not found");
+      throw new WebStoreUnauthorizedException("User not found");
     }
 
 
     boolean isValid = sessionUser.getPassword().equals(password);
     if (!isValid) {
-      throw new UnauthorizedException("Wrong password");
+      throw new WebStoreUnauthorizedException("Wrong password");
     }
 
     return sessionUser;

@@ -486,10 +486,18 @@ components:
         id:
           type: integer
           format: int32
-        label:
-          type: string
         name:
           type: string
+        phone:
+          type: string       
+        location:
+          $ref: '#/components/schemas/Location'   
+    Location:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
         address1:
           type: string
         address2:
@@ -498,13 +506,16 @@ components:
           type: string
         city:
           type: string
-        phone:
-          type: string
-        countryId:
+        country:
+          $ref: '#/components/schemas/Country'          
+    Country:
+      type: object
+      properties:
+        id:
           type: integer
           format: int32
-        countryName:
-          type: string
+        name:
+          type: string                   
     Document:
       type: object
       properties:

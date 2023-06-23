@@ -14,7 +14,7 @@ import java.security.Key;
 
 import com.google.common.base.Preconditions;
 
-import co.icreated.wstore.exception.UnauthorizedException;
+import co.icreated.wstore.exception.WebStoreUnauthorizedException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.AuthService;
 import io.jsonwebtoken.Jwts;
@@ -40,7 +40,7 @@ public final class TokenHandler {
     try {
       username = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody().getSubject();
     } catch (SignatureException e) {
-      throw new UnauthorizedException("Error Decoding Token");
+      throw new WebStoreUnauthorizedException("Error Decoding Token");
     }
 
     return authService.loadUserByUsername(username, false, false);

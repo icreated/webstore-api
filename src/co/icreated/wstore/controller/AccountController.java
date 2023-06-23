@@ -18,8 +18,6 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.ForbiddenException;
-import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 
@@ -36,10 +34,10 @@ import co.icreated.wstore.api.model.DocumentDto;
 import co.icreated.wstore.api.model.NewAccountFormDto;
 import co.icreated.wstore.api.model.OrderDto;
 import co.icreated.wstore.api.model.PasswordDto;
-import co.icreated.wstore.api.model.StatusDto;
-import co.icreated.wstore.api.model.StatusDto.StatusEnum;
 import co.icreated.wstore.api.model.TokenDto;
 import co.icreated.wstore.api.service.AccountApi;
+import co.icreated.wstore.exception.WebStoreBadRequestException;
+import co.icreated.wstore.exception.WebStoreInternalServerException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.TokenHandler;
 import co.icreated.wstore.service.AccountService;
@@ -75,7 +73,7 @@ public class AccountController implements AccountApi {
     boolean isValid = passwordDto.getPassword().equals(sessionUser.getPassword());
 
     if (!isValid) {
-      throw new ForbiddenException("Old password not correct");
+      throw new WebStoreBadRequestException("Old password not correct");
     }
 
     boolean ok = accountService.changePassword(passwordDto.getConfirmPassword());
@@ -87,7 +85,7 @@ public class AccountController implements AccountApi {
       return new TokenDto().token(token);
     }
 
-    throw new InternalServerErrorException("Password not changed");
+    throw new WebStoreInternalServerException("Password not changed");
 
   }
 
@@ -138,34 +136,21 @@ public class AccountController implements AccountApi {
   @PermitAll
   public TokenDto signup(@Valid @NotNull NewAccountFormDto newAccountFormDto) {
 
-    String token = null;
-    MUser user = null;
-
-    // Social connection
-    if (newAccountFormDto.getPassword() == null
-        || newAccountFormDto.getPassword().trim().length() == 0) {
-      int AD_User_ID =
-          DB.getSQLValue(null, "SELECT max(AD_User_ID) FROM AD_User WHERE UPPER(email) LIKE ?",
-              newAccountFormDto.getEmail().toUpperCase());
-      if (AD_User_ID > 0) {
-        user = MUser.get(ctx, AD_User_ID);
-      } else {
-        user = accountService.createUserAccount(newAccountFormDto);
-      }
-    } else {
-      user = accountService.createUserAccount(newAccountFormDto);
-    }
-
-
+    int AD_User_ID =
+            DB.getSQLValue(null, "SELECT max(AD_User_ID) FROM AD_User WHERE UPPER(email) LIKE ?",
+                newAccountFormDto.getEmail().toUpperCase());
+    if (AD_User_ID > 0) {
+        throw new WebStoreBadRequestException("Account already exists");
+      } 
+      
+     MUser user = accountService.createUserAccount(newAccountFormDto);
     if (user.getAD_User_ID() > 0) {
       final SessionUser sessionUser = authService.loadUserByUsername(user.getEMail(), true, true);
-
-
       TokenHandler tokenHandler = new TokenHandler(authService);
-      token = tokenHandler.createTokenForUser(sessionUser);
-
+      String token = tokenHandler.createTokenForUser(sessionUser);
+      return new TokenDto().token(token);
     }
-    return new TokenDto().token(token);
+    throw new WebStoreInternalServerException("Account not created");
   }
 
 

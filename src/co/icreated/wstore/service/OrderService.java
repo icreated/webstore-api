@@ -297,28 +297,28 @@ public class OrderService extends AbstractService {
       if (rs.next()) {
         docStatusName = MRefList.getListName(ctx, 131, rs.getString(5));
 
-        AddressDto deliveryAddress = new AddressDto() //
-            .id(rs.getInt(8)) //
-            .label(rs.getString(9)) //
-            .name(rs.getString(10)) //
-            .address1(rs.getString(11)) //
-            .address2(rs.getString(12)) //
-            .postal(rs.getString(13)) //
-            .city(rs.getString(14)) //
-            .phone(rs.getString(15)) //
-            .countryId(rs.getInt(16)) //
-            .countryName(rs.getString(17));
-
-        AddressDto invoiceAddress = new AddressDto() //
-            .id(rs.getInt(18)) //
-            .label(rs.getString(19)) //
-            .name(rs.getString(20)) //
-            .address1(rs.getString(21)) //
-            .address2(rs.getString(22)) //
-            .postal(rs.getString(23)) //
-            .city(rs.getString(24)) //
-            .phone(rs.getString(26)) //
-            .countryName(rs.getString(27));
+//        AddressDto deliveryAddress = new AddressDto() //
+//            .id(rs.getInt(8)) //
+//            .label(rs.getString(9)) //
+//            .name(rs.getString(10)) //
+//            .address1(rs.getString(11)) //
+//            .address2(rs.getString(12)) //
+//            .postal(rs.getString(13)) //
+//            .city(rs.getString(14)) //
+//            .phone(rs.getString(15)) //
+//            .countryId(rs.getInt(16)) //
+//            .countryName(rs.getString(17));
+//
+//        AddressDto invoiceAddress = new AddressDto() //
+//            .id(rs.getInt(18)) //
+//            .label(rs.getString(19)) //
+//            .name(rs.getString(20)) //
+//            .address1(rs.getString(21)) //
+//            .address2(rs.getString(22)) //
+//            .postal(rs.getString(23)) //
+//            .city(rs.getString(24)) //
+//            .phone(rs.getString(26)) //
+//            .countryName(rs.getString(27));
 
         orderDto = new OrderDto().id(rs.getInt(1)) //
             .documentNo(rs.getString(2)) //
@@ -332,8 +332,8 @@ public class OrderService extends AbstractService {
 
 
         orderDto.setShipper(new ShipperDto().id(rs.getInt(30)).name(rs.getString(28)));
-        orderDto.setShipAddress(deliveryAddress);
-        orderDto.setBillAddress(invoiceAddress);
+//        orderDto.setShipAddress(deliveryAddress);
+//        orderDto.setBillAddress(invoiceAddress);
         orderDto.setLines(getOrderLines(C_Order_ID));
         orderDto.setShipments(getShipments(C_Order_ID));
         orderDto.setPayments(getPayments(C_Order_ID));
