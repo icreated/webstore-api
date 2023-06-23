@@ -12,10 +12,14 @@ package co.icreated.wstore.service;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import org.compiere.model.MBPartner;
+import org.compiere.model.MProduct;
+import org.compiere.model.MUser;
 import org.compiere.util.CCache;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -24,6 +28,8 @@ import co.icreated.wstore.exception.WebStoreNotFoundException;
 import co.icreated.wstore.exception.WebStoreUnauthorizedException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.TokenHandler;
+import co.icreated.wstore.utils.PQuery;
+import co.icreated.wstore.utils.Utils;
 
 
 public class AuthService extends AbstractService {
@@ -32,7 +38,6 @@ public class AuthService extends AbstractService {
   CCache<String, SessionUser> s_cache = new CCache<String, SessionUser>("SessionUser", 100, 30);
   private static CLogger log = CLogger.getCLogger(AuthService.class);
 
-  // public AuthService() {}
 
   public AuthService(Properties ctx) {
     super(ctx);
@@ -94,50 +99,29 @@ public class AuthService extends AbstractService {
 
 
 
-  public static SessionUser getUser(String login, boolean isEmail) {
+  public SessionUser getUser(String login, boolean isEmail) {
 
     log.info(login);
 
     String sql = "SELECT u.AD_User_ID, u.Value, u.Name, u.Email, u.Password, u.salt, "
         + "bp.C_BPartner_ID, bp.C_BP_Group_ID, bp.M_PriceList_ID, bp.C_PaymentTerm_ID, "
         + "u.Description, u.isActive, u.isLocked, bp.isActive, bp.SOCreditStatus "
-        + "FROM AD_User u " + "INNER JOIN C_BPartner bp ON bp.C_BPartner_ID = u.C_BPartner_ID "
+        + "FROM AD_User u " //
+        + "INNER JOIN C_BPartner bp ON bp.C_BPartner_ID = u.C_BPartner_ID "
         + "WHERE u.isActive='Y' AND %s LIKE trim(?) ";
 
-    SessionUser user = null;
     sql = isEmail ? String.format(sql, "u.EMail") : String.format(sql, "u.Value");
-    /*
-     * if (EmailValidator.validate(login)) sql = String.format(sql, "u.EMail"); else sql =
-     * String.format(sql, "u.Value");
-     */
+    
+    Map<Integer, Object> params = Map.of(1, login.trim());
+    return  Utils.nativeFirstQuery(sql, params, rs -> {
+			boolean enabled = rs.getString(12).equals("Y") & rs.getString(14).equals("Y");
+	        boolean accountNonLocked = !rs.getString(7).equals(MBPartner.SOCREDITSTATUS_CreditStop);
 
-
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-
-      pstmt.setString(1, login.trim());
-      rs = pstmt.executeQuery();
-      if (rs.next()) {
-
-        boolean enabled = rs.getString(12).equals("Y") & rs.getString(14).equals("Y");
-        boolean accountNonLocked = !rs.getString(7).equals(MBPartner.SOCREDITSTATUS_CreditStop);
-
-        user = new SessionUser(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-            rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(9), rs.getInt(9),
-            rs.getInt(10), enabled, accountNonLocked);
-      }
-    } catch (Exception e) {
-      log.log(Level.SEVERE, sql, e);
-    } finally {
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-    return user;
-
-  } // load
+	        return new SessionUser(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+	            rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(9), rs.getInt(9),
+	            rs.getInt(10), enabled, accountNonLocked);
+		});
+  } 
 
 
 
