@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import javax.ws.rs.core.SecurityContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrder;
@@ -55,7 +56,7 @@ public class OrderService extends AbstractService {
   public OrderDto createOrder(OrderDto orderDto) {
 
 	// During order creation there are some Env.getCtx() calls which is not defined (same issue as Query loosing ctx)
-   // For example in MStorageReservationLog: MStorageReservationLog log = new MStorageReservationLog(Env.getCtx(), 0, trxName); 
+   // Here MStorageReservationLog is called like this: MStorageReservationLog log = new MStorageReservationLog(Env.getCtx(), 0, trxName); 
    // PO checks integrity of AD_Client so we are obliged to defined it with this awful solution to be sure it's not lost again 
    Env.setCtx(ctx);
    
@@ -142,7 +143,7 @@ public class OrderService extends AbstractService {
 
 
   public boolean processOrder(String DocAction, MOrder order) {
-    if (DocAction == null || DocAction.length() == 0)
+    if (StringUtils.isBlank(DocAction))
       return false;
 
     order.setDocAction(DocAction, true); // force creation
@@ -156,17 +157,6 @@ public class OrderService extends AbstractService {
 	  
 	MOrder order = new MOrder(ctx, C_Order_ID, null);
     return  AccountMapper.INSTANCE.toOrderDto(order);
-  }
-
-  private List<DocumentLineDto> getOrderLines(int C_Order_ID) {
-
-    return new PQuery(ctx, MOrderLine.Table_Name, "C_Order_ID=?", null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setParameters(C_Order_ID).setOrderBy("Line") //
-        .<MOrderLine>stream() //
-        .map(AccountMapper.INSTANCE::toDto) //
-        .collect(Collectors.toList());
   }
 
 

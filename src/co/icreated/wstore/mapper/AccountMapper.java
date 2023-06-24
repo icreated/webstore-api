@@ -67,6 +67,8 @@ public interface AccountMapper {
   expression="java(toDto(new org.compiere.model.MBPartnerLocation(order.getCtx(), order.getC_BPartner_Location_ID(), order.get_TrxName())))")
   @Mapping(target = "billAddress", 
   expression="java(toDto(new org.compiere.model.MBPartnerLocation(order.getCtx(), order.getBill_Location_ID(), order.get_TrxName())))")  
+  @Mapping(target = "taxes", expression="java(java.util.stream.Stream.of(order.getTaxes(true)).map(AccountMapper.INSTANCE::toDto).collect(java.util.stream.Collectors.toList()))")
+  @Mapping(target = "shipper", expression = "java(toDto(new MShipper(order.getCtx(), order.getM_Shipper_ID(), order.get_TrxName())))")
   public OrderDto toOrderDto(MOrder order);
   
  
@@ -87,10 +89,6 @@ public interface AccountMapper {
   
   
   
-  
-  
-
-
   // Partner Location
   @Mapping(source = "c_BPartner_Location_ID", target = "id")
   @Mapping(expression = "java(toDto(bpl.getLocation(true)))", target = "location")
