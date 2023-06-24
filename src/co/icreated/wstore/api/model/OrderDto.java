@@ -3,7 +3,6 @@ package co.icreated.wstore.api.model;
 import co.icreated.wstore.api.model.AddressDto;
 import co.icreated.wstore.api.model.DocumentDto;
 import co.icreated.wstore.api.model.DocumentLineDto;
-import co.icreated.wstore.api.model.PaymentDto;
 import co.icreated.wstore.api.model.ShipmentDto;
 import co.icreated.wstore.api.model.ShipperDto;
 import co.icreated.wstore.api.model.TaxDto;
@@ -35,13 +34,11 @@ public class OrderDto   {
   private @Valid Date date;
   private @Valid BigDecimal totalLines;
   private @Valid BigDecimal grandTotal;
-  private @Valid String name;
   private @Valid List<DocumentLineDto> lines = null;
   private @Valid AddressDto shipAddress;
   private @Valid AddressDto billAddress;
   private @Valid ShipperDto shipper;
   private @Valid List<ShipmentDto> shipments = null;
-  private @Valid List<PaymentDto> payments = null;
   private @Valid List<DocumentDto> invoices = null;
   private @Valid List<TaxDto> taxes = null;
 
@@ -209,24 +206,6 @@ public class OrderDto   {
 
   /**
    **/
-  public OrderDto name(String name) {
-    this.name = name;
-    return this;
-  }
-
-  
-  @JsonProperty("name")
-  public String getName() {
-    return name;
-  }
-
-  @JsonProperty("name")
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  /**
-   **/
   public OrderDto lines(List<DocumentLineDto> lines) {
     this.lines = lines;
     return this;
@@ -349,40 +328,6 @@ public class OrderDto   {
   }
   /**
    **/
-  public OrderDto payments(List<PaymentDto> payments) {
-    this.payments = payments;
-    return this;
-  }
-
-  
-  @JsonProperty("payments")
-  public List<PaymentDto> getPayments() {
-    return payments;
-  }
-
-  @JsonProperty("payments")
-  public void setPayments(List<PaymentDto> payments) {
-    this.payments = payments;
-  }
-
-  public OrderDto addPaymentsItem(PaymentDto paymentsItem) {
-    if (this.payments == null) {
-      this.payments = new ArrayList<>();
-    }
-
-    this.payments.add(paymentsItem);
-    return this;
-  }
-
-  public OrderDto removePaymentsItem(PaymentDto paymentsItem) {
-    if (paymentsItem != null && this.payments != null) {
-      this.payments.remove(paymentsItem);
-    }
-
-    return this;
-  }
-  /**
-   **/
   public OrderDto invoices(List<DocumentDto> invoices) {
     this.invoices = invoices;
     return this;
@@ -468,20 +413,18 @@ public class OrderDto   {
         Objects.equals(this.date, order.date) &&
         Objects.equals(this.totalLines, order.totalLines) &&
         Objects.equals(this.grandTotal, order.grandTotal) &&
-        Objects.equals(this.name, order.name) &&
         Objects.equals(this.lines, order.lines) &&
         Objects.equals(this.shipAddress, order.shipAddress) &&
         Objects.equals(this.billAddress, order.billAddress) &&
         Objects.equals(this.shipper, order.shipper) &&
         Objects.equals(this.shipments, order.shipments) &&
-        Objects.equals(this.payments, order.payments) &&
         Objects.equals(this.invoices, order.invoices) &&
         Objects.equals(this.taxes, order.taxes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date, totalLines, grandTotal, name, lines, shipAddress, billAddress, shipper, shipments, payments, invoices, taxes);
+    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date, totalLines, grandTotal, lines, shipAddress, billAddress, shipper, shipments, invoices, taxes);
   }
 
   @Override
@@ -498,13 +441,11 @@ public class OrderDto   {
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    totalLines: ").append(toIndentedString(totalLines)).append("\n");
     sb.append("    grandTotal: ").append(toIndentedString(grandTotal)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    lines: ").append(toIndentedString(lines)).append("\n");
     sb.append("    shipAddress: ").append(toIndentedString(shipAddress)).append("\n");
     sb.append("    billAddress: ").append(toIndentedString(billAddress)).append("\n");
     sb.append("    shipper: ").append(toIndentedString(shipper)).append("\n");
     sb.append("    shipments: ").append(toIndentedString(shipments)).append("\n");
-    sb.append("    payments: ").append(toIndentedString(payments)).append("\n");
     sb.append("    invoices: ").append(toIndentedString(invoices)).append("\n");
     sb.append("    taxes: ").append(toIndentedString(taxes)).append("\n");
     sb.append("}");

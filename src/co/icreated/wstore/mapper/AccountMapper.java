@@ -40,8 +40,8 @@ public interface AccountMapper {
   @Mapping(source = "AD_User_ID", target = "id")
   @Mapping(source = "EMail", target = "email")
   public AccountInfoDto toDto(MUser user);
-  
-  
+
+
   @Mapping(source = "c_Order_ID", target = "id")
   @Mapping(source = "POReference", target = "poReference")
   @Mapping(source = "dateOrdered", target = "date")
@@ -54,24 +54,27 @@ public interface AccountMapper {
   @Mapping(source = "product.name", target = "name")
   @Mapping(source = "product.description", target = "description")
   public DocumentLineDto toDto(MOrderLine orderLine);
-  
-  @Mapping(target = "name", expression= "java(org.compiere.model.MTax.get(orderTax.getCtx(), orderTax.getC_Tax_ID()).getName())")
+
+  @Mapping(target = "name",
+      expression = "java(org.compiere.model.MTax.get(orderTax.getCtx(), orderTax.getC_Tax_ID()).getName())")
   public TaxDto toDto(MOrderTax orderTax);
-  
-  
+
+
   // OrderDto
   @Mapping(source = "c_Order_ID", target = "id")
   @Mapping(source = "POReference", target = "poReference")
   @Mapping(source = "dateOrdered", target = "date")
-  @Mapping(target = "shipAddress", 
-  expression="java(toDto(new org.compiere.model.MBPartnerLocation(order.getCtx(), order.getC_BPartner_Location_ID(), order.get_TrxName())))")
-  @Mapping(target = "billAddress", 
-  expression="java(toDto(new org.compiere.model.MBPartnerLocation(order.getCtx(), order.getBill_Location_ID(), order.get_TrxName())))")  
-  @Mapping(target = "taxes", expression="java(java.util.stream.Stream.of(order.getTaxes(true)).map(AccountMapper.INSTANCE::toDto).collect(java.util.stream.Collectors.toList()))")
-  @Mapping(target = "shipper", expression = "java(toDto(new MShipper(order.getCtx(), order.getM_Shipper_ID(), order.get_TrxName())))")
+  @Mapping(target = "shipAddress",
+      expression = "java(toDto(new org.compiere.model.MBPartnerLocation(order.getCtx(), order.getC_BPartner_Location_ID(), order.get_TrxName())))")
+  @Mapping(target = "billAddress",
+      expression = "java(toDto(new org.compiere.model.MBPartnerLocation(order.getCtx(), order.getBill_Location_ID(), order.get_TrxName())))")
+  @Mapping(target = "taxes",
+      expression = "java(java.util.stream.Stream.of(order.getTaxes(true)).map(AccountMapper.INSTANCE::toDto).collect(java.util.stream.Collectors.toList()))")
+  @Mapping(target = "shipper",
+      expression = "java(toDto(new MShipper(order.getCtx(), order.getM_Shipper_ID(), order.get_TrxName())))")
   public OrderDto toOrderDto(MOrder order);
-  
- 
+
+
 
   @Mapping(source = "c_Invoice_ID", target = "id")
   public DocumentDto toDto(MInvoice invoice);
@@ -86,9 +89,9 @@ public interface AccountMapper {
   @Mapping(target = "docStatusName",
       expression = "java(org.compiere.model.MRefList.getListName(shipment.getCtx(), 131, shipment.getDocStatus()))")
   public ShipmentDto toDto(MInOut shipment);
-  
-  
-  
+
+
+
   // Partner Location
   @Mapping(source = "c_BPartner_Location_ID", target = "id")
   @Mapping(expression = "java(toDto(bpl.getLocation(true)))", target = "location")

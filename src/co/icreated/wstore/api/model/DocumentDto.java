@@ -30,7 +30,6 @@ public class DocumentDto   {
   private @Valid Date date;
   private @Valid BigDecimal totalLines;
   private @Valid BigDecimal grandTotal;
-  private @Valid String name;
   private @Valid List<DocumentLineDto> lines = null;
   private @Valid AddressDto shipAddress;
   private @Valid AddressDto billAddress;
@@ -199,24 +198,6 @@ public class DocumentDto   {
 
   /**
    **/
-  public DocumentDto name(String name) {
-    this.name = name;
-    return this;
-  }
-
-  
-  @JsonProperty("name")
-  public String getName() {
-    return name;
-  }
-
-  @JsonProperty("name")
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  /**
-   **/
   public DocumentDto lines(List<DocumentLineDto> lines) {
     this.lines = lines;
     return this;
@@ -304,7 +285,6 @@ public class DocumentDto   {
         Objects.equals(this.date, document.date) &&
         Objects.equals(this.totalLines, document.totalLines) &&
         Objects.equals(this.grandTotal, document.grandTotal) &&
-        Objects.equals(this.name, document.name) &&
         Objects.equals(this.lines, document.lines) &&
         Objects.equals(this.shipAddress, document.shipAddress) &&
         Objects.equals(this.billAddress, document.billAddress);
@@ -312,7 +292,7 @@ public class DocumentDto   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date, totalLines, grandTotal, name, lines, shipAddress, billAddress);
+    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date, totalLines, grandTotal, lines, shipAddress, billAddress);
   }
 
   @Override
@@ -329,7 +309,6 @@ public class DocumentDto   {
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    totalLines: ").append(toIndentedString(totalLines)).append("\n");
     sb.append("    grandTotal: ").append(toIndentedString(grandTotal)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    lines: ").append(toIndentedString(lines)).append("\n");
     sb.append("    shipAddress: ").append(toIndentedString(shipAddress)).append("\n");
     sb.append("    billAddress: ").append(toIndentedString(billAddress)).append("\n");

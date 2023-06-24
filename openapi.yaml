@@ -538,8 +538,6 @@ components:
           type: number
         grandTotal:
           type: number
-        name:
-          type: string
         lines:
           type: array
           items:
@@ -628,8 +626,6 @@ components:
           type: number
         grandTotal:
           type: number
-        name:
-          type: string
         lines:
           type: array
           items:
@@ -644,10 +640,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Shipment'
-        payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Payment'
         invoices:
           type: array
           items:
