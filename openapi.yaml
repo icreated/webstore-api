@@ -183,6 +183,9 @@ paths:
           required: true
           schema:
             type: string
+            enum:
+              - order
+              - invoice
         - name: id
           in: path
           description: C_Order_ID or C_Invoice_ID depending from type
@@ -455,12 +458,8 @@ paths:
               $ref: '#/components/schemas/Token'
         required: true
       responses:
-        default:
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
+        '200':
+          description: Email found 
   /common/shippers:
     get:
       tags:
@@ -765,14 +764,6 @@ components:
           type: string
         msg:
           type: string
-    Status:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - OK
-            - NOT_FOUND
   securitySchemes:
     bearerAuth:
       type: http

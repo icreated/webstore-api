@@ -2,7 +2,6 @@ package co.icreated.wstore.api.service;
 
 import co.icreated.wstore.api.model.IdNameBeanDto;
 import co.icreated.wstore.api.model.ShipperDto;
-import co.icreated.wstore.api.model.StatusDto;
 import co.icreated.wstore.api.model.TokenDto;
 
 import javax.ws.rs.*;
@@ -32,6 +31,5 @@ public interface CommonApi {
     @POST
     @Path("/lookup/email")
     @Consumes({ "application/json" })
-    @Produces({ "application/json" })
-    StatusDto lookupEmail(@Valid @NotNull TokenDto tokenDto);
+    void lookupEmail(@Valid @NotNull TokenDto tokenDto);
 }
