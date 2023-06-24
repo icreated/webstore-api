@@ -13,10 +13,6 @@ import co.icreated.wstore.api.service.CatalogApi;
 import co.icreated.wstore.service.CatalogService;
 
 
-/**
- * @author spok
- *
- */
 @PermitAll
 public class CatalogController implements CatalogApi {
 

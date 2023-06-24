@@ -25,7 +25,7 @@ import co.icreated.wstore.api.model.PaymentDto;
 import co.icreated.wstore.api.model.ShipmentDto;
 import co.icreated.wstore.mapper.AccountMapper;
 import co.icreated.wstore.utils.PQuery;
-import co.icreated.wstore.utils.Utils;
+import co.icreated.wstore.utils.TrxUtil;
 
 
 public class OrderService extends AbstractService {
@@ -60,7 +60,7 @@ public class OrderService extends AbstractService {
     int C_BPartner_Location_ID = orderDto.getShipAddress().getId();
     int Bill_BPartner_Location_ID = orderDto.getBillAddress().getId();
 
-    MOrder createdOrder = Utils.trx(trxName -> {
+    MOrder createdOrder = TrxUtil.commit(trxName -> {
       MOrder order = new MOrder(ctx, 0, trxName);
       order.setAD_Org_ID(Env.getAD_Org_ID(ctx));
       order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_Prepay);

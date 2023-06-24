@@ -1,11 +1,8 @@
 package co.icreated.wstore.service;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
 import javax.ws.rs.core.SecurityContext;
 
@@ -16,13 +13,11 @@ import org.compiere.model.MDocType;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MPayment;
-import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MUser;
 import org.compiere.model.Query;
 import org.compiere.model.X_C_Payment;
 import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import co.icreated.wstore.model.PaymentInfo;
@@ -37,38 +32,6 @@ public class PaymentService extends AbstractService {
 
   public PaymentService(Properties ctx, SecurityContext securityContext) {
     super(ctx, securityContext);
-  }
-
-
-  public List<MPayment> getPayments(int C_BPartner_ID) {
-
-    List<MPayment> list = new ArrayList<MPayment>();
-
-    if (C_BPartner_ID == 0)
-      C_BPartner_ID = getSessionUser().getC_BPartner_ID();
-
-    String sql = "SELECT * FROM C_Payment WHERE C_BPartner_ID=? " + "ORDER BY DocumentNo DESC";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-      pstmt.setInt(1, C_BPartner_ID);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        list.add(new MPayment(ctx, rs, null));
-      }
-
-    } catch (Exception e) {
-      log.log(Level.SEVERE, sql, e);
-    } finally {
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-    log.log(Level.FINE, "#" + list.size());
-
-    return list;
   }
 
 
@@ -210,100 +173,28 @@ public class PaymentService extends AbstractService {
       payment.setC_Order_ID(order.getC_Order_ID());
       payment.save();
     }
-
-
-
     return payment;
-
-
-  }
-
-
-
-  public List<MPaymentTerm> getPaymentTerms() {
-
-    List<MPaymentTerm> paymentTerm = new ArrayList<MPaymentTerm>();
-    String sql = "SELECT * FROM C_PaymentTerm WHERE  AD_Client_ID = ? AND IsActive = 'Y'";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-      pstmt.setInt(1, Env.getAD_Client_ID(ctx));
-      rs = pstmt.executeQuery();
-
-      while (rs.next()) {
-        paymentTerm.add(new MPaymentTerm(ctx, rs, null));
-
-      }
-
-
-    } catch (Exception e) {
-      log.log(Level.SEVERE, "", e);
-    } finally {
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-
-    return paymentTerm;
-
   }
 
 
   public MBPBankAccount getBankAccount(MOrder order) {
 
-    MBPartner bp = MBPartner.get(ctx, order.getC_BPartner_ID());
-    MBPBankAccount retValue = null;
+    MBPartner bp = MBPartner.get(ctx, order.getC_BPartner_ID(), order.get_TrxName());
     // Find Bank Account for exact User
-    MBPBankAccount[] bas = bp.getBankAccounts(true);
-    for (int i = 0; i < bas.length; i++) {
-      if (bas[i].getAD_User_ID() == getSessionUser().getAD_User_ID() && bas[i].isActive())
-        retValue = bas[i];
-    }
+    MBPBankAccount retValue = Stream.of(bp.getBankAccounts(false))
+    .filter(ba -> ba.getAD_User_ID() == getSessionUser().getAD_User_ID() && ba.isActive())
+    .findAny().get();
 
     // create new
     if (retValue == null) {
-      MUser user = MUser.get(ctx, getSessionUser().getAD_User_ID());
-      MLocation location = MLocation.get(ctx, order.getBill_Location_ID(), null);
+      MUser user = new MUser(ctx, getSessionUser().getAD_User_ID(), order.get_TrxName());
+      MLocation location = MLocation.get(ctx, order.getBill_Location_ID(), order.get_TrxName());
       retValue = new MBPBankAccount(ctx, bp, user, location);
       retValue.setAD_User_ID(getSessionUser().getAD_User_ID());
-      retValue.save();
+      retValue.save(order.get_TrxName());
     }
-
     return retValue;
-  } // getBankAccount
-
-
-
-  public MPayment getPaymentByTrxId(String tx) {
-
-    String sql = "SELECT * FROM C_Payment WHERE Orig_TrxId LIKE ? AND IsActive = 'Y'";
-
-    MPayment payment = null;
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = DB.prepareStatement(sql, null);
-      pstmt.setString(1, tx);
-      rs = pstmt.executeQuery();
-
-      if (rs.next()) {
-        payment = new MPayment(ctx, rs, null);
-
-      }
-
-    } catch (Exception e) {
-      log.log(Level.SEVERE, "", e);
-    } finally {
-      DB.close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-
-    return payment;
-
   }
-
 
 
 }

@@ -1,13 +1,3 @@
-/*******************************************************************************
- * @author Copyright (C) 2019 ICreated, Sergey Polyarus
- * @date 2019 This program is free software; you can redistribute it and/or modify it under the
- *       terms version 2 of the GNU General Public License as published by the Free Software
- *       Foundation. This program is distributed in the hope that it will be useful, but WITHOUT ANY
- *       WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *       PURPOSE. See the GNU General Public License for more details. You should have received a
- *       copy of the GNU General Public License along with this program; if not, write to the Free
- *       Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
- ******************************************************************************/
 package co.icreated.wstore.service;
 
 import java.util.Map;
@@ -18,7 +8,7 @@ import org.compiere.util.CCache;
 import org.compiere.util.Env;
 
 import co.icreated.wstore.model.WStore;
-import co.icreated.wstore.utils.Utils;
+import co.icreated.wstore.utils.QueryUtil;
 
 public enum ContextService {
   INSTANCE;
@@ -102,7 +92,7 @@ public enum ContextService {
   private static WStore getWebStore(int W_Store_ID) {
 
     String sql = "SELECT * FROM W_Store WHERE W_Store_ID = ?";
-    return Utils.nativeFirstQuery(sql, Map.of(1, W_Store_ID), rs -> {
+    return QueryUtil.nativeFirst(sql, Map.of(1, W_Store_ID), rs -> {
       return new WStore(rs.getInt("W_Store_ID"), rs.getInt("AD_Client_ID"), rs.getInt("AD_Org_ID"),
           rs.getInt("salesRep_ID"), rs.getInt("M_PriceList_ID"), rs.getInt("M_Warehouse_ID"),
           rs.getString("name"), rs.getString("description"), rs.getString("help"),

@@ -10,8 +10,6 @@ import javax.ws.rs.core.Context;
 
 import co.icreated.wstore.api.model.IdNameBeanDto;
 import co.icreated.wstore.api.model.ShipperDto;
-import co.icreated.wstore.api.model.StatusDto;
-import co.icreated.wstore.api.model.StatusDto.StatusEnum;
 import co.icreated.wstore.api.model.TokenDto;
 import co.icreated.wstore.api.service.CommonApi;
 import co.icreated.wstore.service.CommonService;

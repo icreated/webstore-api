@@ -23,7 +23,7 @@ import co.icreated.wstore.api.model.AccountInfoDto;
 import co.icreated.wstore.api.model.AddressDto;
 import co.icreated.wstore.api.model.NewAccountFormDto;
 import co.icreated.wstore.mapper.AccountMapper;
-import co.icreated.wstore.utils.Utils;
+import co.icreated.wstore.utils.TrxUtil;
 
 public class AccountService extends AbstractService {
 
@@ -45,7 +45,7 @@ public class AccountService extends AbstractService {
 
     log.log(Level.FINE, "update user account ", accountInfoDto);
 
-    Utils.trx(trxName -> {
+    TrxUtil.commit(trxName -> {
       X_AD_User user = new X_AD_User(ctx, getSessionUser().getAD_User_ID(), trxName);
       user.setName(accountInfoDto.getName());
       user.setEMail(accountInfoDto.getEmail());
@@ -62,7 +62,7 @@ public class AccountService extends AbstractService {
 
     int SalesRep_ID = Env.getContextAsInt(ctx, "#SalesRep_ID");
 
-    return Utils.trx(trxName -> {
+    return TrxUtil.commit(trxName -> {
       MBPartner bp = new MBPartner(ctx);
       bp.setIsCustomer(true);
       bp.setName(newAccountFormDto.getName());
@@ -82,7 +82,7 @@ public class AccountService extends AbstractService {
 
     log.log(Level.FINE, "new address ", addressDto);
 
-    X_C_BPartner_Location created = Utils.trx(trxName -> {
+    X_C_BPartner_Location created = TrxUtil.commit(trxName -> {
       X_C_Location location =
           AccountMapper.INSTANCE.to(addressDto.getLocation(), new X_C_Location(ctx, 0, trxName));
       location.save();
@@ -104,7 +104,7 @@ public class AccountService extends AbstractService {
 
     log.log(Level.FINE, "update address ", addressDto);
 
-    Utils.trx(trxName -> {
+    TrxUtil.commit(trxName -> {
       X_C_BPartner_Location bpl = AccountMapper.INSTANCE.to(addressDto,
           new X_C_BPartner_Location(ctx, addressDto.getId(), trxName));
       bpl.save();
@@ -120,7 +120,7 @@ public class AccountService extends AbstractService {
 
   public boolean deleteAddress(int C_BPartner_Location_ID) {
 
-    Utils.trx(trxName -> {
+    TrxUtil.commit(trxName -> {
       MBPartnerLocation bpl = new MBPartnerLocation(ctx, C_BPartner_Location_ID, trxName);
       bpl.setIsActive(false);
       bpl.save();
@@ -141,7 +141,7 @@ public class AccountService extends AbstractService {
 
   public boolean changePassword(String newPassword) {
 
-    Utils.trx(trxName -> {
+    TrxUtil.commit(trxName -> {
       MUser user = new MUser(ctx, getSessionUser().getAD_User_ID(), trxName);
       user.setPassword(newPassword);
       user.setIsLocked(false);

@@ -33,8 +33,6 @@ import javax.ws.rs.ext.Provider;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.AuthService;
 
-
-// @Secured
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class JwtAuthenticationFilter implements ContainerRequestFilter {
@@ -43,8 +41,6 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
   private ResourceInfo resourceInfo;
 
 
-  // @Context
-  // AuthService authService;
   @Inject
   private javax.inject.Provider<AuthService> serviceProvider;
 
@@ -102,7 +98,6 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
 
 
   private SessionUser getUserFromToken(String token) {
-
     TokenHandler tokenHandler = new TokenHandler(serviceProvider.get());
     SessionUser user = tokenHandler.parseUserFromToken(token);
     return user;
