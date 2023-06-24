@@ -1,10 +1,7 @@
 package co.icreated.wstore.api.model;
 
-import co.icreated.wstore.api.model.AddressDto;
 import co.icreated.wstore.api.model.DocumentLineDto;
-import co.icreated.wstore.api.model.ShipperDto;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,18 +21,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class ShipmentDto   {
   private @Valid Integer id;
   private @Valid String documentNo;
-  private @Valid String poReference;
   private @Valid String description;
   private @Valid String docStatus;
   private @Valid String docStatusName;
   private @Valid Date date;
-  private @Valid BigDecimal totalLines;
-  private @Valid BigDecimal grandTotal;
-  private @Valid String name;
   private @Valid List<DocumentLineDto> lines = null;
-  private @Valid AddressDto shipAddress;
-  private @Valid AddressDto billAddress;
-  private @Valid ShipperDto shipper;
   private @Valid String trackingNo;
 
   /**
@@ -72,24 +62,6 @@ public class ShipmentDto   {
   @JsonProperty("documentNo")
   public void setDocumentNo(String documentNo) {
     this.documentNo = documentNo;
-  }
-
-  /**
-   **/
-  public ShipmentDto poReference(String poReference) {
-    this.poReference = poReference;
-    return this;
-  }
-
-  
-  @JsonProperty("poReference")
-  public String getPoReference() {
-    return poReference;
-  }
-
-  @JsonProperty("poReference")
-  public void setPoReference(String poReference) {
-    this.poReference = poReference;
   }
 
   /**
@@ -166,60 +138,6 @@ public class ShipmentDto   {
 
   /**
    **/
-  public ShipmentDto totalLines(BigDecimal totalLines) {
-    this.totalLines = totalLines;
-    return this;
-  }
-
-  
-  @JsonProperty("totalLines")
-  public BigDecimal getTotalLines() {
-    return totalLines;
-  }
-
-  @JsonProperty("totalLines")
-  public void setTotalLines(BigDecimal totalLines) {
-    this.totalLines = totalLines;
-  }
-
-  /**
-   **/
-  public ShipmentDto grandTotal(BigDecimal grandTotal) {
-    this.grandTotal = grandTotal;
-    return this;
-  }
-
-  
-  @JsonProperty("grandTotal")
-  public BigDecimal getGrandTotal() {
-    return grandTotal;
-  }
-
-  @JsonProperty("grandTotal")
-  public void setGrandTotal(BigDecimal grandTotal) {
-    this.grandTotal = grandTotal;
-  }
-
-  /**
-   **/
-  public ShipmentDto name(String name) {
-    this.name = name;
-    return this;
-  }
-
-  
-  @JsonProperty("name")
-  public String getName() {
-    return name;
-  }
-
-  @JsonProperty("name")
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  /**
-   **/
   public ShipmentDto lines(List<DocumentLineDto> lines) {
     this.lines = lines;
     return this;
@@ -254,60 +172,6 @@ public class ShipmentDto   {
   }
   /**
    **/
-  public ShipmentDto shipAddress(AddressDto shipAddress) {
-    this.shipAddress = shipAddress;
-    return this;
-  }
-
-  
-  @JsonProperty("shipAddress")
-  public AddressDto getShipAddress() {
-    return shipAddress;
-  }
-
-  @JsonProperty("shipAddress")
-  public void setShipAddress(AddressDto shipAddress) {
-    this.shipAddress = shipAddress;
-  }
-
-  /**
-   **/
-  public ShipmentDto billAddress(AddressDto billAddress) {
-    this.billAddress = billAddress;
-    return this;
-  }
-
-  
-  @JsonProperty("billAddress")
-  public AddressDto getBillAddress() {
-    return billAddress;
-  }
-
-  @JsonProperty("billAddress")
-  public void setBillAddress(AddressDto billAddress) {
-    this.billAddress = billAddress;
-  }
-
-  /**
-   **/
-  public ShipmentDto shipper(ShipperDto shipper) {
-    this.shipper = shipper;
-    return this;
-  }
-
-  
-  @JsonProperty("shipper")
-  public ShipperDto getShipper() {
-    return shipper;
-  }
-
-  @JsonProperty("shipper")
-  public void setShipper(ShipperDto shipper) {
-    this.shipper = shipper;
-  }
-
-  /**
-   **/
   public ShipmentDto trackingNo(String trackingNo) {
     this.trackingNo = trackingNo;
     return this;
@@ -336,24 +200,17 @@ public class ShipmentDto   {
     ShipmentDto shipment = (ShipmentDto) o;
     return Objects.equals(this.id, shipment.id) &&
         Objects.equals(this.documentNo, shipment.documentNo) &&
-        Objects.equals(this.poReference, shipment.poReference) &&
         Objects.equals(this.description, shipment.description) &&
         Objects.equals(this.docStatus, shipment.docStatus) &&
         Objects.equals(this.docStatusName, shipment.docStatusName) &&
         Objects.equals(this.date, shipment.date) &&
-        Objects.equals(this.totalLines, shipment.totalLines) &&
-        Objects.equals(this.grandTotal, shipment.grandTotal) &&
-        Objects.equals(this.name, shipment.name) &&
         Objects.equals(this.lines, shipment.lines) &&
-        Objects.equals(this.shipAddress, shipment.shipAddress) &&
-        Objects.equals(this.billAddress, shipment.billAddress) &&
-        Objects.equals(this.shipper, shipment.shipper) &&
         Objects.equals(this.trackingNo, shipment.trackingNo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date, totalLines, grandTotal, name, lines, shipAddress, billAddress, shipper, trackingNo);
+    return Objects.hash(id, documentNo, description, docStatus, docStatusName, date, lines, trackingNo);
   }
 
   @Override
@@ -363,18 +220,11 @@ public class ShipmentDto   {
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    documentNo: ").append(toIndentedString(documentNo)).append("\n");
-    sb.append("    poReference: ").append(toIndentedString(poReference)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    docStatus: ").append(toIndentedString(docStatus)).append("\n");
     sb.append("    docStatusName: ").append(toIndentedString(docStatusName)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
-    sb.append("    totalLines: ").append(toIndentedString(totalLines)).append("\n");
-    sb.append("    grandTotal: ").append(toIndentedString(grandTotal)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    lines: ").append(toIndentedString(lines)).append("\n");
-    sb.append("    shipAddress: ").append(toIndentedString(shipAddress)).append("\n");
-    sb.append("    billAddress: ").append(toIndentedString(billAddress)).append("\n");
-    sb.append("    shipper: ").append(toIndentedString(shipper)).append("\n");
     sb.append("    trackingNo: ").append(toIndentedString(trackingNo)).append("\n");
     sb.append("}");
     return sb.toString();

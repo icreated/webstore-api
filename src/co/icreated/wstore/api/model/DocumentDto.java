@@ -1,12 +1,8 @@
 package co.icreated.wstore.api.model;
 
-import co.icreated.wstore.api.model.AddressDto;
-import co.icreated.wstore.api.model.DocumentLineDto;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -30,9 +26,6 @@ public class DocumentDto   {
   private @Valid Date date;
   private @Valid BigDecimal totalLines;
   private @Valid BigDecimal grandTotal;
-  private @Valid List<DocumentLineDto> lines = null;
-  private @Valid AddressDto shipAddress;
-  private @Valid AddressDto billAddress;
 
   /**
    **/
@@ -196,76 +189,6 @@ public class DocumentDto   {
     this.grandTotal = grandTotal;
   }
 
-  /**
-   **/
-  public DocumentDto lines(List<DocumentLineDto> lines) {
-    this.lines = lines;
-    return this;
-  }
-
-  
-  @JsonProperty("lines")
-  public List<DocumentLineDto> getLines() {
-    return lines;
-  }
-
-  @JsonProperty("lines")
-  public void setLines(List<DocumentLineDto> lines) {
-    this.lines = lines;
-  }
-
-  public DocumentDto addLinesItem(DocumentLineDto linesItem) {
-    if (this.lines == null) {
-      this.lines = new ArrayList<>();
-    }
-
-    this.lines.add(linesItem);
-    return this;
-  }
-
-  public DocumentDto removeLinesItem(DocumentLineDto linesItem) {
-    if (linesItem != null && this.lines != null) {
-      this.lines.remove(linesItem);
-    }
-
-    return this;
-  }
-  /**
-   **/
-  public DocumentDto shipAddress(AddressDto shipAddress) {
-    this.shipAddress = shipAddress;
-    return this;
-  }
-
-  
-  @JsonProperty("shipAddress")
-  public AddressDto getShipAddress() {
-    return shipAddress;
-  }
-
-  @JsonProperty("shipAddress")
-  public void setShipAddress(AddressDto shipAddress) {
-    this.shipAddress = shipAddress;
-  }
-
-  /**
-   **/
-  public DocumentDto billAddress(AddressDto billAddress) {
-    this.billAddress = billAddress;
-    return this;
-  }
-
-  
-  @JsonProperty("billAddress")
-  public AddressDto getBillAddress() {
-    return billAddress;
-  }
-
-  @JsonProperty("billAddress")
-  public void setBillAddress(AddressDto billAddress) {
-    this.billAddress = billAddress;
-  }
-
 
   @Override
   public boolean equals(Object o) {
@@ -284,15 +207,12 @@ public class DocumentDto   {
         Objects.equals(this.docStatusName, document.docStatusName) &&
         Objects.equals(this.date, document.date) &&
         Objects.equals(this.totalLines, document.totalLines) &&
-        Objects.equals(this.grandTotal, document.grandTotal) &&
-        Objects.equals(this.lines, document.lines) &&
-        Objects.equals(this.shipAddress, document.shipAddress) &&
-        Objects.equals(this.billAddress, document.billAddress);
+        Objects.equals(this.grandTotal, document.grandTotal);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date, totalLines, grandTotal, lines, shipAddress, billAddress);
+    return Objects.hash(id, documentNo, poReference, description, docStatus, docStatusName, date, totalLines, grandTotal);
   }
 
   @Override
@@ -309,9 +229,6 @@ public class DocumentDto   {
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    totalLines: ").append(toIndentedString(totalLines)).append("\n");
     sb.append("    grandTotal: ").append(toIndentedString(grandTotal)).append("\n");
-    sb.append("    lines: ").append(toIndentedString(lines)).append("\n");
-    sb.append("    shipAddress: ").append(toIndentedString(shipAddress)).append("\n");
-    sb.append("    billAddress: ").append(toIndentedString(billAddress)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -1,10 +1,6 @@
 package co.icreated.wstore.service;
 
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -18,25 +14,15 @@ import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
-import org.compiere.model.MOrderTax;
 import org.compiere.model.MPayment;
-import org.compiere.model.MProduct;
-import org.compiere.model.MRefList;
-import org.compiere.model.MStorageReservationLog;
-import org.compiere.model.MTax;
-import org.compiere.model.Query;
 import org.compiere.util.CLogger;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.compiere.util.Trx;
 
 import co.icreated.wstore.api.model.DocumentDto;
 import co.icreated.wstore.api.model.DocumentLineDto;
 import co.icreated.wstore.api.model.OrderDto;
 import co.icreated.wstore.api.model.PaymentDto;
 import co.icreated.wstore.api.model.ShipmentDto;
-import co.icreated.wstore.api.model.ShipperDto;
-import co.icreated.wstore.api.model.TaxDto;
 import co.icreated.wstore.mapper.AccountMapper;
 import co.icreated.wstore.utils.PQuery;
 import co.icreated.wstore.utils.Utils;
@@ -114,10 +100,6 @@ public class OrderService extends AbstractService {
     });
 
     MOrder order = new MOrder(ctx, createdOrder.getC_Order_ID(), createdOrder.get_TrxName()); // Refresh
-                                                                                              // it,
-                                                                                              // totals
-                                                                                              // aren't
-                                                                                              // updated
     orderDto.setId(order.getC_Order_ID());
     orderDto.setDocumentNo(order.getDocumentNo());
     orderDto.setGrandTotal(order.getGrandTotal());
@@ -226,7 +208,6 @@ public class OrderService extends AbstractService {
         .<MInvoice>stream() //
         .map(AccountMapper.INSTANCE::toDto) //
         .collect(Collectors.toList());
-
   }
 
 

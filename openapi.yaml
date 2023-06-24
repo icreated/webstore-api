@@ -538,14 +538,7 @@ components:
           type: number
         grandTotal:
           type: number
-        lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentLine'
-        shipAddress:
-          $ref: '#/components/schemas/Address'
-        billAddress:
-          $ref: '#/components/schemas/Address'
+
     DocumentLine:
       type: object
       properties:
@@ -676,8 +669,6 @@ components:
           format: int32
         documentNo:
           type: string
-        poReference:
-          type: string
         description:
           type: string
         docStatus:
@@ -687,22 +678,10 @@ components:
         date:
           type: string
           format: date-time
-        totalLines:
-          type: number
-        grandTotal:
-          type: number
-        name:
-          type: string
         lines:
           type: array
           items:
             $ref: '#/components/schemas/DocumentLine'
-        shipAddress:
-          $ref: '#/components/schemas/Address'
-        billAddress:
-          $ref: '#/components/schemas/Address'
-        shipper:
-          $ref: '#/components/schemas/Shipper'
         trackingNo:
           type: string
     Shipper:
