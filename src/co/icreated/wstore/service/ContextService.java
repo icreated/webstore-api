@@ -8,7 +8,7 @@
  *       copy of the GNU General Public License along with this program; if not, write to the Free
  *       Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  ******************************************************************************/
-package co.icreated.wstore;
+package co.icreated.wstore.service;
 
 import java.util.Map;
 import java.util.Properties;
@@ -20,7 +20,7 @@ import org.compiere.util.Env;
 import co.icreated.wstore.model.WStore;
 import co.icreated.wstore.utils.Utils;
 
-public enum Envs {
+public enum ContextService {
   INSTANCE;
 
   private static CCache<Integer, Properties> s_cacheCtx =

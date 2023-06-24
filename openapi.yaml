@@ -381,28 +381,7 @@ paths:
           description: Order forbidden
         '500':
           description: Order not processed
-  /checkout/order/void:
-    post:
-      tags:
-        - Checkout Services
-      summary: Void order
-      description: Void order
-      operationId: voidOrder
-      requestBody:
-        description: Order Form
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Order'
-        required: true
-      responses:
-        '200':
-          description: Order processed              
-        '403':
-          description: Order forbidden
-        '500':
-          description: Order not processed
-  /checkout/order/create:
+  /checkout/order:
     post:
       tags:
         - Checkout Services
@@ -425,6 +404,26 @@ paths:
                 $ref: '#/components/schemas/Order'
         '500':
           description: Missing address or shipper or lines
+    delete:
+      tags:
+        - Checkout Services
+      summary: Void order
+      description: Void order
+      operationId: voidOrder
+      requestBody:
+        description: Order Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        '200':
+          description: Order processed              
+        '403':
+          description: Order forbidden
+        '500':
+          description: Order not processed          
   /common/countries:
     get:
       tags:
@@ -727,7 +726,7 @@ components:
       properties:
         name:
           type: string
-        tax:
+        taxAmt:
           type: number
     UserCredentials:
       type: object

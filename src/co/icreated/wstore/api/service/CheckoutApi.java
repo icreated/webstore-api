@@ -18,7 +18,7 @@ import javax.validation.Valid;
 public interface CheckoutApi {
 
     @POST
-    @Path("/order/create")
+    @Path("/order")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     OrderDto createOrder(@Valid @NotNull OrderDto orderDto);
@@ -28,8 +28,8 @@ public interface CheckoutApi {
     @Consumes({ "application/json" })
     void payment(@Valid @NotNull PaymentParamDto paymentParamDto);
 
-    @POST
-    @Path("/order/void")
+    @DELETE
+    @Path("/order")
     @Consumes({ "application/json" })
     void voidOrder(@Valid @NotNull OrderDto orderDto);
 }

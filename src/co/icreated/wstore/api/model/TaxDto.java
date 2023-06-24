@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
 public class TaxDto   {
   private @Valid String name;
-  private @Valid BigDecimal tax;
+  private @Valid BigDecimal taxAmt;
 
   /**
    **/
@@ -39,20 +39,20 @@ public class TaxDto   {
 
   /**
    **/
-  public TaxDto tax(BigDecimal tax) {
-    this.tax = tax;
+  public TaxDto taxAmt(BigDecimal taxAmt) {
+    this.taxAmt = taxAmt;
     return this;
   }
 
   
-  @JsonProperty("tax")
-  public BigDecimal getTax() {
-    return tax;
+  @JsonProperty("taxAmt")
+  public BigDecimal getTaxAmt() {
+    return taxAmt;
   }
 
-  @JsonProperty("tax")
-  public void setTax(BigDecimal tax) {
-    this.tax = tax;
+  @JsonProperty("taxAmt")
+  public void setTaxAmt(BigDecimal taxAmt) {
+    this.taxAmt = taxAmt;
   }
 
 
@@ -66,12 +66,12 @@ public class TaxDto   {
     }
     TaxDto tax = (TaxDto) o;
     return Objects.equals(this.name, tax.name) &&
-        Objects.equals(this.tax, tax.tax);
+        Objects.equals(this.taxAmt, tax.taxAmt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, tax);
+    return Objects.hash(name, taxAmt);
   }
 
   @Override
@@ -80,7 +80,7 @@ public class TaxDto   {
     sb.append("class TaxDto {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    tax: ").append(toIndentedString(tax)).append("\n");
+    sb.append("    taxAmt: ").append(toIndentedString(taxAmt)).append("\n");
     sb.append("}");
     return sb.toString();
   }
