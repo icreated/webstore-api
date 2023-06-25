@@ -8,7 +8,7 @@ import org.compiere.util.CCache;
 import org.compiere.util.Env;
 
 import co.icreated.wstore.model.WStore;
-import co.icreated.wstore.utils.QueryUtil;
+import co.icreated.wstore.utils.QueryTool;
 
 public enum ContextService {
   INSTANCE;
@@ -92,7 +92,7 @@ public enum ContextService {
   private static WStore getWebStore(int W_Store_ID) {
 
     String sql = "SELECT * FROM W_Store WHERE W_Store_ID = ?";
-    return QueryUtil.nativeFirst(sql, Map.of(1, W_Store_ID), rs -> {
+    return QueryTool.nativeFirst(sql, Map.of(1, W_Store_ID), rs -> {
       return new WStore(rs.getInt("W_Store_ID"), rs.getInt("AD_Client_ID"), rs.getInt("AD_Org_ID"),
           rs.getInt("salesRep_ID"), rs.getInt("M_PriceList_ID"), rs.getInt("M_Warehouse_ID"),
           rs.getString("name"), rs.getString("description"), rs.getString("help"),

@@ -11,7 +11,7 @@ import co.icreated.wstore.exception.WebStoreNotFoundException;
 import co.icreated.wstore.exception.WebStoreUnauthorizedException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.TokenHandler;
-import co.icreated.wstore.utils.QueryUtil;
+import co.icreated.wstore.utils.QueryTool;
 
 
 public class AuthService extends AbstractService {
@@ -92,7 +92,7 @@ public class AuthService extends AbstractService {
 
     sql = isEmail ? String.format(sql, "u.EMail") : String.format(sql, "u.Value");
 
-    return QueryUtil.nativeFirst(sql, Map.of(1, login.trim()), rs -> {
+    return QueryTool.nativeFirst(sql, Map.of(1, login.trim()), rs -> {
       boolean enabled = rs.getString(12).equals("Y") & rs.getString(14).equals("Y");
       boolean accountNonLocked = !rs.getString(7).equals(MBPartner.SOCREDITSTATUS_CreditStop);
 

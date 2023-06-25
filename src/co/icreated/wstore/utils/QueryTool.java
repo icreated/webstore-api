@@ -11,9 +11,9 @@ import java.util.logging.Level;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 
-public class QueryUtil {
+public class QueryTool {
 	
-	  static CLogger log = CLogger.getCLogger(QueryUtil.class);
+	  static CLogger log = CLogger.getCLogger(QueryTool.class);
 	
 	  public static <T> T nativeFirst(String sql, Map<Integer, Object> params,
 	      ThrowingFunction<ResultSet, T, Exception> function) {
