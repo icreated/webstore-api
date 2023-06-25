@@ -5,11 +5,11 @@ import java.util.function.Function;
 import org.compiere.util.CLogger;
 import org.compiere.util.Trx;
 
-public class TrxUtil {
+public class Transaction {
 
-  static CLogger log = CLogger.getCLogger(TrxUtil.class);
+  static CLogger log = CLogger.getCLogger(Transaction.class);
 
-  public static <T> T commit(Function<String, T> transaction) {
+  public static <T> T run(Function<String, T> transaction) {
 
     Trx trx = null;
     try {

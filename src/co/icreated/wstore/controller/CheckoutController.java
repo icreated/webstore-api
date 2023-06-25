@@ -18,7 +18,7 @@ import co.icreated.wstore.api.model.PaymentParamDto;
 import co.icreated.wstore.api.service.CheckoutApi;
 import co.icreated.wstore.service.OrderService;
 import co.icreated.wstore.service.PaymentService;
-import co.icreated.wstore.utils.TrxUtil;
+import co.icreated.wstore.utils.Transaction;
 
 @RolesAllowed({"USER"})
 public class CheckoutController implements CheckoutApi {
@@ -57,7 +57,7 @@ public class CheckoutController implements CheckoutApi {
     if (!orderService.orderBelongsToUser(order))
       throw new ForbiddenException("Forbidden access");
     
-    TrxUtil.commit(trxName -> {
+    Transaction.run(trxName -> {
         order.set_TrxName(trxName);
         return paymentService.createSimplePayment(order, type);
     });
@@ -70,7 +70,7 @@ public class CheckoutController implements CheckoutApi {
     if (orderDto.getId() <= 0) {
       throw new BadRequestException("Order id not defined");
     }
-    TrxUtil.commit(trxName -> {
+    Transaction.run(trxName -> {
         MOrder order = new MOrder(ctx, orderDto.getId(), trxName);
         if (!orderService.orderBelongsToUser(order))
           throw new ForbiddenException("Forbidden access");
