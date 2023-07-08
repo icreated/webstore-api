@@ -2,8 +2,11 @@ package co.icreated.wstore.service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.compiere.model.MPriceListVersion;
@@ -17,6 +20,7 @@ import co.icreated.wstore.api.model.PriceListProductDto;
 import co.icreated.wstore.api.model.ProductCategoryDto;
 import co.icreated.wstore.mapper.CatalogMapper;
 import co.icreated.wstore.utils.PQuery;
+import io.jsonwebtoken.lang.Collections;
 
 
 public class CatalogService extends AbstractService {
@@ -56,7 +60,7 @@ public class CatalogService extends AbstractService {
   public List<PriceListProductDto> getProducts(int M_Product_Category_ID,
       boolean isWebStoreFeatured) {
 
-    List<Object> params = List.of();
+    List<Object> params = new ArrayList();
     StringBuilder whereClause = new StringBuilder("isBOM='N' AND Discontinued='N'");
     if (M_Product_Category_ID > 0) {
       whereClause.append(" AND M_Product_Category_ID=?");
@@ -74,6 +78,7 @@ public class CatalogService extends AbstractService {
         .setOrderBy("Name") //
         .<MProduct>stream() //
         .map(product -> priceToDto(product, priceListVersionId)) //
+        .filter(Objects::nonNull) //
         .collect(Collectors.toList());
   }
 
@@ -91,11 +96,16 @@ public class CatalogService extends AbstractService {
         .setOrderBy("Name") //
         .<MProduct>stream() //
         .map(product -> priceToDto(product, priceListVersionId)) //
+        .filter(Objects::nonNull) //
         .collect(Collectors.toList());
   }
 
 
   public List<PriceListProductDto> getProductsById(List<Object> ids) {
+	  
+	if (Collections.isEmpty(ids)) {
+		return List.of();
+	}  
 
     StringBuilder whereClause = new StringBuilder("M_Product_ID IN (") //
         .append(ids.stream().map(v -> "?").collect(Collectors.joining(","))) //
@@ -109,6 +119,7 @@ public class CatalogService extends AbstractService {
         .setOrderBy("Name") //
         .<MProduct>stream() //
         .map(product -> priceToDto(product, priceListVersionId)) //
+        .filter(Objects::nonNull) //
         .collect(Collectors.toList());
   }
 
@@ -116,6 +127,10 @@ public class CatalogService extends AbstractService {
   private PriceListProductDto priceToDto(MProduct product, int priceListVersionId) {
     MProductPrice productPrice =
         MProductPrice.get(ctx, priceListVersionId, product.getM_Product_ID(), null);
+    if (productPrice == null) {
+    	log.log(Level.WARNING, "Price not defined", product.getName());
+    	return null;
+    }
     return CatalogMapper.INSTANCE.toDto(product, productPrice.getPriceStd());
   }
 
