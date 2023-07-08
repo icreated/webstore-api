@@ -64,21 +64,4 @@ public class CheckoutController implements CheckoutApi {
   }
 
 
-
-  @Override
-  public void voidOrder(@Valid @NotNull OrderDto orderDto) {
-    if (orderDto.getId() <= 0) {
-      throw new BadRequestException("Order id not defined");
-    }
-    Transaction.run(trxName -> {
-        MOrder order = new MOrder(ctx, orderDto.getId(), trxName);
-        if (!orderService.orderBelongsToUser(order))
-          throw new ForbiddenException("Forbidden access");
-        return orderService.processOrder(MOrder.ACTION_Void, order);
-    });
-
-  }
-
-
-
 }

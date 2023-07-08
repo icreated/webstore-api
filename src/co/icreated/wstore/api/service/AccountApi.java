@@ -78,4 +78,8 @@ public interface AccountApi {
     @Path("/addresses")
     @Consumes({ "application/json" })
     void updateAddress(@Valid @NotNull AddressDto addressDto);
+
+    @DELETE
+    @Path("/orders/{id}")
+    void voidOrder(@PathParam("id") Integer id);
 }

@@ -51,6 +51,7 @@ public class OrderDto   {
 
   
   @JsonProperty("id")
+  @NotNull
   public Integer getId() {
     return id;
   }

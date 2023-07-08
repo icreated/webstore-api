@@ -8,6 +8,8 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 
@@ -33,6 +35,7 @@ import co.icreated.wstore.security.TokenHandler;
 import co.icreated.wstore.service.AccountService;
 import co.icreated.wstore.service.AuthService;
 import co.icreated.wstore.service.OrderService;
+import co.icreated.wstore.utils.Transaction;
 
 
 @RolesAllowed({"ROLE_USER"})
@@ -168,6 +171,21 @@ public class AccountController implements AccountApi {
     }
     return document.createPDF();
   }
+
+
+@Override
+public void voidOrder(Integer id) {
+    if (id <= 0) {
+        throw new BadRequestException("Order id not defined");
+      }
+      Transaction.run(trxName -> {
+          MOrder order = new MOrder(ctx, id, trxName);
+          if (!orderService.orderBelongsToUser(order))
+            throw new ForbiddenException("Forbidden access");
+          return orderService.processOrder(MOrder.ACTION_Void, order);
+      });
+	
+}
 
 
 

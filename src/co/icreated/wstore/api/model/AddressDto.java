@@ -48,6 +48,7 @@ public class AddressDto   {
 
   
   @JsonProperty("name")
+  @NotNull
   public String getName() {
     return name;
   }
@@ -84,6 +85,7 @@ public class AddressDto   {
 
   
   @JsonProperty("location")
+  @NotNull
   public LocationDto getLocation() {
     return location;
   }

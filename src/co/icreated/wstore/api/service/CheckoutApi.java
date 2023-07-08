@@ -27,9 +27,4 @@ public interface CheckoutApi {
     @Path("/payment")
     @Consumes({ "application/json" })
     void payment(@Valid @NotNull PaymentParamDto paymentParamDto);
-
-    @DELETE
-    @Path("/order")
-    @Consumes({ "application/json" })
-    void voidOrder(@Valid @NotNull OrderDto orderDto);
 }

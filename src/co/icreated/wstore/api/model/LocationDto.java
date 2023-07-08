@@ -50,6 +50,7 @@ public class LocationDto   {
 
   
   @JsonProperty("address1")
+  @NotNull
   public String getAddress1() {
     return address1;
   }
@@ -86,6 +87,7 @@ public class LocationDto   {
 
   
   @JsonProperty("postal")
+  @NotNull
   public String getPostal() {
     return postal;
   }
@@ -104,6 +106,7 @@ public class LocationDto   {
 
   
   @JsonProperty("city")
+  @NotNull
   public String getCity() {
     return city;
   }
@@ -122,6 +125,7 @@ public class LocationDto   {
 
   
   @JsonProperty("country")
+  @NotNull
   public CountryDto getCountry() {
     return country;
   }
