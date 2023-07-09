@@ -49,7 +49,6 @@ public class CommonService extends AbstractService {
   public List<IdNameBeanDto> getCountries() {
 
     return new PQuery(ctx, MCountry.Table_Name, "", null) //
-        .setClient_ID() //
         .setOnlyActiveRecords(true) //
         .setOrderBy("Name") //
         .<MCountry>stream() //
