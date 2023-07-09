@@ -177,14 +177,23 @@ public class AccountController implements AccountApi {
 public void voidOrder(Integer id) {
     if (id <= 0) {
         throw new BadRequestException("Order id not defined");
-      }
-      Transaction.run(trxName -> {
-          MOrder order = new MOrder(ctx, id, trxName);
-          if (!orderService.orderBelongsToUser(order))
-            throw new ForbiddenException("Forbidden access");
-          return orderService.processOrder(MOrder.ACTION_Void, order);
-      });
+	  }
+	  Transaction.run(trxName -> {
+	      MOrder order = new MOrder(ctx, id, trxName);
+	      if (!orderService.orderBelongsToUser(order))
+	        throw new ForbiddenException("Forbidden access");
+	      return orderService.processOrder(MOrder.ACTION_Void, order);
+	  });
 	
+}
+
+
+@Override
+public AddressDto getAddress(Integer id) {
+    if (id <= 0) {
+        throw new BadRequestException("Address id not defined");
+	  }
+	return accountService.getAddress(id);
 }
 
 

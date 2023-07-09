@@ -40,6 +40,11 @@ public interface AccountApi {
     void deleteAddress(@PathParam("id") Integer id);
 
     @GET
+    @Path("/addresses/{id}")
+    @Produces({ "application/json" })
+    AddressDto getAddress(@PathParam("id") Integer id);
+
+    @GET
     @Path("/addresses")
     @Produces({ "application/json" })
     List<AddressDto> getAddresses();
