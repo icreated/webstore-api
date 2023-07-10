@@ -1,6 +1,6 @@
 package co.icreated.wstore.api.service;
 
-import co.icreated.wstore.api.model.IdNameBeanDto;
+import co.icreated.wstore.api.model.IdNamePairDto;
 import co.icreated.wstore.api.model.ShipperDto;
 import co.icreated.wstore.api.model.TokenDto;
 
@@ -21,7 +21,7 @@ public interface CommonApi {
     @GET
     @Path("/countries")
     @Produces({ "application/json" })
-    List<IdNameBeanDto> getCountries();
+    List<IdNamePairDto> getCountries();
 
     @GET
     @Path("/shippers")

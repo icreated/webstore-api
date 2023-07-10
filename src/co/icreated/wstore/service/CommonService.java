@@ -8,7 +8,7 @@ import org.compiere.model.MCountry;
 import org.compiere.model.MShipper;
 import org.compiere.model.MUser;
 
-import co.icreated.wstore.api.model.IdNameBeanDto;
+import co.icreated.wstore.api.model.IdNamePairDto;
 import co.icreated.wstore.api.model.ShipperDto;
 import co.icreated.wstore.mapper.CommonMapper;
 import co.icreated.wstore.utils.PQuery;
@@ -46,7 +46,7 @@ public class CommonService extends AbstractService {
   }
 
 
-  public List<IdNameBeanDto> getCountries() {
+  public List<IdNamePairDto> getCountries() {
 
     return new PQuery(ctx, MCountry.Table_Name, "", null) //
         .setOnlyActiveRecords(true) //

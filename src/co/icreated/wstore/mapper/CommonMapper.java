@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import co.icreated.wstore.api.model.IdNameBeanDto;
+import co.icreated.wstore.api.model.IdNamePairDto;
 import co.icreated.wstore.api.model.ShipperDto;
 
 
@@ -20,6 +20,6 @@ public interface CommonMapper {
   public ShipperDto toDto(MShipper shipper);
 
   @Mapping(source = "c_Country_ID", target = "id")
-  public IdNameBeanDto toDto(MCountry country);
+  public IdNamePairDto toDto(MCountry country);
 
 }

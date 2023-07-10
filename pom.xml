@@ -28,7 +28,7 @@
 			<artifactId>tycho-compiler-plugin</artifactId>
   			<configuration>
         		<release>11</release>
-                <annotationProcessorPaths> 
+                <annotationProcessorPaths>
                     <path>
                         <groupId>org.mapstruct</groupId>
                         <artifactId>mapstruct-processor</artifactId>

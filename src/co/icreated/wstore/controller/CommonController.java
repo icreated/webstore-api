@@ -8,7 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Context;
 
-import co.icreated.wstore.api.model.IdNameBeanDto;
+import co.icreated.wstore.api.model.IdNamePairDto;
 import co.icreated.wstore.api.model.ShipperDto;
 import co.icreated.wstore.api.model.TokenDto;
 import co.icreated.wstore.api.service.CommonApi;
@@ -26,7 +26,7 @@ public class CommonController implements CommonApi {
 
 
   @Override
-  public List<IdNameBeanDto> getCountries() {
+  public List<IdNamePairDto> getCountries() {
     return commonService.getCountries();
   }
 
