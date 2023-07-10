@@ -76,6 +76,7 @@ public interface AccountApi {
 
     @PUT
     @Path("/info")
+    @Consumes({ "application/json" })
     @Produces({ "application/json" })
     TokenDto updateAccount(@Valid @NotNull AccountInfoDto accountInfoDto);
 

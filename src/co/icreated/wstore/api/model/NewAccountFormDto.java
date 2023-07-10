@@ -18,6 +18,7 @@ public class NewAccountFormDto   {
   private @Valid String name;
   private @Valid String email;
   private @Valid String password;
+  private @Valid String confirmPassword;
 
   /**
    **/
@@ -73,6 +74,24 @@ public class NewAccountFormDto   {
     this.password = password;
   }
 
+  /**
+   **/
+  public NewAccountFormDto confirmPassword(String confirmPassword) {
+    this.confirmPassword = confirmPassword;
+    return this;
+  }
+
+  
+  @JsonProperty("confirmPassword")
+  public String getConfirmPassword() {
+    return confirmPassword;
+  }
+
+  @JsonProperty("confirmPassword")
+  public void setConfirmPassword(String confirmPassword) {
+    this.confirmPassword = confirmPassword;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -85,12 +104,13 @@ public class NewAccountFormDto   {
     NewAccountFormDto newAccountForm = (NewAccountFormDto) o;
     return Objects.equals(this.name, newAccountForm.name) &&
         Objects.equals(this.email, newAccountForm.email) &&
-        Objects.equals(this.password, newAccountForm.password);
+        Objects.equals(this.password, newAccountForm.password) &&
+        Objects.equals(this.confirmPassword, newAccountForm.confirmPassword);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, email, password);
+    return Objects.hash(name, email, password, confirmPassword);
   }
 
   @Override
@@ -101,6 +121,7 @@ public class NewAccountFormDto   {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    confirmPassword: ").append(toIndentedString(confirmPassword)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -38,7 +38,7 @@ public interface CatalogApi {
     List<PriceListProductDto> getProductsFeatured();
 
     @GET
-    @Path("/products/search/{searchString}")
+    @Path("/products/search")
     @Produces({ "application/json" })
-    List<PriceListProductDto> getProductsSearch(@PathParam("searchString") String searchString);
+    List<PriceListProductDto> getProductsSearch(@QueryParam("searchString") @NotNull   String searchString);
 }
