@@ -36,6 +36,7 @@ public class PriceListProductDto   {
 
   
   @JsonProperty("id")
+  @NotNull
   public Integer getId() {
     return id;
   }
@@ -72,6 +73,7 @@ public class PriceListProductDto   {
 
   
   @JsonProperty("name")
+  @NotNull
   public String getName() {
     return name;
   }
@@ -162,6 +164,7 @@ public class PriceListProductDto   {
 
   
   @JsonProperty("price")
+  @NotNull
   public BigDecimal getPrice() {
     return price;
   }
@@ -180,6 +183,7 @@ public class PriceListProductDto   {
 
   
   @JsonProperty("qty")
+  @NotNull
   public Integer getQty() {
     return qty;
   }
@@ -198,6 +202,7 @@ public class PriceListProductDto   {
 
   
   @JsonProperty("line")
+  @NotNull
   public Integer getLine() {
     return line;
   }

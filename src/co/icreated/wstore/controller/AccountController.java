@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.BadRequestException;
@@ -31,6 +32,7 @@ import co.icreated.wstore.api.service.AccountApi;
 import co.icreated.wstore.exception.WebStoreBadRequestException;
 import co.icreated.wstore.exception.WebStoreInternalServerException;
 import co.icreated.wstore.model.SessionUser;
+import co.icreated.wstore.security.Status;
 import co.icreated.wstore.security.TokenHandler;
 import co.icreated.wstore.service.AccountService;
 import co.icreated.wstore.service.AuthService;
@@ -56,8 +58,7 @@ public class AccountController implements AccountApi {
 
   @Context
   SecurityContext securityContext;
-
-
+  
 
   @Override
   public TokenDto changePassword(@Valid @NotNull PasswordDto passwordDto) {
@@ -90,12 +91,14 @@ public class AccountController implements AccountApi {
 
 
   @Override
+  @Status(Status.OK)
   public void updateAddress(@Valid @NotNull AddressDto addressDto) {
     accountService.updateAddress(addressDto);
   }
 
 
   @Override
+  @Status(Status.OK)
   public void deleteAddress(Integer id) {
     accountService.deleteAddress(id);
   }
@@ -174,6 +177,7 @@ public class AccountController implements AccountApi {
 
 
 @Override
+@Status(Status.OK)
 public void voidOrder(Integer id) {
     if (id <= 0) {
         throw new BadRequestException("Order id not defined");

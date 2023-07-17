@@ -34,6 +34,7 @@ import co.icreated.wstore.factory.PaymentServiceFactory;
 import co.icreated.wstore.security.CORSFilter;
 import co.icreated.wstore.security.CheckRequestFilter;
 import co.icreated.wstore.security.JwtAuthenticationFilter;
+import co.icreated.wstore.security.StatusFilter;
 import co.icreated.wstore.service.AccountService;
 import co.icreated.wstore.service.AuthService;
 import co.icreated.wstore.service.CatalogService;
@@ -58,6 +59,7 @@ public class WStoreApplication extends ResourceConfig {
     register(CheckRequestFilter.class);
     register(JwtAuthenticationFilter.class);
     register(AuthController.class);
+    register(StatusFilter.class);
 
     // register(new LoggingFilter());
 
