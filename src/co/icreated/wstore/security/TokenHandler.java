@@ -29,10 +29,10 @@ public final class TokenHandler {
     String username = null;
     try {
       username = Jwts.parser() //
-    		  .setSigningKey(SECRET) //
-    		  .parseClaimsJws(token) //
-    		  .getBody() //
-    		  .getSubject();
+          .setSigningKey(SECRET) //
+          .parseClaimsJws(token) //
+          .getBody() //
+          .getSubject();
     } catch (SignatureException e) {
       throw new WebStoreUnauthorizedException("Error Decoding JWT Token. Renew it.");
     }
@@ -43,10 +43,10 @@ public final class TokenHandler {
   public String createTokenForUser(SessionUser user) {
 
     return Jwts.builder() //
-    		.setSubject(user.getUsername()) //
-    		.claim("name", user.getName()) //
-    		.signWith(SECRET) //
-    		.compact();
+        .setSubject(user.getUsername()) //
+        .claim("name", user.getName()) //
+        .signWith(SECRET) //
+        .compact();
   }
 
 

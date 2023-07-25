@@ -103,10 +103,10 @@ public class CatalogService extends AbstractService {
 
 
   public List<PriceListProductDto> getProductsById(List<Object> ids) {
-	  
-	if (Collections.isEmpty(ids)) {
-		return List.of();
-	}  
+
+    if (Collections.isEmpty(ids)) {
+      return List.of();
+    }
 
     StringBuilder whereClause = new StringBuilder("M_Product_ID IN (") //
         .append(ids.stream().map(v -> "?").collect(Collectors.joining(","))) //
@@ -129,8 +129,8 @@ public class CatalogService extends AbstractService {
     MProductPrice productPrice =
         MProductPrice.get(ctx, priceListVersionId, product.getM_Product_ID(), null);
     if (productPrice == null) {
-    	log.log(Level.WARNING, "Price not defined", product.getName());
-    	return null;
+      log.log(Level.WARNING, "Price not defined", product.getName());
+      return null;
     }
     return CatalogMapper.INSTANCE.toDto(product, productPrice.getPriceStd());
   }

@@ -14,18 +14,19 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 public class StatusFilter implements ContainerResponseFilter {
-	
-	  @Context
-	  private ResourceInfo resourceInfo;
+
+  @Context
+  private ResourceInfo resourceInfo;
 
   @Override
-  public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) throws IOException {
-	  
-	    Class<?> clazz = resourceInfo.getResourceClass();
-	    Method method = resourceInfo.getResourceMethod();
-	    // Replacing 204 with custom Status
-	    if (method.isAnnotationPresent(Status.class) && containerResponseContext.getStatus() == 204) {
-	    	containerResponseContext.setStatus(method.getAnnotation(Status.class).value());
-	    }
+  public void filter(ContainerRequestContext containerRequestContext,
+      ContainerResponseContext containerResponseContext) throws IOException {
+
+    Class<?> clazz = resourceInfo.getResourceClass();
+    Method method = resourceInfo.getResourceMethod();
+    // Replacing 204 with custom Status
+    if (method.isAnnotationPresent(Status.class) && containerResponseContext.getStatus() == 204) {
+      containerResponseContext.setStatus(method.getAnnotation(Status.class).value());
+    }
   }
 }

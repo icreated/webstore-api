@@ -15,43 +15,71 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("PaymentParam")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen")
 public class PaymentParamDto   {
-  private @Valid String type;
-  private @Valid Integer orderId;
+  public enum TypeEnum {
+
+    CHECK(String.valueOf("check")), DEPOSIT(String.valueOf("deposit"));
+
+
+    private String value;
+
+    TypeEnum (String v) {
+        value = v;
+    }
+
+    public String value() {
+        return value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return String.valueOf(value);
+    }
+
+    /**
+     * Convert a String into String, as specified in the
+     * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">See JAX RS 2.0 Specification, section 3.2, p. 12</a>
+     */
+	public static TypeEnum fromString(String s) {
+        for (TypeEnum b : TypeEnum.values()) {
+            // using Objects.toString() to be safe if value type non-object type
+            // because types like 'int' etc. will be auto-boxed
+            if (java.util.Objects.toString(b.value).equals(s)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected string value '" + s + "'");
+	}
+	
+    @JsonCreator
+    public static TypeEnum fromValue(String value) {
+        for (TypeEnum b : TypeEnum.values()) {
+            if (b.value.equals(value)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+}
+
+  private @Valid TypeEnum type;
 
   /**
    **/
-  public PaymentParamDto type(String type) {
+  public PaymentParamDto type(TypeEnum type) {
     this.type = type;
     return this;
   }
 
   
   @JsonProperty("type")
-  public String getType() {
+  public TypeEnum getType() {
     return type;
   }
 
   @JsonProperty("type")
-  public void setType(String type) {
+  public void setType(TypeEnum type) {
     this.type = type;
-  }
-
-  /**
-   **/
-  public PaymentParamDto orderId(Integer orderId) {
-    this.orderId = orderId;
-    return this;
-  }
-
-  
-  @JsonProperty("orderId")
-  public Integer getOrderId() {
-    return orderId;
-  }
-
-  @JsonProperty("orderId")
-  public void setOrderId(Integer orderId) {
-    this.orderId = orderId;
   }
 
 
@@ -64,13 +92,12 @@ public class PaymentParamDto   {
       return false;
     }
     PaymentParamDto paymentParam = (PaymentParamDto) o;
-    return Objects.equals(this.type, paymentParam.type) &&
-        Objects.equals(this.orderId, paymentParam.orderId);
+    return Objects.equals(this.type, paymentParam.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, orderId);
+    return Objects.hash(type);
   }
 
   @Override
@@ -79,7 +106,6 @@ public class PaymentParamDto   {
     sb.append("class PaymentParamDto {\n");
     
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    orderId: ").append(toIndentedString(orderId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

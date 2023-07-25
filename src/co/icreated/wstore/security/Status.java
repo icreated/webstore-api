@@ -7,7 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 @NameBinding
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Status {
-  int OK = 200;	
+  int OK = 200;
   int CREATED = 201;
+
   int value();
 }

@@ -10,11 +10,18 @@ import java.util.stream.Stream;
 import javax.ws.rs.core.SecurityContext;
 
 import org.apache.commons.lang3.StringUtils;
+import org.compiere.model.MBPBankAccount;
+import org.compiere.model.MBPartner;
+import org.compiere.model.MBankAccount;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPayment;
+import org.compiere.model.MUser;
+import org.compiere.model.Query;
+import org.compiere.model.X_C_Payment;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
@@ -83,6 +90,7 @@ public class OrderService extends AbstractService {
       order.setSendEMail(true);
       order.setDocAction(MOrder.DOCACTION_Prepare);
       order.save();
+
 
       for (DocumentLineDto wbl : orderDto.getLines()) {
         MOrderLine ol = new MOrderLine(order);
@@ -199,7 +207,6 @@ public class OrderService extends AbstractService {
   }
 
 
-
   public List<DocumentDto> getInvoices(int C_Order_ID) {
     return new PQuery(ctx, MInvoice.Table_Name, "C_Order_ID=?", null) //
         .setClient_ID() //
@@ -210,6 +217,60 @@ public class OrderService extends AbstractService {
         .collect(Collectors.toList());
   }
 
+
+  public MPayment createPayment(MOrder order, String tenderType) {
+
+    MBPBankAccount bpBankAccount = getBankAccount(order);
+
+    MBankAccount bankAccount =
+        new Query(order.getCtx(), MBankAccount.Table_Name, "AD_Org_ID=? AND C_Currency_ID=?",
+            order.get_TrxName()).setParameters(order.getAD_Org_ID(), order.getC_Currency_ID())
+            .setOrderBy("IsDefault DESC").first();
+
+    MPayment payment = new MPayment(ctx, 0, order.get_TrxName());
+    payment.setIsSelfService(true);
+    payment.setAmount(0, order.getGrandTotal());
+    payment.setIsOnline(false);
+    payment.setC_DocType_ID(true);
+    payment.setTrxType(X_C_Payment.TRXTYPE_Sales);
+    payment.setTenderType(tenderType);
+    payment.setC_Order_ID(order.getC_Order_ID());
+    payment.setC_BankAccount_ID(bankAccount.getC_BankAccount_ID());
+    payment.setC_BP_BankAccount_ID(bpBankAccount.getC_BP_BankAccount_ID());
+    payment.setBP_BankAccount(bpBankAccount);
+    payment.save();
+
+    boolean isOrderCompleted = MOrder.STATUS_Completed.equals(order.getDocStatus())
+        || MOrder.STATUS_Closed.equals(order.getDocStatus());
+
+    if (!isOrderCompleted) {
+      order.setPaymentRule(tenderType);
+      order.setC_Payment_ID(payment.getC_Payment_ID());
+      order.setDocAction(MOrder.DOCACTION_Prepare);
+      order.processIt(MOrder.DOCACTION_Prepare);
+      order.saveEx();
+
+      payment.setC_Order_ID(order.getC_Order_ID());
+      payment.save();
+    }
+    return payment;
+  }
+
+
+  public MBPBankAccount getBankAccount(MOrder order) {
+    MBPartner bp = MBPartner.get(ctx, order.getC_BPartner_ID(), order.get_TrxName());
+    // Find Bank Account for exact User
+    return Stream.of(bp.getBankAccounts(false))
+        .filter(ba -> ba.getAD_User_ID() == getSessionUser().getAD_User_ID()).findAny()
+        .orElseGet(() -> {
+          MUser user = new MUser(ctx, getSessionUser().getAD_User_ID(), order.get_TrxName());
+          MLocation location = MLocation.get(ctx, order.getBill_Location_ID(), order.get_TrxName());
+          MBPBankAccount bankAccount = new MBPBankAccount(ctx, bp, user, location);
+          bankAccount.setAD_User_ID(user.getAD_User_ID());
+          bankAccount.save(order.get_TrxName());
+          return bankAccount;
+        });
+  }
 
 
   public boolean orderBelongsToUser(MOrder order) {

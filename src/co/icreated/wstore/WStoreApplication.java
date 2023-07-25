@@ -22,7 +22,6 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import co.icreated.wstore.controller.AccountController;
 import co.icreated.wstore.controller.AuthController;
 import co.icreated.wstore.controller.CatalogController;
-import co.icreated.wstore.controller.CheckoutController;
 import co.icreated.wstore.controller.CommonController;
 import co.icreated.wstore.factory.AccountServiceFactory;
 import co.icreated.wstore.factory.AuthServiceFactory;
@@ -30,7 +29,6 @@ import co.icreated.wstore.factory.CatalogServiceFactory;
 import co.icreated.wstore.factory.CommonServiceFactory;
 import co.icreated.wstore.factory.ContextFactory;
 import co.icreated.wstore.factory.OrderServiceFactory;
-import co.icreated.wstore.factory.PaymentServiceFactory;
 import co.icreated.wstore.security.CORSFilter;
 import co.icreated.wstore.security.CheckRequestFilter;
 import co.icreated.wstore.security.JwtAuthenticationFilter;
@@ -40,7 +38,6 @@ import co.icreated.wstore.service.AuthService;
 import co.icreated.wstore.service.CatalogService;
 import co.icreated.wstore.service.CommonService;
 import co.icreated.wstore.service.OrderService;
-import co.icreated.wstore.service.PaymentService;
 
 
 
@@ -53,7 +50,6 @@ public class WStoreApplication extends ResourceConfig {
     register(CatalogController.class);
 
     register(CommonController.class);
-    register(CheckoutController.class);
 
     register(CORSFilter.class);
     register(CheckRequestFilter.class);
@@ -110,14 +106,6 @@ public class WStoreApplication extends ResourceConfig {
         bindFactory(OrderServiceFactory.class).to(OrderService.class);
       }
     });
-
-    register(new AbstractBinder() {
-      @Override
-      protected void configure() {
-        bindFactory(PaymentServiceFactory.class).to(PaymentService.class);
-      }
-    });
-
 
   }
 

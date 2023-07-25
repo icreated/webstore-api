@@ -6,7 +6,6 @@ import java.util.Properties;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.BadRequestException;
@@ -27,6 +26,7 @@ import co.icreated.wstore.api.model.DocumentDto;
 import co.icreated.wstore.api.model.NewAccountFormDto;
 import co.icreated.wstore.api.model.OrderDto;
 import co.icreated.wstore.api.model.PasswordDto;
+import co.icreated.wstore.api.model.PaymentParamDto;
 import co.icreated.wstore.api.model.TokenDto;
 import co.icreated.wstore.api.service.AccountApi;
 import co.icreated.wstore.exception.WebStoreBadRequestException;
@@ -58,7 +58,7 @@ public class AccountController implements AccountApi {
 
   @Context
   SecurityContext securityContext;
-  
+
 
   @Override
   public TokenDto changePassword(@Valid @NotNull PasswordDto passwordDto) {
@@ -162,7 +162,7 @@ public class AccountController implements AccountApi {
 
 
   @Override
-  public File getOrderFile(String type, Integer id) {
+  public File downloadDocument(String type, Integer id) {
     DocAction document;
 
     if (type == null || type.equals("order")) {
@@ -176,30 +176,58 @@ public class AccountController implements AccountApi {
   }
 
 
-@Override
-@Status(Status.OK)
-public void voidOrder(Integer id) {
+  @Override
+  @Status(Status.OK)
+  public void voidOrder(Integer id) {
     if (id <= 0) {
-        throw new BadRequestException("Order id not defined");
-	  }
-	  Transaction.run(trxName -> {
-	      MOrder order = new MOrder(ctx, id, trxName);
-	      if (!orderService.orderBelongsToUser(order))
-	        throw new ForbiddenException("Forbidden access");
-	      return orderService.processOrder(MOrder.ACTION_Void, order);
-	  });
-	
-}
+      throw new BadRequestException("Order id not defined");
+    }
+    Transaction.run(trxName -> {
+      MOrder order = new MOrder(ctx, id, trxName);
+      if (!orderService.orderBelongsToUser(order))
+        throw new ForbiddenException("Forbidden access");
+      return orderService.processOrder(MOrder.ACTION_Void, order);
+    });
+
+  }
 
 
-@Override
-public AddressDto getAddress(Integer id) {
+  @Override
+  public AddressDto getAddress(Integer id) {
     if (id <= 0) {
-        throw new BadRequestException("Address id not defined");
-	  }
-	return accountService.getAddress(id);
-}
+      throw new BadRequestException("Address id not defined");
+    }
+    return accountService.getAddress(id);
+  }
 
+
+  @Override
+  public OrderDto createOrder(@Valid @NotNull OrderDto orderDto) {
+    if (orderDto.getShipAddress() == null || orderDto.getBillAddress() == null
+        || orderDto.getShipper() == null || orderDto.getLines() == null)
+      throw new BadRequestException("Missing order data");
+
+    return orderService.createOrder(orderDto);
+  }
+
+
+  @Override
+  @Status(Status.OK)
+  public void payment(Integer id, @Valid @NotNull PaymentParamDto paymentParamDto) {
+    String type = paymentParamDto.getType() == null
+        || paymentParamDto.getType().equals(PaymentParamDto.TypeEnum.CHECK)
+            ? MOrder.PAYMENTRULE_Check
+            : MOrder.PAYMENTRULE_DirectDeposit;
+
+    MOrder order = new MOrder(ctx, id, null);
+    if (!orderService.orderBelongsToUser(order))
+      throw new ForbiddenException("Forbidden access");
+
+    Transaction.run(trxName -> {
+      order.set_TrxName(trxName);
+      return orderService.createPayment(order, type);
+    });
+  }
 
 
 }

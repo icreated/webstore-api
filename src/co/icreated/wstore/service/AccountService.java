@@ -137,11 +137,11 @@ public class AccountService extends AbstractService {
         .filter(bpl -> bpl.isActive()) //
         .map(AccountMapper.INSTANCE::toDto).collect(Collectors.toList());
   }
-  
-  
+
+
   public AddressDto getAddress(int C_BPartner_Location_ID) {
-	  MBPartnerLocation bpl = new MBPartnerLocation(ctx, C_BPartner_Location_ID, null);
-	  return AccountMapper.INSTANCE.toDto(bpl);
+    MBPartnerLocation bpl = new MBPartnerLocation(ctx, C_BPartner_Location_ID, null);
+    return AccountMapper.INSTANCE.toDto(bpl);
   }
 
 

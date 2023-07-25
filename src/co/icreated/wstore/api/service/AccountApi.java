@@ -7,6 +7,7 @@ import java.io.File;
 import co.icreated.wstore.api.model.NewAccountFormDto;
 import co.icreated.wstore.api.model.OrderDto;
 import co.icreated.wstore.api.model.PasswordDto;
+import co.icreated.wstore.api.model.PaymentParamDto;
 import co.icreated.wstore.api.model.TokenDto;
 
 import javax.ws.rs.*;
@@ -35,9 +36,20 @@ public interface AccountApi {
     @Produces({ "application/json" })
     AddressDto createAddress(@Valid @NotNull AddressDto addressDto);
 
+    @POST
+    @Path("/orders")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    OrderDto createOrder(@Valid @NotNull OrderDto orderDto);
+
     @DELETE
     @Path("/addresses/{id}")
     void deleteAddress(@PathParam("id") Integer id);
+
+    @GET
+    @Path("/pdf/{type}/{id}")
+    @Produces({ "application/pdf" })
+    File downloadDocument(@PathParam("type") String type,@PathParam("id") Integer id);
 
     @GET
     @Path("/addresses/{id}")
@@ -60,14 +72,14 @@ public interface AccountApi {
     OrderDto getOrder(@PathParam("id") Integer id);
 
     @GET
-    @Path("/pdf/{type}/{id}")
-    @Produces({ "application/pdf" })
-    File getOrderFile(@PathParam("type") String type,@PathParam("id") Integer id);
-
-    @GET
     @Path("/orders")
     @Produces({ "application/json" })
     List<DocumentDto> getOrders();
+
+    @POST
+    @Path("/orders/{id}/payment")
+    @Consumes({ "application/json" })
+    void payment(@PathParam("id") Integer id,@Valid @NotNull PaymentParamDto paymentParamDto);
 
     @POST
     @Consumes({ "application/json" })
