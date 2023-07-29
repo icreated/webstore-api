@@ -99,5 +99,6 @@ public interface AccountApi {
 
     @DELETE
     @Path("/orders/{id}")
-    void voidOrder(@PathParam("id") Integer id);
+    @Produces({ "application/json" })
+    OrderDto voidOrder(@PathParam("id") Integer id);
 }

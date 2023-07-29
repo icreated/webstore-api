@@ -7,11 +7,14 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: '3.0'
 servers:
+  - url: http://localhost:3000
+    description: Json Server
   - url: http://localhost:8080/services/api
+    description: WebStore API
 security:
   - bearerAuth: []
 paths:
-  /account/orders:  
+  /account/orders:
     get:
       tags:
         - Account
@@ -26,8 +29,30 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Document'        
-  /account/orders/{id}:                   
+                  $ref: '#/components/schemas/Document'
+    post:
+      tags:
+        - Account
+      summary: Order Creation
+      description: Create order
+      operationId: createOrder
+      requestBody:
+        description: Order Form
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        '200':
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '500':
+          description: Missing address or shipper or lines
+  /account/orders/{id}:
     get:
       tags:
         - Account
@@ -49,6 +74,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+    delete:
+      tags:
+        - Account
+      summary: Void order
+      description: Void order
+      operationId: voidOrder
+      parameters:
+        - name: id
+          in: path
+          description: C_Order_ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  /account/orders/{id}/payment:
+    post:
+      tags:
+        - Account
+      summary: Payment Creation
+      description: Create simple payment
+      operationId: payment
+      parameters:
+        - name: id
+          in: path
+          description: C_Order_ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: Payment Param
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentParam'
+        required: true
+      responses:
+        '200':
+          description: Order processed
+        '403':
+          description: Order forbidden
+        '500':
+          description: Order not processed
   /account:
     post:
       tags:
@@ -69,11 +144,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'            
+                $ref: '#/components/schemas/Token'
         '400':
           description: Missing Account Info or Email
 
-  /account/addresses:   
+  /account/addresses:
     get:
       tags:
         - Account
@@ -108,7 +183,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'                  
+                $ref: '#/components/schemas/Address'
+  /account/addresses/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: C_BPartner_Location_ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+    get:
+      tags:
+        - Account
+      summary: Get Address
+      description: Get address
+      operationId: getAddress
+      responses:
+        '200':
+          description: Address found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
     put:
       tags:
         - Account
@@ -125,24 +222,15 @@ paths:
       responses:
         '200':
           description: Address updated
-  /account/addresses/{id}:            
     delete:
       tags:
         - Account
       summary: Deactivating address
       description: Deactivating address
       operationId: deleteAddress
-      parameters:
-        - name: id
-          in: path
-          description: C_BPartner_Location_ID
-          required: true
-          schema:
-            type: integer
-            format: int32
       responses:
         '200':
-          description: Address deactivated                              
+          description: Address deactivated
   /account/password:
     put:
       tags:
@@ -163,19 +251,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'          
+                $ref: '#/components/schemas/Token'
         '202':
           description: Old password not correct
         '500':
           description: Password not changed
-    
+
   /account/pdf/{type}/{id}:
     get:
       tags:
         - Account
       summary: Order Invoice PDF
       description: Get PDF File
-      operationId: getOrderFile
+      operationId: downloadDocument
       parameters:
         - name: type
           in: path
@@ -225,7 +313,7 @@ paths:
       requestBody:
         description: Account Form
         content:
-          '*/*':
+          application/json:
             schema:
               $ref: '#/components/schemas/AccountInfo'
         required: true
@@ -235,7 +323,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'                
+                $ref: '#/components/schemas/Token'
   /auth/login:
     post:
       tags:
@@ -252,7 +340,7 @@ paths:
         required: true
       responses:
         '200':
-          description: JWT Token      
+          description: JWT Token
           content:
             application/json:
               schema:
@@ -340,7 +428,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PriceListProduct'
-  /catalog/products/search/{searchString}:
+  /catalog/products/search:
     get:
       tags:
         - Catalog
@@ -349,7 +437,7 @@ paths:
       operationId: getProductsSearch
       parameters:
         - name: searchString
-          in: path
+          in: query
           description: Searching string
           required: true
           schema:
@@ -363,70 +451,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PriceListProduct'
-  /checkout/payment:
-    post:
-      tags:
-        - Checkout
-      summary: Payment Creation
-      description: Create simple payment
-      operationId: payment
-      requestBody:
-        description: Payment Param
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentParam'
-        required: true
-      responses:
-        '200':
-          description: Order processed      
-        '403':
-          description: Order forbidden
-        '500':
-          description: Order not processed
-  /checkout/order:
-    post:
-      tags:
-        - Checkout
-      summary: Order Creation
-      description: Create order
-      operationId: createOrder
-      requestBody:
-        description: Order Form
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Order'
-        required: true
-      responses:
-        '200':
-          description: Order created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '500':
-          description: Missing address or shipper or lines
-    delete:
-      tags:
-        - Checkout
-      summary: Void order
-      description: Void order
-      operationId: voidOrder
-      requestBody:
-        description: Order Form
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Order'
-        required: true
-      responses:
-        '200':
-          description: Order processed              
-        '403':
-          description: Order forbidden
-        '500':
-          description: Order not processed          
   /common/countries:
     get:
       tags:
@@ -442,7 +466,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/IdNameBean'
+                  $ref: '#/components/schemas/IdNamePair'
   /common/lookup/email:
     post:
       tags:
@@ -459,7 +483,11 @@ paths:
         required: true
       responses:
         '200':
-          description: Email found 
+          description: Email found
+          content:
+            application/text:
+                schema:
+                    type: boolean
   /common/shippers:
     get:
       tags:
@@ -487,9 +515,12 @@ components:
         name:
           type: string
         phone:
-          type: string       
+          type: string
         location:
-          $ref: '#/components/schemas/Location'   
+          $ref: '#/components/schemas/Location'
+      required:
+        - name
+        - location
     Location:
       type: object
       properties:
@@ -505,7 +536,12 @@ components:
         city:
           type: string
         country:
-          $ref: '#/components/schemas/Country'          
+          $ref: '#/components/schemas/Country'
+      required:
+        - address1
+        - postal
+        - city
+        - country
     Country:
       type: object
       properties:
@@ -513,7 +549,7 @@ components:
           type: integer
           format: int32
         name:
-          type: string                   
+          type: string
     Document:
       type: object
       properties:
@@ -570,6 +606,8 @@ components:
         email:
           type: string
         password:
+          type: string
+        confirmPassword:
           type: string
     Password:
       type: object
@@ -640,6 +678,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Tax'
+      required:
+        - id
     Payment:
       type: object
       properties:
@@ -731,6 +771,12 @@ components:
         line:
           type: integer
           format: int32
+      required:
+        - id
+        - name
+        - price
+        - qty
+        - line
     ProductCategory:
       type: object
       properties:
@@ -746,10 +792,10 @@ components:
       properties:
         type:
           type: string
-        orderId:
-          type: integer
-          format: int32
-    IdNameBean:
+          enum:
+            - check
+            - deposit
+    IdNamePair:
       type: object
       properties:
         id:
