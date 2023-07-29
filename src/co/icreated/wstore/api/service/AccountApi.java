@@ -93,9 +93,9 @@ public interface AccountApi {
     TokenDto updateAccount(@Valid @NotNull AccountInfoDto accountInfoDto);
 
     @PUT
-    @Path("/addresses")
+    @Path("/addresses/{id}")
     @Consumes({ "application/json" })
-    void updateAddress(@Valid @NotNull AddressDto addressDto);
+    void updateAddress(@PathParam("id") Integer id,@Valid @NotNull AddressDto addressDto);
 
     @DELETE
     @Path("/orders/{id}")

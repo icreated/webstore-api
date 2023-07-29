@@ -7,8 +7,8 @@ import org.compiere.model.MBPartner;
 import org.compiere.util.CCache;
 import org.compiere.util.CLogger;
 
-import co.icreated.wstore.exception.WebStoreNotFoundException;
-import co.icreated.wstore.exception.WebStoreUnauthorizedException;
+import co.icreated.wstore.exception.WstoreNotFoundException;
+import co.icreated.wstore.exception.WstoreUnauthorizedException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.TokenHandler;
 import co.icreated.wstore.utils.QueryTool;
@@ -46,7 +46,7 @@ public class AuthService extends AbstractService {
     }
 
     if (retValue == null) {
-      throw new WebStoreNotFoundException("user not found");
+      throw new WstoreNotFoundException("user not found");
     }
 
     return retValue;
@@ -66,13 +66,13 @@ public class AuthService extends AbstractService {
 
     SessionUser sessionUser = (SessionUser) loadUserByUsername(username, true, false);
     if (sessionUser == null) {
-      throw new WebStoreUnauthorizedException("User not found");
+      throw new WstoreUnauthorizedException("User not found");
     }
 
 
     boolean isValid = sessionUser.getPassword().equals(password);
     if (!isValid) {
-      throw new WebStoreUnauthorizedException("Wrong password");
+      throw new WstoreUnauthorizedException("Wrong password");
     }
 
     return sessionUser;

@@ -4,7 +4,7 @@ import java.security.Key;
 
 import com.google.common.base.Preconditions;
 
-import co.icreated.wstore.exception.WebStoreUnauthorizedException;
+import co.icreated.wstore.exception.WstoreUnauthorizedException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.AuthService;
 import io.jsonwebtoken.Jwts;
@@ -34,7 +34,7 @@ public final class TokenHandler {
           .getBody() //
           .getSubject();
     } catch (SignatureException e) {
-      throw new WebStoreUnauthorizedException("Error Decoding JWT Token. Renew it.");
+      throw new WstoreUnauthorizedException("Error Decoding JWT Token. Renew it.");
     }
 
     return authService.loadUserByUsername(username, false, false);

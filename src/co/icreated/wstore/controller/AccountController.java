@@ -8,8 +8,6 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 
@@ -29,8 +27,9 @@ import co.icreated.wstore.api.model.PasswordDto;
 import co.icreated.wstore.api.model.PaymentParamDto;
 import co.icreated.wstore.api.model.TokenDto;
 import co.icreated.wstore.api.service.AccountApi;
-import co.icreated.wstore.exception.WebStoreBadRequestException;
-import co.icreated.wstore.exception.WebStoreInternalServerException;
+import co.icreated.wstore.exception.WstoreBadRequestException;
+import co.icreated.wstore.exception.WstoreInternalServerException;
+import co.icreated.wstore.exception.WstoreUnauthorizedException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.Status;
 import co.icreated.wstore.security.TokenHandler;
@@ -67,7 +66,7 @@ public class AccountController implements AccountApi {
     boolean isValid = passwordDto.getPassword().equals(sessionUser.getPassword());
 
     if (!isValid) {
-      throw new WebStoreBadRequestException("Old password not correct");
+      throw new WstoreBadRequestException("Old password not correct");
     }
 
     boolean ok = accountService.changePassword(passwordDto.getConfirmPassword());
@@ -79,7 +78,7 @@ public class AccountController implements AccountApi {
       return new TokenDto().token(token);
     }
 
-    throw new WebStoreInternalServerException("Password not changed");
+    throw new WstoreInternalServerException("Password not changed");
 
   }
 
@@ -92,8 +91,8 @@ public class AccountController implements AccountApi {
 
   @Override
   @Status(Status.OK)
-  public void updateAddress(@Valid @NotNull AddressDto addressDto) {
-    accountService.updateAddress(addressDto);
+  public void updateAddress(Integer id, @Valid @NotNull AddressDto addressDto) {
+    accountService.updateAddress(id, addressDto);
   }
 
 
@@ -136,7 +135,7 @@ public class AccountController implements AccountApi {
         DB.getSQLValue(null, "SELECT max(AD_User_ID) FROM AD_User WHERE UPPER(email) LIKE ?",
             newAccountFormDto.getEmail().toUpperCase());
     if (AD_User_ID > 0) {
-      throw new WebStoreBadRequestException("Account already exists");
+      throw new WstoreBadRequestException("Account already exists");
     }
 
     MUser user = accountService.createUserAccount(newAccountFormDto);
@@ -146,7 +145,7 @@ public class AccountController implements AccountApi {
       String token = tokenHandler.createTokenForUser(sessionUser);
       return new TokenDto().token(token);
     }
-    throw new WebStoreInternalServerException("Account not created");
+    throw new WstoreInternalServerException("Account not created");
   }
 
 
@@ -180,12 +179,13 @@ public class AccountController implements AccountApi {
   @Status(Status.OK)
   public void voidOrder(Integer id) {
     if (id <= 0) {
-      throw new BadRequestException("Order id not defined");
+      throw new WstoreBadRequestException("Order id not defined");
     }
     Transaction.run(trxName -> {
       MOrder order = new MOrder(ctx, id, trxName);
-      if (!orderService.orderBelongsToUser(order))
-        throw new ForbiddenException("Forbidden access");
+      if (!orderService.orderBelongsToUser(order)) {
+        throw new WstoreUnauthorizedException("Access to order is unauthorized");
+      }
       return orderService.processOrder(MOrder.ACTION_Void, order);
     });
 
@@ -195,7 +195,7 @@ public class AccountController implements AccountApi {
   @Override
   public AddressDto getAddress(Integer id) {
     if (id <= 0) {
-      throw new BadRequestException("Address id not defined");
+      throw new WstoreBadRequestException("Address id not defined");
     }
     return accountService.getAddress(id);
   }
@@ -205,7 +205,7 @@ public class AccountController implements AccountApi {
   public OrderDto createOrder(@Valid @NotNull OrderDto orderDto) {
     if (orderDto.getShipAddress() == null || orderDto.getBillAddress() == null
         || orderDto.getShipper() == null || orderDto.getLines() == null)
-      throw new BadRequestException("Missing order data");
+      throw new WstoreBadRequestException("Missing order data");
 
     return orderService.createOrder(orderDto);
   }
@@ -221,7 +221,7 @@ public class AccountController implements AccountApi {
 
     MOrder order = new MOrder(ctx, id, null);
     if (!orderService.orderBelongsToUser(order))
-      throw new ForbiddenException("Forbidden access");
+      throw new WstoreUnauthorizedException("Access to order is unauthorized");
 
     Transaction.run(trxName -> {
       order.set_TrxName(trxName);

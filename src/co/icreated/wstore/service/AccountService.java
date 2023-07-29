@@ -100,13 +100,13 @@ public class AccountService extends AbstractService {
   }
 
 
-  public void updateAddress(AddressDto addressDto) {
+  public void updateAddress(int id, AddressDto addressDto) {
 
     log.log(Level.FINE, "update address ", addressDto);
 
     Transaction.run(trxName -> {
-      X_C_BPartner_Location bpl = AccountMapper.INSTANCE.to(addressDto,
-          new X_C_BPartner_Location(ctx, addressDto.getId(), trxName));
+      X_C_BPartner_Location bpl =
+          AccountMapper.INSTANCE.to(addressDto, new X_C_BPartner_Location(ctx, id, trxName));
       bpl.save();
 
       X_C_Location location = AccountMapper.INSTANCE.to(addressDto.getLocation(),

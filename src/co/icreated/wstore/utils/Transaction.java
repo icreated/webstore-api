@@ -2,8 +2,13 @@ package co.icreated.wstore.utils;
 
 import java.util.function.Function;
 
+import javax.ws.rs.WebApplicationException;
+
 import org.compiere.util.CLogger;
 import org.compiere.util.Trx;
+
+import co.icreated.wstore.exception.WstoreInternalServerException;
+
 
 public class Transaction {
 
@@ -12,13 +17,14 @@ public class Transaction {
   public static <T> T run(Function<String, T> transaction) {
 
     Trx trx = null;
+    T instance = null;
     try {
       String transactionName = Thread.currentThread().getStackTrace()[2].getMethodName();
       String trxName = Trx.createTrxName(transactionName);
       trx = Trx.get(trxName, true);
-      T object = transaction.apply(trxName);
+      instance = transaction.apply(trxName);
       if (trx.commit()) {
-        return object;
+        return instance;
       }
 
     } catch (Throwable e) {
@@ -26,6 +32,7 @@ public class Transaction {
         trx.rollback();
         trx.close();
         trx = null;
+        throw new WstoreInternalServerException("Transaction error: " + e.getMessage());
       }
     } finally {
       if (trx != null) {

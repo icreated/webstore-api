@@ -36,8 +36,8 @@ public class CommonController implements CommonApi {
   }
 
   @Override
-  public void lookupEmail(@Valid @NotNull TokenDto tokenDto) {
-    commonService.isUnique(ctx, "Email", tokenDto.getToken());
+  public Boolean lookupEmail(@Valid @NotNull TokenDto tokenDto) {
+    return commonService.isUnique(ctx, "Email", tokenDto.getToken());
   }
 
 

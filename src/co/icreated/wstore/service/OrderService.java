@@ -137,12 +137,12 @@ public class OrderService extends AbstractService {
   }
 
 
-  public boolean processOrder(String DocAction, MOrder order) {
-    if (StringUtils.isBlank(DocAction))
+  public boolean processOrder(String docAction, MOrder order) {
+    if (StringUtils.isBlank(docAction)) {
       return false;
-
-    order.setDocAction(DocAction, true); // force creation
-    boolean ok = order.processIt(DocAction);
+    }
+    order.setDocAction(docAction, true); // force creation
+    boolean ok = order.processIt(docAction);
     order.save();
     return ok;
   }

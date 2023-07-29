@@ -31,5 +31,6 @@ public interface CommonApi {
     @POST
     @Path("/lookup/email")
     @Consumes({ "application/json" })
-    void lookupEmail(@Valid @NotNull TokenDto tokenDto);
+    @Produces({ "application/text" })
+    Boolean lookupEmail(@Valid @NotNull TokenDto tokenDto);
 }

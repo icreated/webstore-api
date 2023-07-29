@@ -7,7 +7,7 @@ import javax.ws.rs.core.Context;
 import co.icreated.wstore.api.model.TokenDto;
 import co.icreated.wstore.api.model.UserCredentialsDto;
 import co.icreated.wstore.api.service.AuthApi;
-import co.icreated.wstore.exception.WebStoreUnauthorizedException;
+import co.icreated.wstore.exception.WstoreUnauthorizedException;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.service.AuthService;
 
@@ -27,7 +27,7 @@ public class AuthController implements AuthApi {
       return new TokenDto().token(token);
 
     } catch (Exception e) {
-      throw new WebStoreUnauthorizedException("Not authenticated");
+      throw new WstoreUnauthorizedException("Not authenticated");
     }
   }
 
