@@ -30,6 +30,7 @@ import co.icreated.wstore.api.service.AccountApi;
 import co.icreated.wstore.exception.WstoreBadRequestException;
 import co.icreated.wstore.exception.WstoreInternalServerException;
 import co.icreated.wstore.exception.WstoreUnauthorizedException;
+import co.icreated.wstore.mapper.AccountMapper;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.Status;
 import co.icreated.wstore.security.TokenHandler;
@@ -176,19 +177,19 @@ public class AccountController implements AccountApi {
 
 
   @Override
-  @Status(Status.OK)
-  public void voidOrder(Integer id) {
+  public OrderDto voidOrder(Integer id) {
     if (id <= 0) {
       throw new WstoreBadRequestException("Order id not defined");
     }
-    Transaction.run(trxName -> {
+    MOrder voidedOrder = Transaction.run(trxName -> {
       MOrder order = new MOrder(ctx, id, trxName);
       if (!orderService.orderBelongsToUser(order)) {
         throw new WstoreUnauthorizedException("Access to order is unauthorized");
       }
-      return orderService.processOrder(MOrder.ACTION_Void, order);
+      orderService.processOrder(MOrder.ACTION_Void, order);
+      return order;
     });
-
+    return AccountMapper.INSTANCE.toOrderDto(voidedOrder);
   }
 
 
