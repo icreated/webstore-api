@@ -52,8 +52,8 @@ public class OrderService extends AbstractService {
     // Query loosing ctx, but resolved with PQuery.java)
     // WIth debugger detected that MStorageReservationLog is called like this: MStorageReservationLog log = new
     // MStorageReservationLog(Env.getCtx(), 0, trxName);
-    // PO checks integrity of AD_Client and in this case AD_Client_ID is lost so we are obliged to define the context with this awful solution to
-    // be sure it's not lost and the AD_Client_ID exists :(
+    // PO checks integrity of AD_Client and in this case AD_Client_ID is not defined so we are obliged to defined it with this awful solution to
+    // be sure it's not lost :(
     Env.setCtx(ctx);
 
     int C_PaymentTerm_ID =
