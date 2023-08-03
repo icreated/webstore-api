@@ -48,12 +48,12 @@ public class OrderService extends AbstractService {
 
   public OrderDto createOrder(OrderDto orderDto) {
 
-    // During order creation there are some Env.getCtx() calls which is not defined (same issue as
-    // Query loosing ctx)
-    // Here MStorageReservationLog is called like this: MStorageReservationLog log = new
+    // During order creation there are some Env.getCtx() calls. The context is not defined (same issue as
+    // Query loosing ctx, but resolved with PQuery.java)
+    // WIth debugger detected that MStorageReservationLog is called like this: MStorageReservationLog log = new
     // MStorageReservationLog(Env.getCtx(), 0, trxName);
-    // PO checks integrity of AD_Client so we are obliged to defined it with this awful solution to
-    // be sure it's not lost again
+    // PO checks integrity of AD_Client and in this case AD_Client_ID is not defined so we are obliged to defined it with this awful solution to
+    // be sure it's not lost :(
     Env.setCtx(ctx);
 
     int C_PaymentTerm_ID =
