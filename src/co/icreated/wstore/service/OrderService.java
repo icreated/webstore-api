@@ -48,11 +48,14 @@ public class OrderService extends AbstractService {
 
   public OrderDto createOrder(OrderDto orderDto) {
 
-    // During order creation there are some Env.getCtx() calls. The context is not defined (same issue as
+    // During order creation there are some Env.getCtx() calls. The context is not defined (same
+    // issue as
     // Query loosing ctx, but resolved with PQuery.java)
-    // WIth debugger detected that MStorageReservationLog is called like this: MStorageReservationLog log = new
+    // WIth debugger detected that MStorageReservationLog is called like this:
+    // MStorageReservationLog log = new
     // MStorageReservationLog(Env.getCtx(), 0, trxName);
-    // PO checks integrity of AD_Client and in this case AD_Client_ID is not defined so we are obliged to defined it with this awful solution to
+    // PO checks integrity of AD_Client and in this case AD_Client_ID is not defined so we are
+    // obliged to defined it with this awful solution to
     // be sure it's not lost :(
     Env.setCtx(ctx);
 
@@ -176,7 +179,8 @@ public class OrderService extends AbstractService {
     return new PQuery(ctx, MInOut.Table_Name, "C_Order_ID=? AND DocStatus NOT IN ('DR')", null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
-        .setParameters(C_Order_ID).setOrderBy("DocumentNo DESC") //
+        .setParameters(C_Order_ID) //
+        .setOrderBy("DocumentNo DESC") //
         .<MInOut>stream() //
         .map(AccountMapper.INSTANCE::toDto) //
         .collect(Collectors.toList());
@@ -188,7 +192,8 @@ public class OrderService extends AbstractService {
     return new PQuery(ctx, MPayment.Table_Name, "C_Order_ID=? AND DocStatus NOT IN ('DR')", null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
-        .setParameters(C_Order_ID).setOrderBy("DocumentNo DESC") //
+        .setParameters(C_Order_ID) //
+        .setOrderBy("DocumentNo DESC") //
         .<MPayment>stream() //
         .map(AccountMapper.INSTANCE::toDto) //
         .collect(Collectors.toList());
@@ -200,7 +205,8 @@ public class OrderService extends AbstractService {
     return new PQuery(ctx, MInvoice.Table_Name, byUser ? "AD_User_ID=?" : "C_BPartner_ID=?", null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
-        .setParameters(id).setOrderBy("DocumentNo DESC") //
+        .setParameters(id) //
+        .setOrderBy("DocumentNo DESC") //
         .<MInvoice>stream() //
         .map(AccountMapper.INSTANCE::toDto) //
         .collect(Collectors.toList());
@@ -211,7 +217,8 @@ public class OrderService extends AbstractService {
     return new PQuery(ctx, MInvoice.Table_Name, "C_Order_ID=?", null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
-        .setParameters(C_Order_ID).setOrderBy("DocumentNo DESC") //
+        .setParameters(C_Order_ID) //
+        .setOrderBy("DocumentNo DESC") //
         .<MInvoice>stream() //
         .map(AccountMapper.INSTANCE::toDto) //
         .collect(Collectors.toList());
