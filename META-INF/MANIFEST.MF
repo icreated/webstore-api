@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WebStore API
 Bundle-SymbolicName: co.icreated.wstore.api;singleton:=true
-Bundle-Version: 10.0.0.qualifier
+Bundle-Version: 11.0.0.qualifier
 Bundle-Vendor: ICreated
 Bundle-Activator: co.icreated.wstore.api.Activator
 Bundle-ActivationPolicy: lazy
@@ -22,7 +22,7 @@ Bundle-ClassPath: .,
  WEB-INF/lib/hibernate-validator.jar,
  WEB-INF/lib/swagger-parser.jar,
  WEB-INF/lib/mapstruct.jar
-Automatic-Module-Name: org.icreated.wstore.api
+Automatic-Module-Name: co.icreated.wstore.api
 Comment: Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=11))"
 Require-Bundle: org.adempiere.base;bundle-version="0.0.0",
