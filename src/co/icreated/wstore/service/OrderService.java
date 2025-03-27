@@ -271,7 +271,7 @@ public class OrderService extends AbstractService {
         .filter(ba -> ba.getAD_User_ID() == getSessionUser().getAD_User_ID()).findAny()
         .orElseGet(() -> {
           MUser user = new MUser(ctx, getSessionUser().getAD_User_ID(), order.get_TrxName());
-          MLocation location = MLocation.get(ctx, order.getBill_Location_ID(), order.get_TrxName());
+          MLocation location = new MLocation(ctx, order.getBill_Location_ID(), order.get_TrxName());
           MBPBankAccount bankAccount = new MBPBankAccount(ctx, bp, user, location);
           bankAccount.setAD_User_ID(user.getAD_User_ID());
           bankAccount.save(order.get_TrxName());

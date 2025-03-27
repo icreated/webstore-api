@@ -14,9 +14,11 @@ import javax.ws.rs.core.SecurityContext;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrder;
+import org.compiere.model.MPayment;
 import org.compiere.model.MUser;
 import org.compiere.process.DocAction;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 import co.icreated.wstore.api.model.AccountInfoDto;
 import co.icreated.wstore.api.model.AddressDto;
@@ -163,8 +165,9 @@ public class AccountController implements AccountApi {
 
   @Override
   public File downloadDocument(String type, Integer id) {
-    DocAction document;
+    Env.setCtx(ctx);
 
+    DocAction document;
     if (type == null || type.equals("order")) {
       document = new MOrder(ctx, id, null);
     } else if (type.equals("invoice")) {
@@ -217,8 +220,8 @@ public class AccountController implements AccountApi {
   public void payment(Integer id, @Valid @NotNull PaymentParamDto paymentParamDto) {
     String type = paymentParamDto.getType() == null
         || paymentParamDto.getType().equals(PaymentParamDto.TypeEnum.CHECK)
-            ? MOrder.PAYMENTRULE_Check
-            : MOrder.PAYMENTRULE_DirectDeposit;
+            ? MPayment.TENDERTYPE_Check
+            : MPayment.TENDERTYPE_DirectDeposit;
 
     MOrder order = new MOrder(ctx, id, null);
     if (!orderService.orderBelongsToUser(order))

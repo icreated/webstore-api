@@ -3,6 +3,11 @@
 	    <param-name>W_Store_ID</param-name>
 	    <param-value>11</param-value>
 	</context-param>
+	<!-- Garden World Admin Role -->
+	<context-param>
+	    <param-name>AD_Role_ID</param-name>
+	    <param-value>102</param-value>
+	</context-param>			
    <context-param>
       <param-name>CrossDomains</param-name>
       <param-value>*</param-value>

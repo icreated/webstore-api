@@ -26,6 +26,7 @@ public class CheckRequestFilter implements ContainerRequestFilter {
   public void filter(ContainerRequestContext requestContext) throws IOException {
 
     requestContext.setProperty("W_Store_ID", context.getInitParameter("W_Store_ID"));
+    requestContext.setProperty("AD_Role_ID", context.getInitParameter("AD_Role_ID"));
 
     if (requestContext.getMediaType() != null
         && requestContext.getMediaType().getType().equals("multipart"))

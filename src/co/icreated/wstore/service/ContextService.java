@@ -13,31 +13,33 @@ import co.icreated.wstore.utils.QueryTool;
 public enum ContextService {
   INSTANCE;
 
-  private static CCache<Integer, Properties> s_cacheCtx =
-      new CCache<Integer, Properties>("EnvCtx", 1, 0);
+  private static CCache<String, Properties> s_cacheCtx =
+      new CCache<String, Properties>("EnvCtx", 1, 0);
   public static final String CTX_DOCUMENT_DIR = "documentDir";
 
 
-  public static Properties getCtx(int W_Store_ID) {
-
-    if (s_cacheCtx.containsKey(W_Store_ID)) {
-      return s_cacheCtx.get(W_Store_ID);
+  public static Properties getCtx(int W_Store_ID, int AD_Role_ID) {
+    var key = W_Store_ID + "_" + AD_Role_ID;
+    if (s_cacheCtx.containsKey(key)) {
+      return s_cacheCtx.get(key);
     }
 
-    Properties ctx = getCtx(getWebStore(W_Store_ID));
-    s_cacheCtx.put(W_Store_ID, ctx);
+    var webStore = getWebStore(W_Store_ID);
+    Properties ctx = getCtx(webStore, AD_Role_ID);
+    s_cacheCtx.put(key, ctx);
     return ctx;
   }
 
 
 
-  private static Properties getCtx(WStore wstore) {
+  private static Properties getCtx(WStore wstore, int AD_Role_ID) {
 
     Properties newCtx = new Properties();
 
     Env.setContext(newCtx, "#W_Store_ID", wstore.getW_Store_ID());
     Env.setContext(newCtx, "#AD_Client_ID", wstore.getAD_Client_ID());
     Env.setContext(newCtx, "#AD_Org_ID", wstore.getAD_Org_ID());
+    Env.setContext(newCtx, "#AD_User_ID", wstore.getSalesRep_ID());
     Env.setContext(newCtx, "#SalesRep_ID", wstore.getSalesRep_ID());
     Env.setContext(newCtx, "#M_PriceList_ID", wstore.getM_PriceList_ID());
     Env.setContext(newCtx, "#M_Warehouse_ID", wstore.getM_Warehouse_ID());
@@ -68,10 +70,8 @@ public enum ContextService {
     Env.setContext(newCtx, "Stylesheet", s);
 
     Env.setContext(newCtx, "#M_PriceList_ID", wstore.getM_PriceList_ID());
-    if (Env.getContextAsInt(newCtx, "#AD_Role_ID") == 0) {
-      int AD_Role_ID = 0;
-      Env.setContext(newCtx, "#AD_Role_ID", AD_Role_ID);
-    }
+    Env.setContext(newCtx, "#AD_Role_ID", AD_Role_ID);
+
     MClient client = MClient.get(newCtx, wstore.getAD_Client_ID());
 
     Env.setContext(newCtx, "name", wstore.getName());
