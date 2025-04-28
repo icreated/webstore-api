@@ -61,6 +61,8 @@ public class AccountController implements AccountApi {
   @Context
   SecurityContext securityContext;
 
+  AccountMapper accountMapper = new AccountMapper();
+
 
   @Override
   public TokenDto changePassword(@Valid @NotNull PasswordDto passwordDto) {
@@ -192,7 +194,7 @@ public class AccountController implements AccountApi {
       orderService.processOrder(MOrder.ACTION_Void, order);
       return order;
     });
-    return AccountMapper.INSTANCE.toOrderDto(voidedOrder);
+    return accountMapper.toOrderDto(voidedOrder);
   }
 
 

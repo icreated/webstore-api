@@ -20,8 +20,7 @@ Bundle-ClassPath: .,
  WEB-INF/lib/swagger-jaxrs2.jar,
  WEB-INF/lib/swagger-models.jar,
  WEB-INF/lib/hibernate-validator.jar,
- WEB-INF/lib/swagger-parser.jar,
- WEB-INF/lib/mapstruct.jar
+ WEB-INF/lib/swagger-parser.jar
 Automatic-Module-Name: co.icreated.wstore.api
 Comment: Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=11))"

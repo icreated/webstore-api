@@ -39,6 +39,8 @@ public class OrderService extends AbstractService {
 
   CLogger log = CLogger.getCLogger(OrderService.class);
 
+  AccountMapper accountMapper = new AccountMapper();
+
 
   public OrderService(Properties ctx, SecurityContext securityContext) {
     super(ctx, securityContext);
@@ -73,7 +75,7 @@ public class OrderService extends AbstractService {
     MOrder createdOrder = Transaction.run(trxName -> {
       MOrder order = new MOrder(ctx, 0, trxName);
       order.setAD_Org_ID(Env.getAD_Org_ID(ctx));
-      order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_Prepay);
+      order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_OnCredit);
       order.setPaymentRule(MOrder.PAYMENTRULE_OnCredit);
       order.setDeliveryRule(MOrder.DELIVERYRULE_Availability);
       order.setInvoiceRule(MOrder.INVOICERULE_Immediate);
@@ -116,10 +118,10 @@ public class OrderService extends AbstractService {
     orderDto.setGrandTotal(order.getGrandTotal());
     orderDto.setTotalLines(order.getTotalLines());
     orderDto.setTaxes(Stream.of(order.getTaxes(true)) //
-        .map(AccountMapper.INSTANCE::toDto) //
+        .map(accountMapper::toDto) //
         .collect(Collectors.toList()));
     orderDto.setLines(Stream.of(order.getLines()) //
-        .map(AccountMapper.INSTANCE::toDto) //
+        .map(accountMapper::toDto) //
         .collect(Collectors.toList()));
 
     log.log(Level.INFO, "Order created, #" + order.getDocumentNo());
@@ -135,7 +137,7 @@ public class OrderService extends AbstractService {
         .setParameters(getSessionUser().getC_BPartner_ID()) //
         .setOrderBy("DocumentNo DESC") //
         .<MOrder>stream() //
-        .map(AccountMapper.INSTANCE::toDto) //
+        .map(accountMapper::toDto) //
         .collect(Collectors.toList());
   }
 
@@ -154,7 +156,7 @@ public class OrderService extends AbstractService {
   public OrderDto getOrder(int C_Order_ID) {
 
     MOrder order = new MOrder(ctx, C_Order_ID, null);
-    return AccountMapper.INSTANCE.toOrderDto(order);
+    return accountMapper.toOrderDto(order);
   }
 
 
@@ -168,8 +170,8 @@ public class OrderService extends AbstractService {
         .setOnlyActiveRecords(true) //
         .setParameters(id).setOrderBy("DocumentNo DESC") //
         .<MInOut>stream() //
-        .map(AccountMapper.INSTANCE::toDto) //
-        .collect(Collectors.toList());
+        .map(accountMapper::toDto) //
+        .toList();
   }
 
 
@@ -182,8 +184,8 @@ public class OrderService extends AbstractService {
         .setParameters(C_Order_ID) //
         .setOrderBy("DocumentNo DESC") //
         .<MInOut>stream() //
-        .map(AccountMapper.INSTANCE::toDto) //
-        .collect(Collectors.toList());
+        .map(accountMapper::toDto) //
+        .toList();
   }
 
 
@@ -195,8 +197,8 @@ public class OrderService extends AbstractService {
         .setParameters(C_Order_ID) //
         .setOrderBy("DocumentNo DESC") //
         .<MPayment>stream() //
-        .map(AccountMapper.INSTANCE::toDto) //
-        .collect(Collectors.toList());
+        .map(accountMapper::toDto) //
+        .toList();
   }
 
 
@@ -208,8 +210,8 @@ public class OrderService extends AbstractService {
         .setParameters(id) //
         .setOrderBy("DocumentNo DESC") //
         .<MInvoice>stream() //
-        .map(AccountMapper.INSTANCE::toDto) //
-        .collect(Collectors.toList());
+        .map(accountMapper::toDto) //
+        .toList();
   }
 
 
@@ -220,8 +222,8 @@ public class OrderService extends AbstractService {
         .setParameters(C_Order_ID) //
         .setOrderBy("DocumentNo DESC") //
         .<MInvoice>stream() //
-        .map(AccountMapper.INSTANCE::toDto) //
-        .collect(Collectors.toList());
+        .map(accountMapper::toDto) //
+        .toList();
   }
 
 

@@ -30,6 +30,8 @@ public class AccountService extends AbstractService {
 
   private static CLogger log = CLogger.getCLogger(AccountService.class);
 
+  AccountMapper accountMapper = new AccountMapper();
+
 
   public AccountService(Properties ctx, SecurityContext securityContext) {
     super(ctx, securityContext);
@@ -37,7 +39,7 @@ public class AccountService extends AbstractService {
 
 
   public AccountInfoDto getAccountInfo() {
-    return AccountMapper.INSTANCE.toDto(MUser.get(getSessionUser().getAD_User_ID()));
+    return accountMapper.toDto(MUser.get(getSessionUser().getAD_User_ID()));
   }
 
 
@@ -84,11 +86,11 @@ public class AccountService extends AbstractService {
 
     X_C_BPartner_Location created = Transaction.run(trxName -> {
       X_C_Location location =
-          AccountMapper.INSTANCE.to(addressDto.getLocation(), new X_C_Location(ctx, 0, trxName));
+          accountMapper.to(addressDto.getLocation(), new X_C_Location(ctx, 0, trxName));
       location.save();
 
       X_C_BPartner_Location bpl =
-          AccountMapper.INSTANCE.to(addressDto, new MBPartnerLocation(ctx, 0, trxName));
+          accountMapper.to(addressDto, new MBPartnerLocation(ctx, 0, trxName));
       bpl.setC_BPartner_ID(getSessionUser().getC_BPartner_ID());
       bpl.setC_Location_ID(location.getC_Location_ID());
       bpl.save();
@@ -106,10 +108,10 @@ public class AccountService extends AbstractService {
 
     Transaction.run(trxName -> {
       X_C_BPartner_Location bpl =
-          AccountMapper.INSTANCE.to(addressDto, new X_C_BPartner_Location(ctx, id, trxName));
+          accountMapper.to(addressDto, new X_C_BPartner_Location(ctx, id, trxName));
       bpl.save();
 
-      X_C_Location location = AccountMapper.INSTANCE.to(addressDto.getLocation(),
+      X_C_Location location = accountMapper.to(addressDto.getLocation(),
           new X_C_Location(ctx, bpl.getC_Location_ID(), trxName));
       location.save();
       return bpl;
@@ -135,14 +137,14 @@ public class AccountService extends AbstractService {
     return Stream
         .of(MBPartnerLocation.getForBPartner(ctx, getSessionUser().getC_BPartner_ID(), null))
         .filter(bpl -> bpl.isActive()) //
-        .map(AccountMapper.INSTANCE::toDto) //
+        .map(accountMapper::toDto) //
         .collect(Collectors.toList());
   }
 
 
   public AddressDto getAddress(int C_BPartner_Location_ID) {
     MBPartnerLocation bpl = new MBPartnerLocation(ctx, C_BPartner_Location_ID, null);
-    return AccountMapper.INSTANCE.toDto(bpl);
+    return accountMapper.toDto(bpl);
   }
 
 

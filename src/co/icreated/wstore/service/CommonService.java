@@ -15,6 +15,7 @@ import co.icreated.wstore.utils.PQuery;
 
 public class CommonService extends AbstractService {
 
+  CommonMapper commonMapper = new CommonMapper();
 
   public CommonService(Properties ctx) {
     super(ctx);
@@ -28,7 +29,7 @@ public class CommonService extends AbstractService {
         .setOnlyActiveRecords(true) //
         .setOrderBy("Name") //
         .<MShipper>stream() //
-        .map(CommonMapper.INSTANCE::toDto) //
+        .map(commonMapper::toDto) //
         .collect(Collectors.toList());
   }
 
@@ -52,7 +53,7 @@ public class CommonService extends AbstractService {
         .setOnlyActiveRecords(true) //
         .setOrderBy("Name") //
         .<MCountry>stream() //
-        .map(CommonMapper.INSTANCE::toDto) //
+        .map(commonMapper::toDto) //
         .collect(Collectors.toList());
   }
 }

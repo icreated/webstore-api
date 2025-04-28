@@ -5,28 +5,39 @@ import java.util.List;
 
 import org.compiere.model.MProduct;
 import org.compiere.model.MProductCategory;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+
 
 import co.icreated.wstore.api.model.PriceListProductDto;
 import co.icreated.wstore.api.model.ProductCategoryDto;
 
-
-@Mapper
-public interface CatalogMapper {
-
-  public CatalogMapper INSTANCE = Mappers.getMapper(CatalogMapper.class);
+public class CatalogMapper {
 
 
-  @Mapping(source = "m_Product_Category_ID", target = "id")
-  public ProductCategoryDto toDto(MProductCategory productCategory);
+  public ProductCategoryDto toDto(MProductCategory productCategory) {
+    var dto = new ProductCategoryDto();
+    dto.id(productCategory.getM_Product_Category_ID());
+    dto.name(productCategory.getName());
+    dto.description(productCategory.getDescription());
+    return dto;
+  }
 
-  public List<ProductCategoryDto> toDto(List<MProductCategory> productCategories);
+  public List<ProductCategoryDto> toDto(List<MProductCategory> productCategories) {
+    return productCategories.stream().map(this::toDto).toList();
+  }
 
-  @Mapping(source = "product.m_Product_ID", target = "id")
-  @Mapping(source = "priceStd", target = "price")
-  public PriceListProductDto toDto(MProduct product, BigDecimal priceStd);
-
+  public PriceListProductDto toDto(MProduct product, BigDecimal priceStd) {
+    var dto = new PriceListProductDto();
+    dto.id(product.getM_Product_ID());
+    dto.value(product.getValue());
+    dto.name(product.getName());
+    dto.description(product.getDescription());
+    dto.help(product.getHelp());
+    dto.documentNote(product.getDocumentNote());
+    dto.imageURL(product.getImageURL());
+    dto.price(priceStd);
+    dto.qty(0);
+    dto.line(0);
+    return dto;
+  }
 
 }

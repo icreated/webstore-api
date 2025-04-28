@@ -1,5 +1,7 @@
 package co.icreated.wstore.mapper;
 
+import java.util.stream.Stream;
+
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCountry;
 import org.compiere.model.MInOut;
@@ -9,14 +11,12 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrderTax;
 import org.compiere.model.MPayment;
+import org.compiere.model.MRefList;
 import org.compiere.model.MShipper;
+import org.compiere.model.MTax;
 import org.compiere.model.MUser;
 import org.compiere.model.X_C_BPartner_Location;
 import org.compiere.model.X_C_Location;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
 
 import co.icreated.wstore.api.model.AccountInfoDto;
 import co.icreated.wstore.api.model.AddressDto;
@@ -31,89 +31,175 @@ import co.icreated.wstore.api.model.ShipperDto;
 import co.icreated.wstore.api.model.TaxDto;
 
 
-@Mapper
-public interface AccountMapper {
-
-  public AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
+public class AccountMapper {
 
 
-  @Mapping(source = "AD_User_ID", target = "id")
-  @Mapping(source = "EMail", target = "email")
-  public AccountInfoDto toDto(MUser user);
+  public AccountInfoDto toDto(MUser user) {
+    var dto = new AccountInfoDto();
+    dto.id(user.getAD_User_ID());
+    dto.value(user.getValue());
+    dto.name(user.getName());
+    dto.email(user.getEMail());
+    dto.birthday(user.getBirthday());
+    return dto;
+  }
 
+  public DocumentDto toDto(MOrder order) {
+    var dto = new DocumentDto();
+    dto.id(order.getC_Order_ID());
+    dto.documentNo(order.getDocumentNo());
+    dto.poReference(order.getPOReference());
+    dto.description(order.getDescription());
+    dto.docStatus(order.getDocStatus());
+    dto.docStatusName(order.getDocStatusName());
+    dto.date(order.getDateOrdered());
+    dto.totalLines(order.getTotalLines());
+    dto.grandTotal(order.getGrandTotal());
+    return dto;
+  }
 
-  @Mapping(source = "c_Order_ID", target = "id")
-  @Mapping(source = "POReference", target = "poReference")
-  @Mapping(source = "dateOrdered", target = "date")
-  public DocumentDto toDto(MOrder order);
+  public DocumentLineDto toDto(MOrderLine orderLine) {
+    var dto = new DocumentLineDto();
+    dto.id(orderLine.getC_OrderLine_ID());
+    dto.productId(orderLine.getM_Product_ID());
+    dto.line(orderLine.getLine());
+    dto.name(orderLine.getProduct().getName());
+    dto.description(orderLine.getProduct().getDescription());
+    dto.priceList(orderLine.getPriceList());
+    dto.price(orderLine.getPriceActual());
+    dto.qty(orderLine.getQtyOrdered());
+    dto.lineNetAmt(orderLine.getLineNetAmt());
+    return dto;
+  }
 
-  @Mapping(source = "c_OrderLine_ID", target = "id")
-  @Mapping(source = "m_Product_ID", target = "productId")
-  @Mapping(source = "qtyOrdered", target = "qty")
-  @Mapping(source = "priceActual", target = "price")
-  @Mapping(source = "product.name", target = "name")
-  @Mapping(source = "product.description", target = "description")
-  public DocumentLineDto toDto(MOrderLine orderLine);
-
-  @Mapping(target = "name",
-      expression = "java(org.compiere.model.MTax.get(orderTax.getCtx(), orderTax.getC_Tax_ID()).getName())")
-  public TaxDto toDto(MOrderTax orderTax);
-
+  public TaxDto toDto(MOrderTax orderTax) {
+    var dto = new TaxDto();
+    dto.name(MTax.get(orderTax.getCtx(), orderTax.getC_Tax_ID()).getName());
+    dto.taxAmt(orderTax.getTaxAmt());
+    return dto;
+  }
 
   // OrderDto
-  @Mapping(source = "c_Order_ID", target = "id")
-  @Mapping(source = "POReference", target = "poReference")
-  @Mapping(source = "dateOrdered", target = "date")
-  @Mapping(target = "shipAddress",
-      expression = "java(toDto(new org.compiere.model.MBPartnerLocation(order.getCtx(), order.getC_BPartner_Location_ID(), order.get_TrxName())))")
-  @Mapping(target = "billAddress",
-      expression = "java(toDto(new org.compiere.model.MBPartnerLocation(order.getCtx(), order.getBill_Location_ID(), order.get_TrxName())))")
-  @Mapping(target = "taxes",
-      expression = "java(java.util.stream.Stream.of(order.getTaxes(true)).map(AccountMapper.INSTANCE::toDto).collect(java.util.stream.Collectors.toList()))")
-  @Mapping(target = "shipper",
-      expression = "java(toDto(new MShipper(order.getCtx(), order.getM_Shipper_ID(), order.get_TrxName())))")
-  public OrderDto toOrderDto(MOrder order);
+  public OrderDto toOrderDto(MOrder order) {
+    var dto = new OrderDto();
+    dto.id(order.getC_Order_ID());
+    dto.documentNo(order.getDocumentNo());
+    dto.poReference(order.getPOReference());
+    dto.description(order.getDescription());
+    dto.docStatus(order.getDocStatus());
+    dto.docStatusName(order.getDocStatusName());
+    dto.date(order.getDateOrdered());
+    dto.totalLines(order.getTotalLines());
+    dto.grandTotal(order.getGrandTotal());
+    dto.shipAddress(toDto(new MBPartnerLocation(order.getCtx(), order.getC_BPartner_Location_ID(),
+        order.get_TrxName())));
+    dto.billAddress(toDto(new org.compiere.model.MBPartnerLocation(order.getCtx(),
+        order.getBill_Location_ID(), order.get_TrxName())));
+    dto.taxes(Stream.of(order.getTaxes(true)).map(orderTax -> toDto(orderTax)).toList());
+    dto.shipper(toDto(new MShipper(order.getCtx(), order.getM_Shipper_ID(), order.get_TrxName())));
+    return dto;
+  }
 
+  public DocumentDto toDto(MInvoice invoice) {
+    var dto = new DocumentDto();
+    dto.id(invoice.getC_Invoice_ID());
+    dto.documentNo(invoice.getDocumentNo());
+    dto.poReference(invoice.getPOReference());
+    dto.description(invoice.getDescription());
+    dto.docStatus(invoice.getDocStatus());
+    dto.docStatusName(invoice.getDocStatusName());
+    dto.date(invoice.getDateOrdered());
+    dto.totalLines(invoice.getTotalLines());
+    dto.grandTotal(invoice.getGrandTotal());
+    return dto;
+  }
 
+  public PaymentDto toDto(MPayment payment) {
+    var dto = new PaymentDto();
+    dto.id(payment.getC_Payment_ID());
+    dto.documentNo(payment.getDocumentNo());
+    dto.description(payment.getDescription());
+    dto.docStatus(payment.getDocStatus());
+    dto.payAmt(payment.getPayAmt());
+    dto.trxid(payment.getOrig_TrxID());
+    dto.currency(payment.getCurrencyISO());
+    dto.tenderType(payment.getTenderType());
+    return dto;
+  }
 
-  @Mapping(source = "c_Invoice_ID", target = "id")
-  public DocumentDto toDto(MInvoice invoice);
+  public ShipperDto toDto(MShipper shipper) {
+    var dto = new ShipperDto();
+    dto.id(shipper.getM_Shipper_ID());
+    dto.name(shipper.getName());
+    return dto;
+  }
 
-  @Mapping(source = "c_Payment_ID", target = "id")
-  public PaymentDto toDto(MPayment payment);
-
-  @Mapping(source = "m_Shipper_ID", target = "id")
-  public ShipperDto toDto(MShipper shipper);
-
-  @Mapping(source = "m_InOut_ID", target = "id")
-  @Mapping(target = "docStatusName",
-      expression = "java(org.compiere.model.MRefList.getListName(shipment.getCtx(), 131, shipment.getDocStatus()))")
-  public ShipmentDto toDto(MInOut shipment);
-
-
+  public ShipmentDto toDto(MInOut shipment) {
+    var dto = new ShipmentDto();
+    dto.id(shipment.getM_InOut_ID());
+    dto.documentNo(shipment.getDocumentNo());
+    dto.description(shipment.getDescription());
+    dto.docStatus(shipment.getDocStatus());
+    dto.docStatusName(MRefList.getListName(shipment.getCtx(), 131, shipment.getDocStatus()));
+    dto.date(shipment.getShipDate());
+    dto.trackingNo(shipment.getTrackingNo());
+    return dto;
+  }
 
   // Partner Location
-  @Mapping(source = "c_BPartner_Location_ID", target = "id")
-  @Mapping(expression = "java(toDto(bpl.getLocation(true)))", target = "location")
-  public AddressDto toDto(MBPartnerLocation bpl);
+  public AddressDto toDto(MBPartnerLocation bpl) {
+    var dto = new AddressDto();
+    dto.id(bpl.getC_BPartner_Location_ID());
+    dto.name(bpl.getName());
+    dto.phone(bpl.getPhone());
+    dto.location(toDto(bpl.getLocation(true)));
+    return dto;
+  }
 
-  public X_C_BPartner_Location to(AddressDto addressDto, @MappingTarget X_C_BPartner_Location bpl);
+  public X_C_BPartner_Location to(AddressDto addressDto, X_C_BPartner_Location bpl) {
+    bpl.setC_BPartner_Location_ID(addressDto.getId());
+    bpl.setName(addressDto.getName());
+    bpl.setPhone(addressDto.getPhone());
+    bpl.setC_Location_ID(addressDto.getLocation().getId());
+    return bpl;
+  }
 
 
   // Location
-  @Mapping(source = "c_Location_ID", target = "id")
-  public LocationDto toDto(MLocation location);
+  public LocationDto toDto(MLocation location) {
+    var dto = new LocationDto();
+    dto.id(location.getC_Location_ID());
+    dto.address1(location.getAddress1());
+    dto.address2(location.getAddress2());
+    dto.postal(location.getPostal());
+    dto.city(location.getCity());
+    dto.country(toDto(location.getCountry()));
+    return dto;
+  }
 
-  @Mapping(source = "id", target = "c_Location_ID")
-  @Mapping(source = "locationDto.country.id", target = "c_Country_ID")
-  public X_C_Location to(LocationDto locationDto, @MappingTarget X_C_Location location);
+  public X_C_Location to(LocationDto locationDto, X_C_Location location) {
+    location.setC_Location_ID(locationDto.getId());
+    location.setAddress1(locationDto.getAddress1());
+    location.setAddress2(locationDto.getAddress2());
+    location.setPostal(locationDto.getPostal());
+    location.setCity(locationDto.getCity());
+    location.setC_Country_ID(locationDto.getCountry().getId());
+    return location;
+  }
 
 
   // Country
-  @Mapping(source = "c_Country_ID", target = "id")
-  public CountryDto toDto(MCountry country);
+  public CountryDto toDto(MCountry country) {
+    var dto = new CountryDto();
+    dto.id(country.getC_Country_ID());
+    dto.name(country.getName());
+    return dto;
+  }
 
-  @Mapping(source = "id", target = "c_Country_ID")
-  public MCountry to(CountryDto countryDto, @MappingTarget MCountry country);
+  public MCountry to(CountryDto countryDto, MCountry country) {
+    country.setC_Country_ID(countryDto.getId());
+    country.setName(countryDto.getName());
+    return country;
+  }
 
 }

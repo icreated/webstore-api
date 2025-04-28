@@ -15,7 +15,6 @@
     <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	<swagger.version>2.1.9</swagger.version>
-  	<mapstruct.version>1.5.5.Final</mapstruct.version>
   </properties>
   
   <build>
@@ -24,21 +23,7 @@
   
     <plugins> 
 		<plugin>
-			<groupId>org.eclipse.tycho</groupId>
-			<artifactId>tycho-compiler-plugin</artifactId>
-  			<configuration>
-        		<release>11</release>
-                <annotationProcessorPaths>
-                    <path>
-                        <groupId>org.mapstruct</groupId>
-                        <artifactId>mapstruct-processor</artifactId>
-                        <version>${mapstruct.version}</version>
-                    </path>
-                </annotationProcessorPaths> 
-            </configuration>
-		</plugin>
-		<plugin>
-		    <groupId>org.openapitools</groupId> 
+		    <groupId>org.openapitools</groupId>
 		    <artifactId>openapi-generator-maven-plugin</artifactId>
 		    <version>6.2.1</version>
 		    <executions>
@@ -154,19 +139,7 @@
 							    <artifactId>classmate</artifactId>
 							    <version>1.5.1</version>
 							</artifactItem>
-							<!-- End Swagger -->	
-							
-							<artifactItem>
-						        <groupId>org.mapstruct</groupId>
-						        <artifactId>mapstruct</artifactId>
-						        <version>${mapstruct.version}</version>
-						    </artifactItem>									
-							<artifactItem>
-							    <groupId>org.mapstruct</groupId>
-							    <artifactId>mapstruct-processor</artifactId>
-							    <version>${mapstruct.version}</version>
-							</artifactItem>							
-																																																																																											
+							<!-- End Swagger -->																																																																																	
 						</artifactItems>
 						<outputDirectory>WEB-INF/lib</outputDirectory>
 						<stripVersion>true</stripVersion>

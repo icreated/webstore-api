@@ -2,24 +2,23 @@ package co.icreated.wstore.mapper;
 
 import org.compiere.model.MCountry;
 import org.compiere.model.MShipper;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
-
 import co.icreated.wstore.api.model.IdNamePairDto;
 import co.icreated.wstore.api.model.ShipperDto;
 
+public class CommonMapper {
 
-@Mapper
-public interface CommonMapper {
+  public ShipperDto toDto(MShipper shipper) {
+    var dto = new ShipperDto();
+    dto.id(shipper.getM_Shipper_ID());
+    dto.name(shipper.getName());
+    return dto;
+  }
 
-  public CommonMapper INSTANCE = Mappers.getMapper(CommonMapper.class);
-
-
-  @Mapping(source = "m_Shipper_ID", target = "id")
-  public ShipperDto toDto(MShipper shipper);
-
-  @Mapping(source = "c_Country_ID", target = "id")
-  public IdNamePairDto toDto(MCountry country);
+  public IdNamePairDto toDto(MCountry country) {
+    var dto = new IdNamePairDto();
+    dto.id(country.getC_Country_ID());
+    dto.name(country.getName());
+    return dto;
+  }
 
 }
