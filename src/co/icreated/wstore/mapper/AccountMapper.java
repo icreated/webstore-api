@@ -91,6 +91,7 @@ public class AccountMapper {
     dto.date(order.getDateOrdered());
     dto.totalLines(order.getTotalLines());
     dto.grandTotal(order.getGrandTotal());
+    dto.lines(Stream.of(order.getLines()).map(line -> toDto(line)).toList());
     dto.shipAddress(toDto(new MBPartnerLocation(order.getCtx(), order.getC_BPartner_Location_ID(),
         order.get_TrxName())));
     dto.billAddress(toDto(new org.compiere.model.MBPartnerLocation(order.getCtx(),
