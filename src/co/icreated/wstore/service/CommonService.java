@@ -2,7 +2,6 @@ package co.icreated.wstore.service;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 import org.compiere.model.MCountry;
 import org.compiere.model.MShipper;
@@ -30,7 +29,7 @@ public class CommonService extends AbstractService {
         .setOrderBy("Name") //
         .<MShipper>stream() //
         .map(commonMapper::toDto) //
-        .collect(Collectors.toList());
+        .toList();
   }
 
 
@@ -54,7 +53,7 @@ public class CommonService extends AbstractService {
         .setOrderBy("Name") //
         .<MCountry>stream() //
         .map(commonMapper::toDto) //
-        .collect(Collectors.toList());
+        .toList();
   }
 }
 

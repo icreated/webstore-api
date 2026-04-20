@@ -138,7 +138,7 @@ public class AccountService extends AbstractService {
         .of(MBPartnerLocation.getForBPartner(ctx, getSessionUser().getC_BPartner_ID(), null))
         .filter(bpl -> bpl.isActive()) //
         .map(accountMapper::toDto) //
-        .collect(Collectors.toList());
+        .toList();
   }
 
 

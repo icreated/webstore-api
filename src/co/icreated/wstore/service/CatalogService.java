@@ -8,9 +8,6 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import javax.ws.rs.NotFoundException;
-
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.joining;
 
 
@@ -25,7 +22,6 @@ import co.icreated.wstore.api.model.PriceListProductDto;
 import co.icreated.wstore.api.model.ProductCategoryDto;
 import co.icreated.wstore.mapper.CatalogMapper;
 import co.icreated.wstore.utils.PQuery;
-import io.jsonwebtoken.lang.Collections;
 
 
 public class CatalogService extends AbstractService {
@@ -48,20 +44,6 @@ public class CatalogService extends AbstractService {
         .map(catalogMapper::toDto) //
         .toList();
   }
-
-
-  public PriceListProductDto getProduct(int M_Product_ID) {
-    return new PQuery(ctx, MProduct.Table_Name, "IsBOM='N' AND Discontinued='N' AND M_Product_ID=?",
-        null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setParameters(M_Product_ID) //
-        .<MProduct>stream() //
-        .map(product -> priceToDto(product, getPriceListVersionId())) //
-        .findAny() //
-        .orElseThrow(() -> new NotFoundException("Product not found"));
-  }
-
 
 
   public List<PriceListProductDto> getProducts(int M_Product_Category_ID,
@@ -110,7 +92,7 @@ public class CatalogService extends AbstractService {
 
   public List<PriceListProductDto> getProductsById(List<Object> ids) {
 
-    if (Collections.isEmpty(ids)) {
+    if (ids == null || ids.isEmpty()) {
       return List.of();
     }
 

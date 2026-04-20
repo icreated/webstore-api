@@ -13,8 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPBankAccount;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBankAccount;
-import org.compiere.model.MInOut;
-import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
@@ -27,8 +25,6 @@ import org.compiere.util.Env;
 import co.icreated.wstore.api.model.DocumentDto;
 import co.icreated.wstore.api.model.DocumentLineDto;
 import co.icreated.wstore.api.model.OrderDto;
-import co.icreated.wstore.api.model.PaymentDto;
-import co.icreated.wstore.api.model.ShipmentDto;
 import co.icreated.wstore.mapper.AccountMapper;
 import co.icreated.wstore.utils.PQuery;
 import co.icreated.wstore.utils.Transaction;
@@ -159,93 +155,6 @@ public class OrderService extends AbstractService {
   }
 
 
-  public List<ShipmentDto> getShipmentsByUser(int AD_User_ID) {
-    return new PQuery(ctx, MInOut.Table_Name, "docStatus NOT IN ('DR') AND AD_User_ID=?", null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setParameters(AD_User_ID) //
-        .setOrderBy("DocumentNo DESC") //
-        .<MInOut>stream() //
-        .map(accountMapper::toDto) //
-        .toList();
-  }
-
-
-  public List<ShipmentDto> getShipmentsByBPartner(int C_BPartner_ID) {
-    return new PQuery(ctx, MInOut.Table_Name, "docStatus NOT IN ('DR') AND C_BPartner_ID=?", null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setParameters(C_BPartner_ID) //
-        .setOrderBy("DocumentNo DESC") //
-        .<MInOut>stream() //
-        .map(accountMapper::toDto) //
-        .toList();
-  }
-
-
-
-  public List<ShipmentDto> getShipments(int C_Order_ID) {
-
-    return new PQuery(ctx, MInOut.Table_Name, "C_Order_ID=? AND DocStatus NOT IN ('DR')", null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setParameters(C_Order_ID) //
-        .setOrderBy("DocumentNo DESC") //
-        .<MInOut>stream() //
-        .map(accountMapper::toDto) //
-        .toList();
-  }
-
-
-  public List<PaymentDto> getPayments(int C_Order_ID) {
-
-    return new PQuery(ctx, MPayment.Table_Name, "C_Order_ID=? AND DocStatus NOT IN ('DR')", null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setParameters(C_Order_ID) //
-        .setOrderBy("DocumentNo DESC") //
-        .<MPayment>stream() //
-        .map(accountMapper::toDto) //
-        .toList();
-  }
-
-
-  public List<DocumentDto> getInvoicesByUser(int AD_User_ID) {
-    return new PQuery(ctx, MInvoice.Table_Name, "AD_User_ID=?", null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setParameters(AD_User_ID) //
-        .setOrderBy("DocumentNo DESC") //
-        .<MInvoice>stream() //
-        .map(accountMapper::toDto) //
-        .toList();
-  }
-
-
-  public List<DocumentDto> getInvoicesByBPartner(int C_BPartner_ID) {
-    return new PQuery(ctx, MInvoice.Table_Name, "C_BPartner_ID=?", null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setParameters(C_BPartner_ID) //
-        .setOrderBy("DocumentNo DESC") //
-        .<MInvoice>stream() //
-        .map(accountMapper::toDto) //
-        .toList();
-  }
-
-
-  public List<DocumentDto> getInvoices(int C_Order_ID) {
-    return new PQuery(ctx, MInvoice.Table_Name, "C_Order_ID=?", null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setParameters(C_Order_ID) //
-        .setOrderBy("DocumentNo DESC") //
-        .<MInvoice>stream() //
-        .map(accountMapper::toDto) //
-        .toList();
-  }
-
-
   public MPayment createPayment(MOrder order, String tenderType) {
 
     MBPBankAccount bpBankAccount = getBankAccount(order);
@@ -304,7 +213,6 @@ public class OrderService extends AbstractService {
   public boolean orderBelongsToUser(MOrder order) {
     return (getSessionUser().getC_BPartner_ID() == order.getC_BPartner_ID());
   }
-
 
 
 }
