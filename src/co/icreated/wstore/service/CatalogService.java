@@ -74,6 +74,14 @@ public class CatalogService extends AbstractService {
 
   public List<PriceListProductDto> doSearch(String searchString) {
 
+    if (searchString == null || searchString.isEmpty() || searchString.equals("%")) {
+      return List.of();
+    }
+
+    String term = searchString.toUpperCase();
+    if (!term.startsWith("%")) term = "%" + term;
+    if (!term.endsWith("%")) term = term + "%";
+
     String whereClause =
         "IsBOM='N' AND Discontinued='N' AND UPPER(Name || Description) LIKE UPPER(?)";
     int priceListVersionId = getPriceListVersionId();
@@ -81,7 +89,7 @@ public class CatalogService extends AbstractService {
     return new PQuery(ctx, MProduct.Table_Name, whereClause, null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
-        .setParameters(searchString) //
+        .setParameters(term) //
         .setOrderBy("Name") //
         .<MProduct>stream() //
         .map(product -> priceToDto(product, priceListVersionId)) //
@@ -90,7 +98,7 @@ public class CatalogService extends AbstractService {
   }
 
 
-  public List<PriceListProductDto> getProductsById(List<Object> ids) {
+  public List<PriceListProductDto> getProductsById(List<Integer> ids) {
 
     if (ids == null || ids.isEmpty()) {
       return List.of();
@@ -104,7 +112,7 @@ public class CatalogService extends AbstractService {
     return new PQuery(ctx, MProduct.Table_Name, whereClause.toString(), null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
-        .setParameters(ids) //
+        .setParameters(new ArrayList<Object>(ids)) //
         .setOrderBy("Name") //
         .<MProduct>stream() //
         .map(product -> priceToDto(product, priceListVersionId)) //
