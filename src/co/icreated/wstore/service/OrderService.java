@@ -20,7 +20,6 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPayment;
 import org.compiere.model.MUser;
-import org.compiere.model.Query;
 import org.compiere.model.X_C_Payment;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -232,7 +231,7 @@ public class OrderService extends AbstractService {
     MBPBankAccount bpBankAccount = getBankAccount(order);
 
     MBankAccount bankAccount =
-        new Query(order.getCtx(), MBankAccount.Table_Name, "AD_Org_ID=? AND C_Currency_ID=?",
+        new PQuery(order.getCtx(), MBankAccount.Table_Name, "AD_Org_ID=? AND C_Currency_ID=?",
             order.get_TrxName()).setParameters(order.getAD_Org_ID(), order.getC_Currency_ID())
             .setOrderBy("IsDefault DESC").first();
 
