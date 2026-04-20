@@ -159,15 +159,24 @@ public class OrderService extends AbstractService {
   }
 
 
-  public List<ShipmentDto> getShipments(int id, boolean byUser) {
-
-    String whereClause = "docStatus NOT IN ('DR') AND ";
-    whereClause += byUser ? "AD_User_ID=?" : "C_BPartner_ID=?";
-
-    return new PQuery(ctx, MInOut.Table_Name, whereClause, null) //
+  public List<ShipmentDto> getShipmentsByUser(int AD_User_ID) {
+    return new PQuery(ctx, MInOut.Table_Name, "docStatus NOT IN ('DR') AND AD_User_ID=?", null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
-        .setParameters(id).setOrderBy("DocumentNo DESC") //
+        .setParameters(AD_User_ID) //
+        .setOrderBy("DocumentNo DESC") //
+        .<MInOut>stream() //
+        .map(accountMapper::toDto) //
+        .toList();
+  }
+
+
+  public List<ShipmentDto> getShipmentsByBPartner(int C_BPartner_ID) {
+    return new PQuery(ctx, MInOut.Table_Name, "docStatus NOT IN ('DR') AND C_BPartner_ID=?", null) //
+        .setClient_ID() //
+        .setOnlyActiveRecords(true) //
+        .setParameters(C_BPartner_ID) //
+        .setOrderBy("DocumentNo DESC") //
         .<MInOut>stream() //
         .map(accountMapper::toDto) //
         .toList();
@@ -201,12 +210,23 @@ public class OrderService extends AbstractService {
   }
 
 
-  public List<DocumentDto> getInvoices(int id, boolean byUser) {
-
-    return new PQuery(ctx, MInvoice.Table_Name, byUser ? "AD_User_ID=?" : "C_BPartner_ID=?", null) //
+  public List<DocumentDto> getInvoicesByUser(int AD_User_ID) {
+    return new PQuery(ctx, MInvoice.Table_Name, "AD_User_ID=?", null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
-        .setParameters(id) //
+        .setParameters(AD_User_ID) //
+        .setOrderBy("DocumentNo DESC") //
+        .<MInvoice>stream() //
+        .map(accountMapper::toDto) //
+        .toList();
+  }
+
+
+  public List<DocumentDto> getInvoicesByBPartner(int C_BPartner_ID) {
+    return new PQuery(ctx, MInvoice.Table_Name, "C_BPartner_ID=?", null) //
+        .setClient_ID() //
+        .setOnlyActiveRecords(true) //
+        .setParameters(C_BPartner_ID) //
         .setOrderBy("DocumentNo DESC") //
         .<MInvoice>stream() //
         .map(accountMapper::toDto) //
