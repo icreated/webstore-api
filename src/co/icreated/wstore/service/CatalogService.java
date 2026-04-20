@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Level;
+
+import javax.ws.rs.NotFoundException;
+
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.joining;
 
@@ -55,7 +58,8 @@ public class CatalogService extends AbstractService {
         .setParameters(M_Product_ID) //
         .<MProduct>stream() //
         .map(product -> priceToDto(product, getPriceListVersionId())) //
-        .findAny().get();
+        .findAny() //
+        .orElseThrow(() -> new NotFoundException("Product not found"));
   }
 
 
@@ -82,7 +86,7 @@ public class CatalogService extends AbstractService {
         .<MProduct>stream() //
         .map(product -> priceToDto(product, priceListVersionId)) //
         .filter(Objects::nonNull) //
-        .collect(toList());
+        .toList();
   }
 
 
@@ -100,7 +104,7 @@ public class CatalogService extends AbstractService {
         .<MProduct>stream() //
         .map(product -> priceToDto(product, priceListVersionId)) //
         .filter(Objects::nonNull) //
-        .collect(toList());
+        .toList();
   }
 
 
@@ -123,7 +127,7 @@ public class CatalogService extends AbstractService {
         .<MProduct>stream() //
         .map(product -> priceToDto(product, priceListVersionId)) //
         .filter(Objects::nonNull) //
-        .collect(toList());
+        .toList();
   }
 
 
