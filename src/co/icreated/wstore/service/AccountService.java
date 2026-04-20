@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.ws.rs.core.SecurityContext;
@@ -17,11 +16,13 @@ import org.compiere.model.X_AD_User;
 import org.compiere.model.X_C_BPartner_Location;
 import org.compiere.model.X_C_Location;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import co.icreated.wstore.api.model.AccountInfoDto;
 import co.icreated.wstore.api.model.AddressDto;
 import co.icreated.wstore.api.model.NewAccountFormDto;
+import co.icreated.wstore.exception.WstoreBadRequestException;
 import co.icreated.wstore.mapper.AccountMapper;
 import co.icreated.wstore.utils.Transaction;
 
@@ -61,6 +62,13 @@ public class AccountService extends AbstractService {
   public MUser createUserAccount(NewAccountFormDto newAccountFormDto) {
 
     log.log(Level.FINE, "new account ", newAccountFormDto);
+
+    int existingUser = DB.getSQLValue(null,
+        "SELECT max(AD_User_ID) FROM AD_User WHERE UPPER(email) LIKE ?",
+        newAccountFormDto.getEmail().toUpperCase());
+    if (existingUser > 0) {
+      throw new WstoreBadRequestException("Account already exists");
+    }
 
     int SalesRep_ID = Env.getContextAsInt(ctx, "#SalesRep_ID");
 
@@ -148,7 +156,11 @@ public class AccountService extends AbstractService {
   }
 
 
-  public boolean changePassword(String newPassword) {
+  public void changePassword(String oldPassword, String newPassword) {
+
+    if (!getSessionUser().getPassword().equals(oldPassword)) {
+      throw new WstoreBadRequestException("Old password not correct");
+    }
 
     Transaction.run(trxName -> {
       MUser user = new MUser(ctx, getSessionUser().getAD_User_ID(), trxName);
@@ -159,8 +171,6 @@ public class AccountService extends AbstractService {
       user.save();
       return user;
     });
-    return true;
   }
 
 }
-

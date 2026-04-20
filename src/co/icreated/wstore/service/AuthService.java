@@ -54,10 +54,12 @@ public class AuthService extends AbstractService {
 
 
   public String issueToken(SessionUser sessionUser) {
+    return new TokenHandler(this).createTokenForUser(sessionUser);
+  }
 
-    TokenHandler tokenHandler = new TokenHandler(this);
-    String token = tokenHandler.createTokenForUser(sessionUser);
-    return token;
+
+  public String issueToken(String email, boolean reload) {
+    return issueToken(loadUserByUsername(email, true, reload));
   }
 
 

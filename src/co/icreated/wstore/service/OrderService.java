@@ -25,6 +25,7 @@ import org.compiere.util.Env;
 import co.icreated.wstore.api.model.DocumentDto;
 import co.icreated.wstore.api.model.DocumentLineDto;
 import co.icreated.wstore.api.model.OrderDto;
+import co.icreated.wstore.exception.WstoreUnauthorizedException;
 import co.icreated.wstore.mapper.AccountMapper;
 import co.icreated.wstore.utils.PQuery;
 import co.icreated.wstore.utils.Transaction;
@@ -207,6 +208,31 @@ public class OrderService extends AbstractService {
           bankAccount.save(order.get_TrxName());
           return bankAccount;
         });
+  }
+
+
+  public OrderDto voidOrder(int C_Order_ID) {
+    MOrder voidedOrder = Transaction.run(trxName -> {
+      MOrder order = new MOrder(ctx, C_Order_ID, trxName);
+      if (!orderBelongsToUser(order)) {
+        throw new WstoreUnauthorizedException("Access to order is unauthorized");
+      }
+      processOrder(MOrder.ACTION_Void, order);
+      return order;
+    });
+    return accountMapper.toOrderDto(voidedOrder);
+  }
+
+
+  public void payment(int C_Order_ID, String tenderType) {
+    MOrder order = new MOrder(ctx, C_Order_ID, null);
+    if (!orderBelongsToUser(order)) {
+      throw new WstoreUnauthorizedException("Access to order is unauthorized");
+    }
+    Transaction.run(trxName -> {
+      order.set_TrxName(trxName);
+      return createPayment(order, tenderType);
+    });
   }
 
 

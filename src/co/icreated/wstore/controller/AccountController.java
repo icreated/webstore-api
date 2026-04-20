@@ -17,7 +17,6 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MPayment;
 import org.compiere.model.MUser;
 import org.compiere.process.DocAction;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import co.icreated.wstore.api.model.AccountInfoDto;
@@ -30,16 +29,11 @@ import co.icreated.wstore.api.model.PaymentParamDto;
 import co.icreated.wstore.api.model.TokenDto;
 import co.icreated.wstore.api.service.AccountApi;
 import co.icreated.wstore.exception.WstoreBadRequestException;
-import co.icreated.wstore.exception.WstoreInternalServerException;
-import co.icreated.wstore.exception.WstoreUnauthorizedException;
-import co.icreated.wstore.mapper.AccountMapper;
 import co.icreated.wstore.model.SessionUser;
 import co.icreated.wstore.security.Status;
-import co.icreated.wstore.security.TokenHandler;
 import co.icreated.wstore.service.AccountService;
 import co.icreated.wstore.service.AuthService;
 import co.icreated.wstore.service.OrderService;
-import co.icreated.wstore.utils.Transaction;
 
 
 @RolesAllowed({"ROLE_USER"})
@@ -61,30 +55,12 @@ public class AccountController implements AccountApi {
   @Context
   SecurityContext securityContext;
 
-  AccountMapper accountMapper = new AccountMapper();
-
 
   @Override
   public TokenDto changePassword(@Valid @NotNull PasswordDto passwordDto) {
-    String token = null;
+    accountService.changePassword(passwordDto.getPassword(), passwordDto.getConfirmPassword());
     SessionUser sessionUser = (SessionUser) securityContext.getUserPrincipal();
-    boolean isValid = passwordDto.getPassword().equals(sessionUser.getPassword());
-
-    if (!isValid) {
-      throw new WstoreBadRequestException("Old password not correct");
-    }
-
-    boolean ok = accountService.changePassword(passwordDto.getConfirmPassword());
-    if (ok) {
-      final SessionUser authenticatedUser =
-          authService.loadUserByUsername(sessionUser.getEmail(), true, true);
-      TokenHandler tokenHandler = new TokenHandler(authService);
-      token = tokenHandler.createTokenForUser(authenticatedUser);
-      return new TokenDto().token(token);
-    }
-
-    throw new WstoreInternalServerException("Password not changed");
-
+    return new TokenDto().token(authService.issueToken(sessionUser.getEmail(), true));
   }
 
 
@@ -135,33 +111,15 @@ public class AccountController implements AccountApi {
   @Override
   @PermitAll
   public TokenDto signup(@Valid @NotNull NewAccountFormDto newAccountFormDto) {
-
-    int AD_User_ID =
-        DB.getSQLValue(null, "SELECT max(AD_User_ID) FROM AD_User WHERE UPPER(email) LIKE ?",
-            newAccountFormDto.getEmail().toUpperCase());
-    if (AD_User_ID > 0) {
-      throw new WstoreBadRequestException("Account already exists");
-    }
-
     MUser user = accountService.createUserAccount(newAccountFormDto);
-    if (user.getAD_User_ID() > 0) {
-      final SessionUser sessionUser = authService.loadUserByUsername(user.getEMail(), true, true);
-      TokenHandler tokenHandler = new TokenHandler(authService);
-      String token = tokenHandler.createTokenForUser(sessionUser);
-      return new TokenDto().token(token);
-    }
-    throw new WstoreInternalServerException("Account not created");
+    return new TokenDto().token(authService.issueToken(user.getEMail(), true));
   }
 
 
   @Override
   public TokenDto updateAccount(@Valid @NotNull AccountInfoDto accountInfoDto) {
     accountInfoDto = accountService.updateUserAccount(accountInfoDto);
-    final SessionUser sessionUser =
-        authService.loadUserByUsername(accountInfoDto.getEmail(), true, false);
-    TokenHandler tokenHandler = new TokenHandler(authService);
-    String token = tokenHandler.createTokenForUser(sessionUser);
-    return new TokenDto().token(token);
+    return new TokenDto().token(authService.issueToken(accountInfoDto.getEmail(), false));
   }
 
 
@@ -186,15 +144,7 @@ public class AccountController implements AccountApi {
     if (id <= 0) {
       throw new WstoreBadRequestException("Order id not defined");
     }
-    MOrder voidedOrder = Transaction.run(trxName -> {
-      MOrder order = new MOrder(ctx, id, trxName);
-      if (!orderService.orderBelongsToUser(order)) {
-        throw new WstoreUnauthorizedException("Access to order is unauthorized");
-      }
-      orderService.processOrder(MOrder.ACTION_Void, order);
-      return order;
-    });
-    return accountMapper.toOrderDto(voidedOrder);
+    return orderService.voidOrder(id);
   }
 
 
@@ -220,19 +170,12 @@ public class AccountController implements AccountApi {
   @Override
   @Status(Status.OK)
   public void payment(Integer id, @Valid @NotNull PaymentParamDto paymentParamDto) {
-    String type = paymentParamDto.getType() == null
+    String tenderType = paymentParamDto.getType() == null
         || paymentParamDto.getType().equals(PaymentParamDto.TypeEnum.CHECK)
             ? MPayment.TENDERTYPE_Check
             : MPayment.TENDERTYPE_DirectDeposit;
 
-    MOrder order = new MOrder(ctx, id, null);
-    if (!orderService.orderBelongsToUser(order))
-      throw new WstoreUnauthorizedException("Access to order is unauthorized");
-
-    Transaction.run(trxName -> {
-      order.set_TrxName(trxName);
-      return orderService.createPayment(order, type);
-    });
+    orderService.payment(id, tenderType);
   }
 
 
