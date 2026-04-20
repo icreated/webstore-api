@@ -65,10 +65,6 @@ public class AuthService extends AbstractService {
 
 
     SessionUser sessionUser = (SessionUser) loadUserByUsername(username, true, false);
-    if (sessionUser == null) {
-      throw new WstoreUnauthorizedException("User not found");
-    }
-
 
     boolean isValid = sessionUser.getPassword().equals(password);
     if (!isValid) {
