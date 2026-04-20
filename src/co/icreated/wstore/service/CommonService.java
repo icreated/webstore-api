@@ -39,7 +39,7 @@ public class CommonService extends AbstractService {
     if (token == null)
       return false;
 
-    return new PQuery(ctx, MUser.Table_Name, "UPPER(%s)=?", null) //
+    return new PQuery(ctx, MUser.Table_Name, String.format("UPPER(%s)=?", field),  null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
         .setParameters(token.toUpperCase()) //
