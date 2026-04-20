@@ -93,8 +93,8 @@ public class AuthService extends AbstractService {
     sql = isEmail ? String.format(sql, "u.EMail") : String.format(sql, "u.Value");
 
     return QueryTool.nativeFirst(sql, Map.of(1, login.trim()), rs -> {
-      boolean enabled = rs.getString(12).equals("Y") & rs.getString(14).equals("Y");
-      boolean accountNonLocked = !rs.getString(7).equals(MBPartner.SOCREDITSTATUS_CreditStop);
+      boolean enabled = rs.getString(12).equals("Y") && rs.getString(14).equals("Y");
+      boolean accountNonLocked = !rs.getString(15).equals(MBPartner.SOCREDITSTATUS_CreditStop);
 
       return new SessionUser.Builder().AD_User_ID(rs.getInt(1)) //
           .value(rs.getString(2)) //
