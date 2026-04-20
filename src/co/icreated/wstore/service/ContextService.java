@@ -68,8 +68,6 @@ public enum ContextService {
       }
     }
     Env.setContext(newCtx, "Stylesheet", s);
-
-    Env.setContext(newCtx, "#M_PriceList_ID", wstore.getM_PriceList_ID());
     Env.setContext(newCtx, "#AD_Role_ID", AD_Role_ID);
 
     MClient client = MClient.get(newCtx, wstore.getAD_Client_ID());
