@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 
@@ -36,13 +37,14 @@ public class CatalogService extends AbstractService {
 
 
   public List<ProductCategoryDto> getCategories() {
-    return new PQuery(ctx, MProductCategory.Table_Name, "IsSelfService='Y'", null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setOrderBy("Name") //
-        .<MProductCategory>stream() //
-        .map(catalogMapper::toDto) //
-        .toList();
+	  return new PQuery(ctx, MProductCategory.Table_Name, "IsSelfService='Y'", null)
+		      .setClient_ID() //
+		      .setOnlyActiveRecords(true) //
+		      .setOrderBy("Name") //
+		      .<MProductCategory>list() //
+		      .stream() //
+		      .map(catalogMapper::toDto) //
+		      .toList();
   }
 
 
@@ -60,12 +62,13 @@ public class CatalogService extends AbstractService {
     }
 
     int priceListVersionId = getPriceListVersionId();
-    return new PQuery(ctx, MProduct.Table_Name, whereClause.toString(), null) //
+     return new PQuery(ctx, MProduct.Table_Name, whereClause.toString(), null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
         .setParameters(params) //
         .setOrderBy("Name") //
-        .<MProduct>stream() //
+        .<MProduct>list() //
+        .stream() //
         .map(product -> priceToDto(product, priceListVersionId)) //
         .filter(Objects::nonNull) //
         .toList();
@@ -87,14 +90,15 @@ public class CatalogService extends AbstractService {
     int priceListVersionId = getPriceListVersionId();
 
     return new PQuery(ctx, MProduct.Table_Name, whereClause, null) //
-        .setClient_ID() //
-        .setOnlyActiveRecords(true) //
-        .setParameters(term) //
-        .setOrderBy("Name") //
-        .<MProduct>stream() //
-        .map(product -> priceToDto(product, priceListVersionId)) //
-        .filter(Objects::nonNull) //
-        .toList();
+            .setClient_ID() //
+            .setOnlyActiveRecords(true) //
+            .setParameters(term) //
+            .setOrderBy("Name") //
+            .<MProduct>list() //
+            .stream() //
+            .map(product -> priceToDto(product, priceListVersionId)) //
+            .filter(Objects::nonNull) //
+            .toList();
   }
 
 
@@ -109,15 +113,14 @@ public class CatalogService extends AbstractService {
         .append(")");
 
     int priceListVersionId = getPriceListVersionId();
-    return new PQuery(ctx, MProduct.Table_Name, whereClause.toString(), null) //
+    try (Stream<MProduct> s = new PQuery(ctx, MProduct.Table_Name, whereClause.toString(), null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
         .setParameters(new ArrayList<Object>(ids)) //
         .setOrderBy("Name") //
-        .<MProduct>stream() //
-        .map(product -> priceToDto(product, priceListVersionId)) //
-        .filter(Objects::nonNull) //
-        .toList();
+        .stream()) {
+      return s.map(product -> priceToDto(product, priceListVersionId)).filter(Objects::nonNull).toList();
+    }
   }
 
 
