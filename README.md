@@ -50,9 +50,8 @@ mvn clean package
 
 ### Deploy
 
-Copy the generated JAR into:
+add plugin vie Apache Felix Console: /osgi/system/console
 
-<idempiere>/dropins/
 
 Or install via OSGi console:
 
