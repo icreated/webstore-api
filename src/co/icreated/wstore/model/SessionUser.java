@@ -169,13 +169,13 @@ public class SessionUser implements Principal {
 
   public boolean equals(Object rhs) {
     if ((rhs instanceof SessionUser)) {
-      return this.username.equals(((SessionUser) rhs).username);
+      return this.value.equals(((SessionUser) rhs).value);
     }
     return false;
   }
 
   public int hashCode() {
-    return this.username.hashCode();
+    return this.value.hashCode();
   }
 
   public String toString() {
