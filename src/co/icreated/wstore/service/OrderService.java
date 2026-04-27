@@ -25,6 +25,7 @@ import org.compiere.util.Env;
 import co.icreated.wstore.api.model.DocumentDto;
 import co.icreated.wstore.api.model.DocumentLineDto;
 import co.icreated.wstore.api.model.OrderDto;
+import co.icreated.wstore.exception.WstoreNotFoundException;
 import co.icreated.wstore.exception.WstoreUnauthorizedException;
 import co.icreated.wstore.mapper.AccountMapper;
 import co.icreated.wstore.utils.PQuery;
@@ -164,6 +165,9 @@ public class OrderService extends AbstractService {
         new PQuery(order.getCtx(), MBankAccount.Table_Name, "AD_Org_ID=? AND C_Currency_ID=?",
             order.get_TrxName()).setParameters(order.getAD_Org_ID(), order.getC_Currency_ID())
             .setOrderBy("IsDefault DESC").first();
+    if (bankAccount == null) {
+      throw new WstoreNotFoundException("No bank account configured for this currency");
+    }
 
     MPayment payment = new MPayment(ctx, 0, order.get_TrxName());
     payment.setIsSelfService(true);
