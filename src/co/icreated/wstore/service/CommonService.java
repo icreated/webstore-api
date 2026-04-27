@@ -2,6 +2,7 @@ package co.icreated.wstore.service;
 
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 import org.compiere.model.MCountry;
 import org.compiere.model.MShipper;
@@ -23,13 +24,13 @@ public class CommonService extends AbstractService {
 
   public List<ShipperDto> getShippers() {
 
-    return new PQuery(ctx, MShipper.Table_Name, "", null) //
+    try (Stream<MShipper> s = new PQuery(ctx, MShipper.Table_Name, "", null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
         .setOrderBy("Name") //
-        .<MShipper>stream() //
-        .map(commonMapper::toDto) //
-        .toList();
+        .<MShipper>stream()) {
+      return s.map(commonMapper::toDto).toList();
+    }
   }
 
 
@@ -48,12 +49,12 @@ public class CommonService extends AbstractService {
 
   public List<IdNamePairDto> getCountries() {
 
-    return new PQuery(ctx, MCountry.Table_Name, "", null) //
+    try (Stream<MCountry> s = new PQuery(ctx, MCountry.Table_Name, "", null) //
         .setOnlyActiveRecords(true) //
         .setOrderBy("Name") //
-        .<MCountry>stream() //
-        .map(commonMapper::toDto) //
-        .toList();
+        .<MCountry>stream()) {
+      return s.map(commonMapper::toDto).toList();
+    }
   }
 }
 

@@ -128,14 +128,15 @@ public class OrderService extends AbstractService {
 
   public List<DocumentDto> getOrders() {
 
-    return new PQuery(ctx, MOrder.Table_Name, "C_BPartner_ID=? AND DocStatus NOT IN ('DR')", null) //
+    try (Stream<MOrder> s = new PQuery(ctx, MOrder.Table_Name,
+        "C_BPartner_ID=? AND DocStatus NOT IN ('DR')", null) //
         .setClient_ID() //
         .setOnlyActiveRecords(true) //
         .setParameters(getSessionUser().getC_BPartner_ID()) //
         .setOrderBy("DocumentNo DESC") //
-        .<MOrder>stream() //
-        .map(accountMapper::toDto) //
-        .collect(Collectors.toList());
+        .<MOrder>stream()) {
+      return s.map(accountMapper::toDto).collect(Collectors.toList());
+    }
   }
 
 
