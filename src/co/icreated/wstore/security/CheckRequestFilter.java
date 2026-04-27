@@ -3,7 +3,6 @@ package co.icreated.wstore.security;
 import java.io.IOException;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
@@ -14,9 +13,6 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @PreMatching
 public class CheckRequestFilter implements ContainerRequestFilter {
-
-  @Context
-  private HttpServletRequest servletRequest;
 
   @Context
   ServletContext context;
