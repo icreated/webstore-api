@@ -20,7 +20,6 @@ public class CORSFilter implements ContainerResponseFilter {
     response.getHeaders().add("Access-Control-Allow-Origin", "*");
     response.getHeaders().add("Access-Control-Allow-Headers",
         "Origin, Content-Type, Accept, Authorization, ApplicationId");
-    response.getHeaders().add("Access-Control-Allow-Credentials", "true");
     response.getHeaders().add("Access-Control-Allow-Methods",
         "GET, POST, PUT, DELETE, OPTIONS, HEAD");
     // response.getHeaders().add("Access-Control-Max-Age", "1800");//30 min
