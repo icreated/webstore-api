@@ -33,7 +33,7 @@ public class CommonService extends AbstractService {
   }
 
 
-  public boolean isUnique(Properties ctx, String field, String token) {
+  public boolean exists(Properties ctx, String field, String token) {
 
     if (token == null)
       return false;
