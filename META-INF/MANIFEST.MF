@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WebStore API
 Bundle-SymbolicName: co.icreated.wstore.api;singleton:=true
-Bundle-Version: 12.0.0.qualifier
+Bundle-Version: 13.0.0.qualifier
 Bundle-Vendor: ICreated
 Bundle-Activator: co.icreated.wstore.api.Activator
 Bundle-ClassPath: .,
