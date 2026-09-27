@@ -60,11 +60,14 @@ public class AccountMapper {
 
   public DocumentLineDto toDto(MOrderLine orderLine) {
     var dto = new DocumentLineDto();
+    var product = orderLine.getProduct();
     dto.id(orderLine.getC_OrderLine_ID());
     dto.productId(orderLine.getM_Product_ID());
     dto.line(orderLine.getLine());
-    dto.name(orderLine.getProduct().getName());
-    dto.description(orderLine.getProduct().getDescription());
+    if (product != null) {
+        dto.name(product.getName());
+        dto.description(product.getDescription());
+    }
     dto.priceList(orderLine.getPriceList());
     dto.price(orderLine.getPriceActual());
     dto.qty(orderLine.getQtyOrdered());
