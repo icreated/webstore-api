@@ -1,6 +1,5 @@
 package co.icreated.wstore.service;
 
-
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -31,36 +30,33 @@ import co.icreated.wstore.mapper.AccountMapper;
 import co.icreated.wstore.utils.PQuery;
 import co.icreated.wstore.utils.Transaction;
 
-
 public class OrderService extends AbstractService {
 
   CLogger log = CLogger.getCLogger(OrderService.class);
 
   AccountMapper accountMapper = new AccountMapper();
 
-
   public OrderService(Properties ctx, SecurityContext securityContext) {
     super(ctx, securityContext);
   }
 
-
-
   public OrderDto createOrder(OrderDto orderDto) {
 
-    // During order creation there are some Env.getCtx() calls. The context is not defined (same
+    // During order creation there are some Env.getCtx() calls. The context is not
+    // defined (same
     // issue as
     // Query loosing ctx, but resolved with PQuery.java)
     // WIth debugger detected that MStorageReservationLog is called like this:
     // MStorageReservationLog log = new
     // MStorageReservationLog(Env.getCtx(), 0, trxName);
-    // PO checks integrity of AD_Client and in this case AD_Client_ID is not defined so we are
+    // PO checks integrity of AD_Client and in this case AD_Client_ID is not defined
+    // so we are
     // obliged to defined it with this awful solution to
     // be sure it's not lost :(
     Env.setCtx(ctx);
 
-    int C_PaymentTerm_ID =
-        getSessionUser().getC_PaymentTerm_ID() > 0 ? getSessionUser().getC_PaymentTerm_ID()
-            : Env.getContextAsInt(ctx, "#C_PaymentTerm_ID");
+    int C_PaymentTerm_ID = getSessionUser().getC_PaymentTerm_ID() > 0 ? getSessionUser().getC_PaymentTerm_ID()
+        : Env.getContextAsInt(ctx, "#C_PaymentTerm_ID");
 
     int M_PriceList_ID = Env.getContextAsInt(ctx, "#M_PriceList_ID");
 
@@ -93,7 +89,6 @@ public class OrderService extends AbstractService {
       order.setDocAction(MOrder.DOCACTION_Prepare);
       order.save();
 
-
       for (DocumentLineDto wbl : orderDto.getLines()) {
         MOrderLine ol = new MOrderLine(order);
         ol.setM_Product_ID(wbl.getProductId(), true);
@@ -125,7 +120,6 @@ public class OrderService extends AbstractService {
     return orderDto;
   }
 
-
   public List<DocumentDto> getOrders() {
 
     try (Stream<MOrder> s = new PQuery(ctx, MOrder.Table_Name,
@@ -139,7 +133,6 @@ public class OrderService extends AbstractService {
     }
   }
 
-
   public boolean processOrder(String docAction, MOrder order) {
     if (StringUtils.isBlank(docAction)) {
       return false;
@@ -150,22 +143,25 @@ public class OrderService extends AbstractService {
     return ok;
   }
 
-
   public OrderDto getOrder(int C_Order_ID) {
 
     MOrder order = new MOrder(ctx, C_Order_ID, null);
+    if (order.get_ID() <= 0) {
+      throw new WstoreNotFoundException("Order not found");
+    }
+    if (!orderBelongsToUser(order)) {
+      throw new WstoreUnauthorizedException("Access to order is unauthorized");
+    }
     return accountMapper.toOrderDto(order);
   }
-
 
   public MPayment createPayment(MOrder order, String tenderType) {
 
     MBPBankAccount bpBankAccount = getBankAccount(order);
 
-    MBankAccount bankAccount =
-        new PQuery(order.getCtx(), MBankAccount.Table_Name, "AD_Org_ID=? AND C_Currency_ID=?",
-            order.get_TrxName()).setParameters(order.getAD_Org_ID(), order.getC_Currency_ID())
-            .setOrderBy("IsDefault DESC").first();
+    MBankAccount bankAccount = new PQuery(order.getCtx(), MBankAccount.Table_Name, "AD_Org_ID=? AND C_Currency_ID=?",
+        order.get_TrxName()).setParameters(order.getAD_Org_ID(), order.getC_Currency_ID())
+        .setOrderBy("IsDefault DESC").first();
     if (bankAccount == null) {
       throw new WstoreNotFoundException("No bank account configured for this currency");
     }
@@ -199,7 +195,6 @@ public class OrderService extends AbstractService {
     return payment;
   }
 
-
   public MBPBankAccount getBankAccount(MOrder order) {
     MBPartner bp = MBPartner.get(ctx, order.getC_BPartner_ID(), order.get_TrxName());
     // Find Bank Account for exact User
@@ -215,7 +210,6 @@ public class OrderService extends AbstractService {
         });
   }
 
-
   public OrderDto voidOrder(int C_Order_ID) {
     MOrder voidedOrder = Transaction.run(trxName -> {
       MOrder order = new MOrder(ctx, C_Order_ID, trxName);
@@ -228,7 +222,6 @@ public class OrderService extends AbstractService {
     return accountMapper.toOrderDto(voidedOrder);
   }
 
-
   public void payment(int C_Order_ID, String tenderType) {
     MOrder order = new MOrder(ctx, C_Order_ID, null);
     if (!orderBelongsToUser(order)) {
@@ -240,10 +233,8 @@ public class OrderService extends AbstractService {
     });
   }
 
-
   public boolean orderBelongsToUser(MOrder order) {
     return (getSessionUser().getC_BPartner_ID() == order.getC_BPartner_ID());
   }
-
 
 }
